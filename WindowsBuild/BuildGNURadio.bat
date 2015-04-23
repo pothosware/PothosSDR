@@ -7,6 +7,8 @@ REM ## * gnuradio
 REM ## * gr-pothos (toolkit bindings project)
 REM ############################################################
 
+set GR_BRANCH=master
+
 REM ############################################################
 REM ## Build GNU Radio
 REM ##

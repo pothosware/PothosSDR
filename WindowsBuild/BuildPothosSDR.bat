@@ -13,12 +13,6 @@ set BUILD_DIR=C:/build/PothosSDR
 set INSTALL_PREFIX=C:/PothosSDR
 set CONFIGURATION=RelWithDebInfo
 set GENERATOR=Visual Studio 11 2012 Win64
-set RTL_BRANCH=master
-set UHD_BRANCH=release_003_008_002
-set POCO_BRANCH=poco-1.6.0-release
-set POTHOS_BRANCH=master
-set SOAPY_BRANCH=master
-set GR_BRANCH=master
 
 COLOR
 mkdir "%BUILD_DIR%"
@@ -31,7 +25,7 @@ call "%SOURCE_DIR%/Prebuilt.bat"
 REM ############################################################
 REM ## sdr hardware support
 REM ############################################################
-call "%SOURCE_DIR%/BuildSDR.bat"
+call "%SOURCE_DIR%/BuildHwDrivers.bat"
 
 REM ############################################################
 REM ## Pothos data-flow suite

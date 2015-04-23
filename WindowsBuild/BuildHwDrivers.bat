@@ -8,6 +8,11 @@ REM ## * uhd/usrp
 REM ## * SoapySDR
 REM ############################################################
 
+set RTL_BRANCH=master
+set BLADERF_BRANCH=libbladeRF_v1.2.1
+set UHD_BRANCH=release_003_008_002
+set SOAPY_BRANCH=master
+
 REM ############################################################
 REM ## Build RTL SDR
 REM ############################################################
@@ -20,6 +25,7 @@ git remote update
 git checkout %RTL_BRANCH%
 mkdir build
 cd build
+rm CMakeCache.txt
 cmake .. -G "%GENERATOR%" ^
     -DCMAKE_BUILD_TYPE="%CONFIGURATION%" ^
     -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%" ^
@@ -27,6 +33,31 @@ cmake .. -G "%GENERATOR%" ^
     -DLIBUSB_LIBRARIES="%LIBUSB_LIBRARIES%" ^
     -DTHREADS_PTHREADS_INCLUDE_DIR="%THREADS_PTHREADS_INCLUDE_DIR%" ^
     -DTHREADS_PTHREADS_WIN32_LIBRARY="%THREADS_PTHREADS_WIN32_LIBRARY%"
+cmake --build . --config "%CONFIGURATION%"
+cmake --build . --config "%CONFIGURATION%" --target install
+
+REM ############################################################
+REM ## Build BladeRF
+REM ############################################################
+cd %BUILD_DIR%
+if NOT EXIST %BUILD_DIR%/bladeRF (
+    git clone https://github.com/Nuand/bladeRF.git
+)
+cd bladeRF/host
+git remote update
+git checkout %BLADERF_BRANCH%
+mkdir build
+cd build
+rm CMakeCache.txt
+cmake .. -G "%GENERATOR%" ^
+    -DCMAKE_BUILD_TYPE="%CONFIGURATION%" ^
+    -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%" ^
+    -DENABLE_BACKEND_USB=ON ^
+    -DENABLE_BACKEND_LIBUSB=ON ^
+    -DLIBUSB_HEADER_FILE="%LIBUSB_INCLUDE_DIR%/libusb.h" ^
+    -DLIBUSB_PATH="%LIBUSB_ROOT%" ^
+    -DLIBPTHREADSWIN32_HEADER_FILE="%THREADS_PTHREADS_INCLUDE_DIR%/pthread.h" ^
+    -DLIBPTHREADSWIN32_PATH="%THREADS_PTHREADS_ROOT%"
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
 
@@ -42,6 +73,7 @@ git remote update
 git checkout %UHD_BRANCH%
 mkdir build
 cd build
+rm CMakeCache.txt
 cmake .. -G "%GENERATOR%" -Wno-dev ^
     -DCMAKE_BUILD_TYPE="%CONFIGURATION%" ^
     -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%" ^
@@ -56,6 +88,8 @@ cmake --build . --config "%CONFIGURATION%" --target install
 
 REM ############################################################
 REM ## Build SoapySDR
+REM ##
+REM ## * ENABLE_RFSPACE=OFF build errors
 REM ############################################################
 cd %BUILD_DIR%
 if NOT EXIST %BUILD_DIR%/SoapySDR (
@@ -75,8 +109,6 @@ cmake .. -G "%GENERATOR%" ^
     -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%" ^
     -DBOOST_ROOT="%BOOST_ROOT%" ^
     -DBOOST_LIBRARY_DIR="%BOOST_LIBRARY_DIR%" ^
-    -DLIBRTLSDR_INCLUDE_DIRS="%INSTALL_PREFIX%/include" ^
-    -DLIBRTLSDR_LIBRARIES="%INSTALL_PREFIX%/lib/rtlsdr.lib" ^
     -DUHD_INCLUDE_DIRS="%INSTALL_PREFIX%/include" ^
     -DUHD_LIBRARIES="%INSTALL_PREFIX%/lib/uhd.lib" ^
     -DPYTHON_EXECUTABLE="C:/Python34/python.exe" ^

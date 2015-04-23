@@ -7,6 +7,9 @@ REM ## * poco (dependency)
 REM ## * pothos (top level project)
 REM ############################################################
 
+set POCO_BRANCH=poco-1.6.0-release
+set POTHOS_BRANCH=master
+
 REM ############################################################
 REM ## Build Poco
 REM ############################################################

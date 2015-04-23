@@ -7,12 +7,11 @@ REM ##
 REM ## * boost (prebuilt runtime dlls)
 REM ## * pthreads (prebuilt runtime dlls)
 REM ## * portaudio (prebuilt runtime dlls)
-REM ## * libusb (prebuilt + static link)
+REM ## * libusb (prebuilt runtime dlls)
 REM ## * swig (prebuilt generator)
 REM ## * qt5 (prebuilt runtime dlls)
 REM ## * fftw (prebuilt runtime dlls)
 REM ############################################################
-
 
 REM ############################################################
 REM ## Created required directories
@@ -38,8 +37,9 @@ cp "%BOOST_LIBRARY_DIR%/boost_program_options-vc110-mt-1_57.dll" "%INSTALL_PREFI
 REM ############################################################
 REM ## Pthreads (prebuilt)
 REM ############################################################
-set THREADS_PTHREADS_INCLUDE_DIR=C:/pthreads/include
-set THREADS_PTHREADS_WIN32_LIBRARY=C:/pthreads/lib/x64/pthreadVC2.lib
+set THREADS_PTHREADS_ROOT=C:/pthreads
+set THREADS_PTHREADS_INCLUDE_DIR=%THREADS_PTHREADS_ROOT%/include
+set THREADS_PTHREADS_WIN32_LIBRARY=%THREADS_PTHREADS_ROOT%/lib/x64/pthreadVC2.lib
 
 cp "C:/pthreads/dll/x64/pthreadVC2.dll" "%INSTALL_PREFIX%/bin"
 
@@ -75,8 +75,11 @@ cp "%QT5_DLL_ROOT%/plugins/platforms/qwindows.dll" "%INSTALL_PREFIX%/bin/platfor
 REM ############################################################
 REM ## LibUSB dependency (prebuilt)
 REM ############################################################
-set LIBUSB_INCLUDE_DIR=C:/build/libusb/libusb
-set LIBUSB_LIBRARIES=C:/build/libusb/x64/Release/lib/libusb-1.0.lib
+set LIBUSB_ROOT=C:/libusb-1.0.19
+set LIBUSB_INCLUDE_DIR=%LIBUSB_ROOT%/include/libusb-1.0
+set LIBUSB_LIBRARIES=%LIBUSB_ROOT%/MS64/dll/libusb-1.0.lib
+
+cp "%LIBUSB_LIBRARY_PATH%/libusb-1.0.dll" "%INSTALL_PREFIX%/bin"
 
 REM ############################################################
 REM ## SWIG dependency (prebuilt)
