@@ -4,12 +4,15 @@ REM ##
 REM ## This script builds SoapySDR and vendor drivers
 REM ##
 REM ## * rtl-sdr
+REM ## * bladerf
+REM ## * hackrf
 REM ## * uhd/usrp
 REM ## * SoapySDR
 REM ############################################################
 
 set RTL_BRANCH=master
 set BLADERF_BRANCH=libbladeRF_v1.2.1
+set HACKRF_BRANCH=v2014.08.1
 set UHD_BRANCH=release_003_008_002
 set SOAPY_BRANCH=master
 
@@ -58,6 +61,29 @@ cmake .. -G "%GENERATOR%" ^
     -DLIBUSB_PATH="%LIBUSB_ROOT%" ^
     -DLIBPTHREADSWIN32_HEADER_FILE="%THREADS_PTHREADS_INCLUDE_DIR%/pthread.h" ^
     -DLIBPTHREADSWIN32_PATH="%THREADS_PTHREADS_ROOT%"
+cmake --build . --config "%CONFIGURATION%"
+cmake --build . --config "%CONFIGURATION%" --target install
+
+REM ############################################################
+REM ## Build HackRF
+REM ############################################################
+cd %BUILD_DIR%
+if NOT EXIST %BUILD_DIR%/hackrf (
+    git clone https://github.com/mossmann/hackrf.git
+)
+cd hackrf/host
+git remote update
+git checkout %HACKRF_BRANCH%
+mkdir build
+cd build
+rm CMakeCache.txt
+cmake .. -G "%GENERATOR%" ^
+    -DCMAKE_BUILD_TYPE="%CONFIGURATION%" ^
+    -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%" ^
+    -DLIBUSB_INCLUDE_DIR="%LIBUSB_INCLUDE_DIR%" ^
+    -DLIBUSB_LIBRARIES="%LIBUSB_LIBRARIES%" ^
+    -DTHREADS_PTHREADS_INCLUDE_DIR="%THREADS_PTHREADS_INCLUDE_DIR%" ^
+    -DTHREADS_PTHREADS_WIN32_LIBRARY="%THREADS_PTHREADS_WIN32_LIBRARY%"
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
 
