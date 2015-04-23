@@ -36,3 +36,11 @@ REM ############################################################
 REM ## GNU Radio toolkit
 REM ############################################################
 call "%SOURCE_DIR%/BuildGNURadio.bat"
+
+REM ############################################################
+REM ## Zip the install dir
+REM ############################################################
+if EXIST "%BUILD_DIR%/PothosSDR.zip" (
+    rm "%BUILD_DIR%/PothosSDR.zip"
+)
+"C:\Program Files\7-Zip\7z.exe" a "%BUILD_DIR%/PothosSDR.zip" "%INSTALL_PREFIX%"

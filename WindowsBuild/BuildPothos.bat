@@ -1,7 +1,7 @@
 REM ############################################################
 REM ## Pothos SDR environment build sub-script
 REM ##
-REM ## This script builds GNU Radio and toolkit bindings
+REM ## This script builds Poco (dependency) and Pothos project
 REM ##
 REM ## * poco (dependency)
 REM ## * pothos (top level project)
