@@ -63,6 +63,7 @@ cmake .. -G "%GENERATOR%" ^
     -DLIBPTHREADSWIN32_PATH="%THREADS_PTHREADS_ROOT%"
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
+mv "%INSTALL_PREFIX%/lib/bladeRF.dll" "%INSTALL_PREFIX%/bin"
 
 REM ############################################################
 REM ## Build HackRF
