@@ -4,6 +4,7 @@ REM ##
 REM ## This script installs pre-built DLLs into the dest,
 REM ## and sets dependency variables for the build scripts
 REM ##
+REM ## * zadig (prebuilt executable)
 REM ## * boost (prebuilt runtime dlls)
 REM ## * pthreads (prebuilt runtime dlls)
 REM ## * portaudio (prebuilt runtime dlls)
@@ -18,6 +19,11 @@ REM ## Created required directories
 REM ############################################################
 mkdir "%INSTALL_PREFIX%"
 mkdir "%INSTALL_PREFIX%/bin"
+
+REM ############################################################
+REM ## Zadig for USB devices
+REM ############################################################
+cp "C:/zadig_2.1.1.exe" "%INSTALL_PREFIX%"
 
 REM ############################################################
 REM ## Boost dependency (prebuilt)

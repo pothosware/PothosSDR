@@ -52,3 +52,8 @@ cmake .. -G "%GENERATOR%" -Wno-dev ^
     -DPORTAUDIO_LIBRARY="%PORTAUDIO_LIBRARY%"
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
+
+REM ############################################################
+REM ## Pothos GUI shortcut
+REM ############################################################
+cp "%SOURCE_DIR%/Launchers/PothosGui.exe" "%INSTALL_PREFIX%"
