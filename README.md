@@ -1,9 +1,10 @@
-# Support repository for Pothos SDR environment
+# Pothos SDR development environment
 
-Pothos SDR aims to create a pre-packaged SDR development environment
-to make it possible for users to start exploring and developing with SDR
-without the hassle of downloading a building dozens of SDR (and related)
-software packages.
+The Pothos SDR development environment makes it easy for windows users
+to start exploring and developing with common SDR hardware and software
+without the hassle of downloading a building dozens of software packages.
+This project contains build scripts to create a package of windows binaries.
+Actual pre-built binaries will be available on a separate download site.
 
 ##Environment
 

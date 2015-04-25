@@ -20,7 +20,7 @@ mkdir "%BUILD_DIR%"
 REM ############################################################
 REM ## pre-built dependencies
 REM ############################################################
-call "%SOURCE_DIR%/Prebuilt.bat"
+call "%SOURCE_DIR%/InstallPrebuilt.bat"
 
 REM ############################################################
 REM ## sdr hardware support
