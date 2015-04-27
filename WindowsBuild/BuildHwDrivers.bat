@@ -38,6 +38,7 @@ cmake .. -G "%GENERATOR%" ^
     -DTHREADS_PTHREADS_WIN32_LIBRARY="%THREADS_PTHREADS_WIN32_LIBRARY%"
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
+cp "%BUILD_DIR%/rtl-sdr/COPYING" "%INSTALL_PREFIX%/licenses/COPYING.rtl-sdr"
 
 REM ############################################################
 REM ## Build BladeRF
@@ -64,6 +65,8 @@ cmake .. -G "%GENERATOR%" ^
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
 mv "%INSTALL_PREFIX%/lib/bladeRF.dll" "%INSTALL_PREFIX%/bin"
+rm -rf "%INSTALL_PREFIX%/licenses/bladeRF"
+cp -r "%BUILD_DIR%/bladeRF/legal/licenses" "%INSTALL_PREFIX%/licenses/bladeRF"
 
 REM ############################################################
 REM ## Build HackRF
@@ -87,6 +90,7 @@ cmake .. -G "%GENERATOR%" ^
     -DTHREADS_PTHREADS_WIN32_LIBRARY="%THREADS_PTHREADS_WIN32_LIBRARY%"
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
+cp "%BUILD_DIR%/hackrf/COPYING" "%INSTALL_PREFIX%/licenses/COPYING.hackrf"
 
 REM ############################################################
 REM ## Build UHD
@@ -112,6 +116,7 @@ cmake .. -G "%GENERATOR%" -Wno-dev ^
     -DPYTHON_EXECUTABLE="C:/Python27/python.exe"
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
+cp "%BUILD_DIR%/uhd/host/LICENSE" "%INSTALL_PREFIX%/licenses/LICENSE.uhd"
 
 REM ############################################################
 REM ## Build SoapySDR
@@ -144,3 +149,5 @@ cmake .. -G "%GENERATOR%" ^
     -DENABLE_RFSPACE=OFF
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
+cp "%BUILD_DIR%/SoapySDR/LICENSE_1_0.txt" "%INSTALL_PREFIX%/licenses/LICENSE_1_0.SoapySDR"
+cp "%BUILD_DIR%/SoapySDR/SoapyOsmo/COPYING" "%INSTALL_PREFIX%/licenses/COPYING.osmosdr"

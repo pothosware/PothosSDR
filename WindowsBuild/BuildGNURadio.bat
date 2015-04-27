@@ -42,6 +42,7 @@ cmake .. -G "%GENERATOR%" -Wno-dev ^
     -DNOSWIG=ON
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
+cp "%BUILD_DIR%/gnuradio/COPYING" "%INSTALL_PREFIX%/licenses/COPYING.gnuradio"
 
 REM ############################################################
 REM ## GR Pothos bindings

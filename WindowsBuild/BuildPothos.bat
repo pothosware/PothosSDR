@@ -27,6 +27,7 @@ cmake .. -G "%GENERATOR%" -Wno-dev ^
     -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%"
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
+cp "%BUILD_DIR%/poco/LICENSE" "%INSTALL_PREFIX%/licenses/LICENSE.poco"
 
 REM ############################################################
 REM ## Build Pothos
@@ -52,6 +53,16 @@ cmake .. -G "%GENERATOR%" -Wno-dev ^
     -DPORTAUDIO_LIBRARY="%PORTAUDIO_LIBRARY%"
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
+
+cp "%BUILD_DIR%/pothos/pothos-library/LICENSE_1_0.txt" "%INSTALL_PREFIX%/licenses/LICENSE_1_0.pothos-library"
+cp "%BUILD_DIR%/pothos/pothos-widgets/qwt/COPYING" "%INSTALL_PREFIX%/licenses/COPYING.qwt"
+cp "%BUILD_DIR%/pothos/pothos-util/muparserx/License.txt" "%INSTALL_PREFIX%/licenses/License.muparserx"
+cp "%BUILD_DIR%/pothos/pothos-blocks/network/udt4/LICENSE.txt" "%INSTALL_PREFIX%/licenses/LICENSE.udt"
+
+mkdir "%INSTALL_PREFIX%/licenses/qtcolorpicker"
+cp "%BUILD_DIR%/pothos/pothos-gui/qtcolorpicker/LGPL_EXCEPTION.txt" "%INSTALL_PREFIX%/licenses/qtcolorpicker"
+cp "%BUILD_DIR%/pothos/pothos-gui/qtcolorpicker/LICENSE.GPL3" "%INSTALL_PREFIX%/licenses/qtcolorpicker"
+cp "%BUILD_DIR%/pothos/pothos-gui/qtcolorpicker/LICENSE.LGPL" "%INSTALL_PREFIX%/licenses/qtcolorpicker"
 
 REM ############################################################
 REM ## Pothos GUI shortcut

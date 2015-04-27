@@ -49,6 +49,10 @@ set THREADS_PTHREADS_WIN32_LIBRARY=%THREADS_PTHREADS_ROOT%/lib/x64/pthreadVC2.li
 
 cp "C:/pthreads/dll/x64/pthreadVC2.dll" "%INSTALL_PREFIX%/bin"
 
+mkdir "%INSTALL_PREFIX%/licenses/pthreads"
+cp "%THREADS_PTHREADS_ROOT%/COPYING" "%INSTALL_PREFIX%/licenses/pthreads"
+cp "%THREADS_PTHREADS_ROOT%/COPYING.lib" "%INSTALL_PREFIX%/licenses/pthreads"
+
 REM ############################################################
 REM ## PortAudio dependency (prebuilt)
 REM ############################################################
@@ -104,3 +108,7 @@ cp "%FFTW3F_ROOT%/libfftw3f-3.dll" "%INSTALL_PREFIX%/bin"
 
 cd "%FFTW3F_ROOT%"
 lib /machine:x64 /def:libfftw3f-3.def
+
+mkdir "%INSTALL_PREFIX%/licenses/fftw"
+cp "%FFTW3F_ROOT%/COPYING" "%INSTALL_PREFIX%/licenses/fftw"
+cp "%FFTW3F_ROOT%/COPYRIGHT" "%INSTALL_PREFIX%/licenses/fftw"

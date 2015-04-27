@@ -16,6 +16,7 @@ set GENERATOR=Visual Studio 11 2012 Win64
 
 COLOR
 mkdir "%BUILD_DIR%"
+mkdir "%INSTALL_PREFIX%/licenses"
 
 REM ############################################################
 REM ## pre-built dependencies
