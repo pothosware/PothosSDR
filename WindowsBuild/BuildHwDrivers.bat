@@ -14,7 +14,7 @@ set RTL_BRANCH=master
 set BLADERF_BRANCH=libbladeRF_v1.2.1
 set HACKRF_BRANCH=755a9f67aeb96d7aa6993c4eb96f7b47963593d7
 set UHD_BRANCH=release_003_008_002
-set UMTRX_BRANCH=win_fixes
+set UMTRX_BRANCH=master
 set SOAPY_BRANCH=master
 
 REM ############################################################
