@@ -14,6 +14,7 @@ set RTL_BRANCH=master
 set BLADERF_BRANCH=libbladeRF_v1.2.1
 set HACKRF_BRANCH=755a9f67aeb96d7aa6993c4eb96f7b47963593d7
 set UHD_BRANCH=release_003_008_002
+set UMTRX_BRANCH=win_fixes
 set SOAPY_BRANCH=master
 
 REM ############################################################
@@ -117,6 +118,29 @@ cmake .. -G "%GENERATOR%" -Wno-dev ^
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
 cp "%BUILD_DIR%/uhd/host/LICENSE" "%INSTALL_PREFIX%/licenses/LICENSE.uhd"
+
+REM ############################################################
+REM ## Build UmTRX
+REM ############################################################
+cd %BUILD_DIR%
+if NOT EXIST %BUILD_DIR%/umtrx (
+    git clone https://github.com/fairwaves/UHD-Fairwaves.git umtrx
+)
+cd umtrx/host
+git remote update
+git checkout %UMTRX_BRANCH%
+fir pull origin %UMTRX_BRANCH%
+mkdir build
+cd build
+rm CMakeCache.txt
+cmake .. -G "%GENERATOR%" -Wno-dev ^
+    -DCMAKE_BUILD_TYPE="%CONFIGURATION%" ^
+    -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%" ^
+    -DBOOST_ROOT="%BOOST_ROOT%" ^
+    -DBOOST_LIBRARY_DIR="%BOOST_LIBRARY_DIR%" ^
+    -DBOOST_ALL_DYN_LINK="TRUE"
+cmake --build . --config "%CONFIGURATION%"
+cmake --build . --config "%CONFIGURATION%" --target install
 
 REM ############################################################
 REM ## Build SoapySDR
