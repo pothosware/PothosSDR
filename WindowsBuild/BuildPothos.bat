@@ -50,7 +50,8 @@ cmake .. -G "%GENERATOR%" -Wno-dev ^
     -DSoapySDR_DIR="%INSTALL_PREFIX%" ^
     -DPoco_DIR="%INSTALL_PREFIX%/lib/cmake/Poco" ^
     -DPORTAUDIO_INCLUDE_DIR="%PORTAUDIO_INCLUDE_DIR%" ^
-    -DPORTAUDIO_LIBRARY="%PORTAUDIO_LIBRARY%"
+    -DPORTAUDIO_LIBRARY="%PORTAUDIO_LIBRARY%" ^
+    -DENABLE_JAVA=OFF
 cmake --build . --config "%CONFIGURATION%"
 cmake --build . --config "%CONFIGURATION%" --target install
 
