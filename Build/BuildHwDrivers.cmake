@@ -11,8 +11,6 @@
 ## * SoapySDR
 ############################################################
 
-include(ExternalProject)
-
 set(RTL_BRANCH master)
 set(BLADERF_BRANCH libbladeRF_v1.2.1)
 set(HACKRF_BRANCH 755a9f67aeb96d7aa6993c4eb96f7b47963593d7)

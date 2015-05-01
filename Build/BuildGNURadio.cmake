@@ -17,6 +17,7 @@ set(GR_BRANCH master)
 ## * NOSWIG=ON to reduce size and build time
 ############################################################
 ExternalProject_Add(GNURadio
+    DEPENDS Pothos
     GIT_REPOSITORY https://github.com/pothosware/gnuradio.git
     GIT_TAG ${GR_BRANCH}
     CMAKE_ARGS
@@ -47,9 +48,11 @@ install(
 ## GR Pothos bindings
 ############################################################
 ExternalProject_Add(GrPothos
-    SOURCE_DIR ${CMAKE_INSTALL_PREFIX}/share/cmake/gr-pothos
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR} #fake
     DEPENDS GNURadio
-    CMAKE_ARGS
+    CONFIGURE_COMMAND
+        "${CMAKE_COMMAND}" ${CMAKE_INSTALL_PREFIX}/share/cmake/gr-pothos
+        -G ${CMAKE_GENERATOR}
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPYTHON_EXECUTABLE=C:/Python27/python.exe
