@@ -60,6 +60,8 @@ ExternalProject_Add(bladeRF
         -DLIBPTHREADSWIN32_PATH=${THREADS_PTHREADS_ROOT}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+        #post install: move dll from lib into the runtime path directory
+        && ${CMAKE_COMMAND} -E rename ${CMAKE_INSTALL_PREFIX}/lib/bladeRF.dll ${CMAKE_INSTALL_PREFIX}/bin/bladeRF.dll
 )
 
 ExternalProject_Get_Property(bladeRF SOURCE_DIR)

@@ -52,6 +52,21 @@ foreach (license_file ${license_files})
 "${license_text}\n")
 endforeach(license_file)
 
+SET(HLKM_ENV
+    "\\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\"")
+
+SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+    WriteRegStr HKLM ${HLKM_ENV} \\\"POTHOS_ROOT\\\" \\\"$INSTDIR\\\"
+    WriteRegStr HKLM ${HLKM_ENV} \\\"SOAPY_SDR_ROOT\\\" \\\"$INSTDIR\\\"
+    WriteRegStr HKLM ${HLKM_ENV} \\\"UHD_PKG_PATH\\\" \\\"$INSTDIR\\\"
+")
+
+SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
+    DeleteRegValue HKLM ${HLKM_ENV} \\\"POTHOS_ROOT\\\"
+    DeleteRegValue HKLM ${HLKM_ENV} \\\"SOAPY_SDR_ROOT\\\"
+    DeleteRegValue HKLM ${HLKM_ENV} \\\"UHD_PKG_PATH\\\"
+")
+
 set(CPACK_GENERATOR "NSIS")
 set(CPACK_NSIS_INSTALL_ROOT "C:\\\\Program Files")
 ExternalProject_Get_Property(Pothos SOURCE_DIR)
