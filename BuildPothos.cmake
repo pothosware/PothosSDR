@@ -82,6 +82,6 @@ install(
 ## Pothos GUI shortcut
 ############################################################
 install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/../Launchers/PothosGui.exe
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/Launchers/PothosGui.exe
     DESTINATION "."
 )
