@@ -30,3 +30,28 @@ the Pothos SDR environment on a Windows/MSVC target system.
 The source code can be found on the pages of the individual projects.
 
 * https://github.com/pothosware/pothos/wiki
+
+##Building the environment
+
+We don't typically expect users to build the environment,
+thats why we offer the pre-packaged windows installers.
+However should someone be interested in building it,
+all of the build scripts are located in this repository.
+
+The build system obtains most of the software from git,
+however several dependency libraries are obtained pre-built
+and installed onto the development machine. Learn more about
+these dependencies from the InstallPrebuilt.cmake script.
+
+Building the environment with CMake:
+
+```
+mkdir build
+cd build
+cmake ../ -G "Visual Studio 11 2012 Win64" ^
+    -DCMAKE_INSTALL_PREFIX=C:/PothosSDR ^
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake --build .
+cmake --build . --target install
+cmake --build . --target package
+```
