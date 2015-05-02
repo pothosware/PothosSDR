@@ -4,17 +4,19 @@ The Pothos SDR development environment makes it easy for windows users
 to start exploring and developing with common SDR hardware and software
 without the hassle of downloading a building dozens of software packages.
 This project contains build scripts to create a package of windows binaries.
-Actual pre-built binaries will be available on a separate download site.
-
-##Instructions
-
-Instructions for downloading, installing,
-and using the development environment
-can be found on this project's main wiki page:
+Links to the pre-built binaries will be available from the main wiki page:
 
 * https://github.com/pothosware/PothosSDR/wiki
 
-##Environment
+##Basic instructions
+
+Instructions for downloading, installing,
+and using the development environment
+can be found on the getting started tutorial:
+
+* https://github.com/pothosware/PothosSDR/wiki/Tutorial
+
+##About the environment
 
 The Pothos SDR environment includes:
 
@@ -23,15 +25,15 @@ The Pothos SDR environment includes:
 * various vendor drivers for commonly used SDR hardware
 * GNU Radio toolkit for signal processing support
 
-##Get the source
+For more details about the software used in the environment
+and links to the actual source code, checkout this wiki page:
+
+* https://github.com/pothosware/PothosSDR/wiki/Sources
+
+##Building the environment
 
 This repository contains build scripts for creating
 the Pothos SDR environment on a Windows/MSVC target system.
-The source code can be found on the pages of the individual projects.
-
-* https://github.com/pothosware/pothos/wiki
-
-##Building the environment
 
 We don't typically expect users to build the environment,
 thats why we offer the pre-packaged windows installers.
