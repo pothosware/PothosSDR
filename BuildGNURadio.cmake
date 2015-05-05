@@ -14,6 +14,7 @@ set(GR_BRANCH master)
 ##
 ## * Use Python27 for Cheetah templates support
 ## * ENABLE_GR_DTV=OFF because of compiler error
+## * ENABLE_GR_UHD=OFF replaced by SoapySDR
 ## * NOSWIG=ON to reduce size and build time
 ############################################################
 ExternalProject_Add(GNURadio
@@ -33,6 +34,7 @@ ExternalProject_Add(GNURadio
         -DFFTW3F_INCLUDE_DIRS=${FFTW3F_INCLUDE_DIRS}
         -DFFTW3F_LIBRARIES=${FFTW3F_LIBRARIES}
         -DENABLE_GR_DTV=OFF
+        -DENABLE_GR_UHD=OFF
         -DNOSWIG=ON
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install

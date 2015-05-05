@@ -9,6 +9,8 @@
 ## * uhd/usrp
 ## * umtrx
 ## * SoapySDR
+## * SoapyUHD
+## * SoapyOsmo
 ############################################################
 
 set(RTL_BRANCH master)
@@ -17,6 +19,31 @@ set(HACKRF_BRANCH 755a9f67aeb96d7aa6993c4eb96f7b47963593d7)
 set(UHD_BRANCH release_003_008_002)
 set(UMTRX_BRANCH master)
 set(SOAPY_BRANCH master)
+
+############################################################
+## Build SoapySDR
+##
+## * GPLOK=OFF disable submodules - build separately
+############################################################
+ExternalProject_Add(SoapySDR
+    GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
+    GIT_TAG ${SOAPY_BRANCH}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPYTHON_EXECUTABLE=C:/Python34/python.exe
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DSWIG_DIR=${SWIG_DIR}
+        -DGPLOK=OFF
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapySDR SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
+    DESTINATION licenses/SoapySDR
+)
 
 ############################################################
 ## Build RTL SDR
@@ -96,6 +123,32 @@ install(
 )
 
 ############################################################
+## Build SoapyOsmo
+##
+## * ENABLE_RFSPACE=OFF build errors
+############################################################
+ExternalProject_Add(SoapyOsmo
+    DEPENDS SoapySDR bladeRF hackRF rtl-sdr
+    GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
+    GIT_TAG ${SOAPY_BRANCH}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARY_DIR=${BOOST_LIBRARY_DIR}
+        -DENABLE_RFSPACE=OFF
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapyOsmo SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/SoapyOsmo
+)
+
+
+############################################################
 ## Build UHD
 ############################################################
 ExternalProject_Add(uhd
@@ -144,13 +197,11 @@ ExternalProject_Add(umtrx
 )
 
 ############################################################
-## Build SoapySDR
-##
-## * ENABLE_RFSPACE=OFF build errors
+## Build SoapyUHD
 ############################################################
-ExternalProject_Add(SoapySDR
-    DEPENDS uhd bladeRF hackRF rtl-sdr
-    GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
+ExternalProject_Add(SoapyUHD
+    DEPENDS SoapySDR uhd
+    GIT_REPOSITORY https://github.com/pothosware/SoapyUHD.git
     GIT_TAG ${SOAPY_BRANCH}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -159,20 +210,12 @@ ExternalProject_Add(SoapySDR
         -DBOOST_LIBRARY_DIR=${BOOST_LIBRARY_DIR}
         -DUHD_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include
         -DUHD_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/uhd.lib
-        -DPYTHON_EXECUTABLE=C:/Python34/python.exe
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DSWIG_DIR=${SWIG_DIR}
-        -DENABLE_RFSPACE=OFF
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
 
-ExternalProject_Get_Property(SoapySDR SOURCE_DIR)
+ExternalProject_Get_Property(SoapyUHD SOURCE_DIR)
 install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/SoapySDR
-)
-install(
-    FILES ${SOURCE_DIR}/SoapyOsmo/COPYING
-    DESTINATION licenses/GrOsmoSDR
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/SoapyUHD
 )
