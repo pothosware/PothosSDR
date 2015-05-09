@@ -9,10 +9,12 @@
 
 set(GR_BRANCH master)
 
+#Use Python27 for Cheetah templates support
+set(PYTHON2_EXECUTABLE C:/Python27/python.exe)
+
 ############################################################
 ## Build GNU Radio
 ##
-## * Use Python27 for Cheetah templates support
 ## * ENABLE_GR_DTV=OFF because of compiler error
 ## * ENABLE_GR_UHD=OFF replaced by SoapySDR
 ## * NOSWIG=ON to reduce size and build time
@@ -30,7 +32,7 @@ ExternalProject_Add(GNURadio
         -DBOOST_ALL_DYN_LINK=TRUE
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DSWIG_DIR=${SWIG_DIR}
-        -DPYTHON_EXECUTABLE=C:/Python27/python.exe
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
         -DFFTW3F_INCLUDE_DIRS=${FFTW3F_INCLUDE_DIRS}
         -DFFTW3F_LIBRARIES=${FFTW3F_LIBRARIES}
         -DENABLE_GR_DTV=OFF
@@ -50,14 +52,15 @@ install(
 ## GR Pothos bindings
 ############################################################
 ExternalProject_Add(GrPothos
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR} #fake
     DEPENDS GNURadio
-    CONFIGURE_COMMAND
-        "${CMAKE_COMMAND}" ${CMAKE_INSTALL_PREFIX}/share/cmake/gr-pothos
-        -G ${CMAKE_GENERATOR}
+    GIT_REPOSITORY https://github.com/pothosware/gr-pothos.git
+    GIT_TAG ${GR_BRANCH}
+    CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DPYTHON_EXECUTABLE=C:/Python27/python.exe
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARY_DIR=${BOOST_LIBRARY_DIR}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
