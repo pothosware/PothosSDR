@@ -70,12 +70,12 @@ install(FILES "C:/portaudio-r1891-build/lib/x64/Release/portaudio_x64.dll" DESTI
 #set(QT5_DLL_ROOT C:/Qt/Qt5.2.1/5.2.1/msvc2012_64)
 set(QT5_DLL_ROOT C:/Qt/Qt5.4.2/5.4/msvc2013_64)
 
+file(GLOB QT5_ICU_DLLS "${QT5_DLL_ROOT}/bin/icu*.dll")
+
 install(FILES
+    ${QT5_ICU_DLLS}
     "${QT5_DLL_ROOT}/bin/libGLESv2.dll"
     "${QT5_DLL_ROOT}/bin/libEGL.dll"
-    "${QT5_DLL_ROOT}/bin/icudt51.dll"
-    "${QT5_DLL_ROOT}/bin/icuin51.dll"
-    "${QT5_DLL_ROOT}/bin/icuuc51.dll"
     "${QT5_DLL_ROOT}/bin/Qt5Core.dll"
     "${QT5_DLL_ROOT}/bin/Qt5Gui.dll"
     "${QT5_DLL_ROOT}/bin/Qt5Widgets.dll"

@@ -51,6 +51,9 @@ install(
 ExternalProject_Add(rtl-sdr
     GIT_REPOSITORY git://git.osmocom.org/rtl-sdr.git
     GIT_TAG ${RTL_BRANCH}
+    PATCH_COMMAND
+        ${GIT_EXECUTABLE} checkout . &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/rtl_msvc2013_builtin_round_log2.diff
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -154,6 +157,9 @@ install(
 ExternalProject_Add(uhd
     GIT_REPOSITORY https://github.com/EttusResearch/uhd.git
     GIT_TAG ${UHD_BRANCH}
+    PATCH_COMMAND
+        ${GIT_EXECUTABLE} checkout . &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/uhd_fix_cbx_bind_boost_1_58.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}

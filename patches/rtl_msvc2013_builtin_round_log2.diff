@@ -1,0 +1,59 @@
+diff --git a/src/rtl_adsb.c b/src/rtl_adsb.c
+index 7b10306..e611e78 100644
+--- a/src/rtl_adsb.c
++++ b/src/rtl_adsb.c
+@@ -45,8 +45,10 @@
+ 
+ #ifdef _WIN32
+ #define sleep Sleep
++#if defined(_MSC_VER) && (_MSC_VER < 1800)
+ #define round(x) (x > 0.0 ? floor(x + 0.5): ceil(x - 0.5))
+ #endif
++#endif
+ 
+ #define ADSB_RATE			2000000
+ #define ADSB_FREQ			1090000000
+diff --git a/src/rtl_fm.c b/src/rtl_fm.c
+index 0f7ac38..e89e42d 100644
+--- a/src/rtl_fm.c
++++ b/src/rtl_fm.c
+@@ -62,7 +62,7 @@
+ #include <io.h>
+ #include "getopt/getopt.h"
+ #define usleep(x) Sleep(x/1000)
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) && (_MSC_VER < 1800)
+ #define round(x) (x > 0.0 ? floor(x + 0.5): ceil(x - 0.5))
+ #endif
+ #define _USE_MATH_DEFINES
+@@ -271,7 +271,7 @@ int cic_9_tables[][10] = {
+ 	{9, -199, -362, 5303, -25505, 77489, -25505, 5303, -362, -199},
+ };
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) && (_MSC_VER < 1800)
+ double log2(double n)
+ {
+ 	return log(n) / log(2.0);
+diff --git a/src/rtl_power.c b/src/rtl_power.c
+index 7eb1d06..aa7a138 100644
+--- a/src/rtl_power.c
++++ b/src/rtl_power.c
+@@ -53,7 +53,7 @@
+ #include <io.h>
+ #include "getopt/getopt.h"
+ #define usleep(x) Sleep(x/1000)
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) && (_MSC_VER < 1800)
+ #define round(x) (x > 0.0 ? floor(x + 0.5): ceil(x - 0.5))
+ #endif
+ #define _USE_MATH_DEFINES
+@@ -220,7 +220,7 @@ int cic_9_tables[][10] = {
+ 	{9, -199, -362, 5303, -25505, 77489, -25505, 5303, -362, -199},
+ };
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) && (_MSC_VER < 1800)
+ double log2(double n)
+ {
+ 	return log(n) / log(2.0);

@@ -11,9 +11,14 @@ endif()
 add_compile_options(/MP) #multi-core build
 
 ########################################################################
+# Setup the external projects for a flat structure
+########################################################################
+set_property(DIRECTORY PROPERTY "EP_BASE" ${CMAKE_BINARY_DIR})
+include(ExternalProject)
+
+########################################################################
 # Build and install external software projects
 ########################################################################
-include(ExternalProject)
 include(InstallPrebuilt.cmake)
 include(BuildHwDrivers.cmake)
 include(BuildPothos.cmake)
