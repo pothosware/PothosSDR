@@ -22,18 +22,22 @@ install(FILES "C:/zadig_2.1.1.exe" DESTINATION ".")
 ############################################################
 ## Boost dependency (prebuilt)
 ############################################################
-set(BOOST_ROOT C:/local/boost_1_57_0)
-set(BOOST_LIBRARY_DIR ${BOOST_ROOT}/lib64-msvc-11.0)
+set(BOOST_ROOT C:/local/boost_1_58_0)
+set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-12.0)
+set(BOOST_DLL_SUFFIX vc120-mt-1_58.dll)
+#set(BOOST_ROOT C:/local/boost_1_57_0)
+#set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-11.0)
+#set(BOOST_DLL_SUFFIX vc110-mt-1_57.dll)
 
 install(FILES
-    "${BOOST_LIBRARY_DIR}/boost_thread-vc110-mt-1_57.dll"
-    "${BOOST_LIBRARY_DIR}/boost_system-vc110-mt-1_57.dll"
-    "${BOOST_LIBRARY_DIR}/boost_date_time-vc110-mt-1_57.dll"
-    "${BOOST_LIBRARY_DIR}/boost_chrono-vc110-mt-1_57.dll"
-    "${BOOST_LIBRARY_DIR}/boost_serialization-vc110-mt-1_57.dll"
-    "${BOOST_LIBRARY_DIR}/boost_regex-vc110-mt-1_57.dll"
-    "${BOOST_LIBRARY_DIR}/boost_filesystem-vc110-mt-1_57.dll"
-    "${BOOST_LIBRARY_DIR}/boost_program_options-vc110-mt-1_57.dll"
+    "${BOOST_LIBRARYDIR}/boost_thread-${BOOST_DLL_SUFFIX}"
+    "${BOOST_LIBRARYDIR}/boost_system-${BOOST_DLL_SUFFIX}"
+    "${BOOST_LIBRARYDIR}/boost_date_time-${BOOST_DLL_SUFFIX}"
+    "${BOOST_LIBRARYDIR}/boost_chrono-${BOOST_DLL_SUFFIX}"
+    "${BOOST_LIBRARYDIR}/boost_serialization-${BOOST_DLL_SUFFIX}"
+    "${BOOST_LIBRARYDIR}/boost_regex-${BOOST_DLL_SUFFIX}"
+    "${BOOST_LIBRARYDIR}/boost_filesystem-${BOOST_DLL_SUFFIX}"
+    "${BOOST_LIBRARYDIR}/boost_program_options-${BOOST_DLL_SUFFIX}"
     DESTINATION bin
 )
 
@@ -63,7 +67,8 @@ install(FILES "C:/portaudio-r1891-build/lib/x64/Release/portaudio_x64.dll" DESTI
 ############################################################
 ## Qt5 (prebuilt)
 ############################################################
-set(QT5_DLL_ROOT C:/Qt/Qt5.2.1/5.2.1/msvc2012_64)
+#set(QT5_DLL_ROOT C:/Qt/Qt5.2.1/5.2.1/msvc2012_64)
+set(QT5_DLL_ROOT C:/Qt/Qt5.4.2/5.4/msvc2013_64)
 
 install(FILES
     "${QT5_DLL_ROOT}/bin/libGLESv2.dll"
