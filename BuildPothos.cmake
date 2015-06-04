@@ -16,6 +16,7 @@ set(POTHOS_BRANCH master)
 ExternalProject_Add(Poco
     GIT_REPOSITORY https://github.com/pocoproject/poco.git
     GIT_TAG ${POCO_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -39,6 +40,7 @@ ExternalProject_Add(Pothos
     DEPENDS Poco SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/pothos.git
     GIT_TAG ${POTHOS_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

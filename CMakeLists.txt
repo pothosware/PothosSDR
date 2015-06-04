@@ -8,6 +8,9 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "build type")
 endif()
 
+enable_language(CXX) #defines MSVCxx variables
+message(STATUS "MSVC_VERSION: ${MSVC_VERSION}")
+
 add_compile_options(/MP) #multi-core build
 
 ########################################################################

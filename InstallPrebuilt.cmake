@@ -17,17 +17,36 @@
 ############################################################
 ## Zadig for USB devices
 ############################################################
-install(FILES "C:/zadig_2.1.1.exe" DESTINATION ".")
+set(ZADIG_NAME "zadig_2.1.2.exe")
+
+if (NOT EXISTS "${CMAKE_BINARY_DIR}/${ZADIG_NAME}")
+    message(STATUS "Downloading zadig...")
+    file(DOWNLOAD
+        "http://zadig.akeo.ie/downloads/${ZADIG_NAME}"
+        ${CMAKE_BINARY_DIR}/${ZADIG_NAME}
+    )
+    message(STATUS "...done")
+endif ()
+
+install(FILES "${CMAKE_BINARY_DIR}/${ZADIG_NAME}" DESTINATION ".")
 
 ############################################################
 ## Boost dependency (prebuilt)
 ############################################################
 set(BOOST_ROOT C:/local/boost_1_58_0)
-set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-12.0)
-set(BOOST_DLL_SUFFIX vc120-mt-1_58.dll)
-#set(BOOST_ROOT C:/local/boost_1_57_0)
-#set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-11.0)
-#set(BOOST_DLL_SUFFIX vc110-mt-1_57.dll)
+
+if (MSVC12)
+    set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-12.0)
+    set(BOOST_DLL_SUFFIX vc120-mt-1_58.dll)
+endif ()
+
+if (MSVC11)
+    set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-11.0)
+    set(BOOST_DLL_SUFFIX vc110-mt-1_58.dll)
+endif ()
+
+message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")
+message(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
 
 install(FILES
     "${BOOST_LIBRARYDIR}/boost_thread-${BOOST_DLL_SUFFIX}"
@@ -48,6 +67,8 @@ set(THREADS_PTHREADS_ROOT C:/pthreads)
 set(THREADS_PTHREADS_INCLUDE_DIR ${THREADS_PTHREADS_ROOT}/include)
 set(THREADS_PTHREADS_WIN32_LIBRARY ${THREADS_PTHREADS_ROOT}/lib/x64/pthreadVC2.lib)
 
+message(STATUS "THREADS_PTHREADS_ROOT: ${THREADS_PTHREADS_ROOT}")
+
 install(FILES "C:/pthreads/dll/x64/pthreadVC2.dll" DESTINATION bin)
 
 install(FILES
@@ -59,16 +80,26 @@ install(FILES
 ############################################################
 ## PortAudio dependency (prebuilt)
 ############################################################
-set(PORTAUDIO_INCLUDE_DIR C:/portaudio-r1891-build/include)
-set(PORTAUDIO_LIBRARY C:/portaudio-r1891-build/lib/x64/Release/portaudio_x64.lib)
+set(PORTAUDIO_ROOT C:/portaudio-r1891-build)
+set(PORTAUDIO_INCLUDE_DIR ${PORTAUDIO_ROOT}/include)
+set(PORTAUDIO_LIBRARY ${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.lib)
 
-install(FILES "C:/portaudio-r1891-build/lib/x64/Release/portaudio_x64.dll" DESTINATION bin)
+message(STATUS "PORTAUDIO_ROOT: ${PORTAUDIO_ROOT}")
+
+install(FILES "${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.dll" DESTINATION bin)
 
 ############################################################
 ## Qt5 (prebuilt)
 ############################################################
-#set(QT5_DLL_ROOT C:/Qt/Qt5.2.1/5.2.1/msvc2012_64)
-set(QT5_DLL_ROOT C:/Qt/Qt5.4.2/5.4/msvc2013_64)
+if (MSVC12)
+    set(QT5_DLL_ROOT C:/Qt/Qt5.4.2/5.4/msvc2013_64)
+endif ()
+
+if (MSVC11)
+    set(QT5_DLL_ROOT C:/Qt/Qt5.2.1/5.2.1/msvc2012_64)
+endif()
+
+message(STATUS "QT5_DLL_ROOT: ${QT5_DLL_ROOT}")
 
 file(GLOB QT5_ICU_DLLS "${QT5_DLL_ROOT}/bin/icu*.dll")
 
@@ -95,13 +126,18 @@ set(LIBUSB_ROOT C:/libusb-1.0.19)
 set(LIBUSB_INCLUDE_DIR ${LIBUSB_ROOT}/include/libusb-1.0)
 set(LIBUSB_LIBRARIES ${LIBUSB_ROOT}/MS64/dll/libusb-1.0.lib)
 
+message(STATUS "LIBUSB_ROOT: ${LIBUSB_ROOT}")
+
 install(FILES "${LIBUSB_ROOT}/MS64/dll/libusb-1.0.dll" DESTINATION bin)
 
 ############################################################
 ## SWIG dependency (prebuilt)
 ############################################################
-set(SWIG_EXECUTABLE C:/swigwin-3.0.5/swig.exe)
-set(SWIG_DIR C:/swigwin-3.0.5/Lib)
+set(SWIG_ROOT C:/swigwin-3.0.5)
+set(SWIG_EXECUTABLE ${SWIG_ROOT}/swig.exe)
+set(SWIG_DIR ${SWIG_ROOT}/Lib)
+
+message(STATUS "SWIG_ROOT: ${SWIG_ROOT}")
 
 ############################################################
 ## FFTW (prebuilt)
@@ -109,6 +145,8 @@ set(SWIG_DIR C:/swigwin-3.0.5/Lib)
 set(FFTW3F_ROOT C:/fftw-3.3.4-dll64)
 set(FFTW3F_INCLUDE_DIRS ${FFTW3F_ROOT})
 set(FFTW3F_LIBRARIES ${FFTW3F_ROOT}/libfftw3f-3.lib)
+
+message(STATUS "FFTW3F_ROOT: ${FFTW3F_ROOT}")
 
 install(FILES "${FFTW3F_ROOT}/libfftw3f-3.dll" DESTINATION bin)
 

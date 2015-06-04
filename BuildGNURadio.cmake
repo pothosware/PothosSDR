@@ -23,6 +23,11 @@ ExternalProject_Add(GNURadio
     DEPENDS Pothos
     GIT_REPOSITORY https://github.com/pothosware/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
+    PATCH_COMMAND
+        cd volk && ${GIT_EXECUTABLE} checkout . &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_skip_profile_app_vc11.diff &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_fix_32f_log2_32f_vc11.diff
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -55,6 +60,7 @@ ExternalProject_Add(GrPothos
     DEPENDS GNURadio
     GIT_REPOSITORY https://github.com/pothosware/gr-pothos.git
     GIT_TAG ${GR_POTHOS_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}

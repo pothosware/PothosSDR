@@ -1,0 +1,15 @@
+diff --git a/kernels/volk/volk_32f_log2_32f.h b/kernels/volk/volk_32f_log2_32f.h
+index f06e890..b9fc0ba 100644
+--- a/kernels/volk/volk_32f_log2_32f.h
++++ b/kernels/volk/volk_32f_log2_32f.h
+@@ -94,6 +94,10 @@
+ #include <inttypes.h>
+ #include <math.h>
+ 
++#if defined(_MSC_VER) && (_MSC_VER < 1800)
++#define log2(x) (log((double)(x))/log(2.0))
++#endif
++
+ #define POLY0(x, c0) _mm_set1_ps(c0)
+ #define POLY1(x, c0, c1) _mm_add_ps(_mm_mul_ps(POLY0(x, c1), x), _mm_set1_ps(c0))
+ #define POLY2(x, c0, c1, c2) _mm_add_ps(_mm_mul_ps(POLY1(x, c1, c2), x), _mm_set1_ps(c0))

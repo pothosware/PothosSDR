@@ -1,0 +1,21 @@
+diff --git a/apps/CMakeLists.txt b/apps/CMakeLists.txt
+index 74ed18d..2d83cbe 100644
+--- a/apps/CMakeLists.txt
++++ b/apps/CMakeLists.txt
+@@ -32,6 +32,8 @@ include_directories(
+     ${Boost_INCLUDE_DIRS}
+ )
+ 
++#skip volk profile in msvc 2012 due to compiler error
++if (NOT MSVC11)
+ # MAKE volk_profile
+ add_executable(volk_profile
+     ${CMAKE_CURRENT_SOURCE_DIR}/volk_profile.cc
+@@ -51,6 +53,7 @@ install(
+     DESTINATION bin
+     COMPONENT "volk"
+ )
++endif (NOT MSVC11)
+ 
+ # MAKE volk-config-info
+ add_executable(volk-config-info volk-config-info.cc)

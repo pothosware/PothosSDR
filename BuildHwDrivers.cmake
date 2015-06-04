@@ -28,6 +28,7 @@ set(SOAPY_BRANCH master)
 ExternalProject_Add(SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
     GIT_TAG ${SOAPY_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -54,6 +55,7 @@ ExternalProject_Add(rtl-sdr
     PATCH_COMMAND
         ${GIT_EXECUTABLE} checkout . &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/rtl_msvc2013_builtin_round_log2.diff
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -134,6 +136,7 @@ ExternalProject_Add(SoapyOsmo
     DEPENDS SoapySDR bladeRF hackRF rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
     GIT_TAG ${SOAPY_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -209,6 +212,7 @@ ExternalProject_Add(SoapyUHD
     DEPENDS SoapySDR uhd
     GIT_REPOSITORY https://github.com/pothosware/SoapyUHD.git
     GIT_TAG ${SOAPY_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
