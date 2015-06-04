@@ -25,6 +25,7 @@ set(SOAPY_BRANCH master)
 ##
 ## * GPLOK=OFF disable submodules - build separately
 ############################################################
+message(STATUS "Configuring SoapySDR")
 ExternalProject_Add(SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
     GIT_TAG ${SOAPY_BRANCH}
@@ -49,6 +50,7 @@ install(
 ############################################################
 ## Build RTL SDR
 ############################################################
+message(STATUS "Configuring rtl-sdr")
 ExternalProject_Add(rtl-sdr
     GIT_REPOSITORY git://git.osmocom.org/rtl-sdr.git
     GIT_TAG ${RTL_BRANCH}
@@ -76,6 +78,7 @@ install(
 ############################################################
 ## Build BladeRF
 ############################################################
+message(STATUS "Configuring bladeRF")
 ExternalProject_Add(bladeRF
     GIT_REPOSITORY https://github.com/Nuand/bladeRF.git
     GIT_TAG ${BLADERF_BRANCH}
@@ -105,6 +108,7 @@ install(
 ############################################################
 ## Build HackRF
 ############################################################
+message(STATUS "Configuring hackRF")
 ExternalProject_Add(hackRF
     GIT_REPOSITORY https://github.com/mossmann/hackrf.git
     GIT_TAG ${HACKRF_BRANCH}
@@ -132,6 +136,7 @@ install(
 ##
 ## * ENABLE_RFSPACE=OFF build errors
 ############################################################
+message(STATUS "Configuring SoapyOsmo")
 ExternalProject_Add(SoapyOsmo
     DEPENDS SoapySDR bladeRF hackRF rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
@@ -157,6 +162,7 @@ install(
 ############################################################
 ## Build UHD
 ############################################################
+message(STATUS "Configuring uhd")
 ExternalProject_Add(uhd
     GIT_REPOSITORY https://github.com/EttusResearch/uhd.git
     GIT_TAG ${UHD_BRANCH}
@@ -187,6 +193,7 @@ install(
 ############################################################
 ## Build UmTRX
 ############################################################
+message(STATUS "Configuring umtrx")
 ExternalProject_Add(umtrx
     DEPENDS uhd
     GIT_REPOSITORY https://github.com/fairwaves/UHD-Fairwaves.git
@@ -208,6 +215,7 @@ ExternalProject_Add(umtrx
 ############################################################
 ## Build SoapyUHD
 ############################################################
+message(STATUS "Configuring SoapyUHD")
 ExternalProject_Add(SoapyUHD
     DEPENDS SoapySDR uhd
     GIT_REPOSITORY https://github.com/pothosware/SoapyUHD.git

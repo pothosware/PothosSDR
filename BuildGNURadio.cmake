@@ -13,20 +13,34 @@ set(GR_POTHOS_BRANCH master)
 #Use Python27 for Cheetah templates support
 set(PYTHON2_EXECUTABLE C:/Python27/python.exe)
 
+#commands for patching volk for msvc 2012 support
+#patching the submodule adds additional complexity
+if (MSVC11)
+set(VOLK_PATCH_COMMAND
+    ${GIT_EXECUTABLE} checkout ${GNURADIO_BRANCH} &&
+    ${GIT_EXECUTABLE} submodule update && cd volk &&
+    ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_skip_profile_app_vc11.diff &&
+    ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_fix_32f_log2_32f_vc11.diff &&
+    ${GIT_EXECUTABLE} commit -am "commit patches" && cd .. &&
+    ${GIT_EXECUTABLE} checkout --detach &&
+    ${GIT_EXECUTABLE} commit -am "commit submodules"
+)
+else (MSVC11)
+set(VOLK_PATCH_COMMAND cd .) #other versions -> do nothing
+endif (MSVC11)
+
 ############################################################
 ## Build GNU Radio
 ##
 ## * ENABLE_GR_UHD=OFF replaced by SoapySDR
 ## * NOSWIG=ON to reduce size and build time
 ############################################################
+message(STATUS "Configuring GNURadio")
 ExternalProject_Add(GNURadio
     DEPENDS Pothos
     GIT_REPOSITORY https://github.com/pothosware/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
-    PATCH_COMMAND
-        cd volk && ${GIT_EXECUTABLE} checkout . &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_skip_profile_app_vc11.diff &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_fix_32f_log2_32f_vc11.diff
+    PATCH_COMMAND ${VOLK_PATCH_COMMAND}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
@@ -56,6 +70,7 @@ install(
 ############################################################
 ## GR Pothos bindings
 ############################################################
+message(STATUS "Configuring gr-pothos")
 ExternalProject_Add(GrPothos
     DEPENDS GNURadio
     GIT_REPOSITORY https://github.com/pothosware/gr-pothos.git

@@ -13,6 +13,7 @@ set(POTHOS_BRANCH master)
 ############################################################
 ## Build Poco
 ############################################################
+message(STATUS "Configuring Poco")
 ExternalProject_Add(Poco
     GIT_REPOSITORY https://github.com/pocoproject/poco.git
     GIT_TAG ${POCO_BRANCH}
@@ -36,6 +37,7 @@ install(
 ##
 ## * ENABLE_JAVA=OFF not useful component yet
 ############################################################
+message(STATUS "Configuring Pothos")
 ExternalProject_Add(Pothos
     DEPENDS Poco SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/pothos.git
@@ -50,6 +52,7 @@ ExternalProject_Add(Pothos
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
         -DPORTAUDIO_INCLUDE_DIR=${PORTAUDIO_INCLUDE_DIR}
         -DPORTAUDIO_LIBRARY=${PORTAUDIO_LIBRARY}
+        -DCMAKE_PREFIX_PATH=${QT5_DLL_ROOT}
         -DENABLE_JAVA=OFF
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
