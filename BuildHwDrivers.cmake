@@ -17,7 +17,7 @@ set(RTL_BRANCH master)
 set(BLADERF_BRANCH libbladeRF_v1.2.1)
 set(HACKRF_BRANCH 755a9f67aeb96d7aa6993c4eb96f7b47963593d7)
 set(UHD_BRANCH release_003_008_004)
-set(UMTRX_BRANCH 1.0.2)
+set(UMTRX_BRANCH 1.0.3)
 set(SOAPY_BRANCH master)
 
 ############################################################

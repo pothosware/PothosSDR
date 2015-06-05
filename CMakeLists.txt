@@ -10,6 +10,15 @@ endif()
 
 enable_language(CXX) #defines MSVCxx variables
 message(STATUS "MSVC_VERSION: ${MSVC_VERSION}")
+message(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
+if (MSVC11)
+    set(PACKAGE_SUFFIX "vc11-x64")
+endif ()
+if (MSVC12)
+    set(PACKAGE_SUFFIX "vc12-x64")
+endif ()
+string(TIMESTAMP PACKAGE_STAMP "%Y.%m.%d-${PACKAGE_SUFFIX}")
+message(STATUS "PACKAGE_STAMP: ${PACKAGE_STAMP}")
 
 add_compile_options(/MP) #multi-core build
 
@@ -30,11 +39,11 @@ include(BuildGNURadio.cmake)
 ########################################################################
 # Package environment with NSIS
 ########################################################################
+message(STATUS "Configuring NSIS")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "PothosSDR")
-set(CPACK_PACKAGE_FILE_NAME "PothosSDR")
+set(CPACK_PACKAGE_FILE_NAME "PothosSDR-${PACKAGE_STAMP}")
 set(CPACK_PACKAGE_VENDOR "Pothosware")
 set(CPACK_INSTALLED_DIRECTORIES "${CMAKE_INSTALL_PREFIX}" ".") #install entire directory from external projects
-
 set(CPACK_PACKAGE_EXECUTABLES "PothosGui" "Pothos GUI")
 
 #general super license text file for complete license summary in installer
