@@ -45,6 +45,7 @@ set(CPACK_PACKAGE_FILE_NAME "PothosSDR-${PACKAGE_STAMP}")
 set(CPACK_PACKAGE_VENDOR "Pothosware")
 set(CPACK_INSTALLED_DIRECTORIES "${CMAKE_INSTALL_PREFIX}" ".") #install entire directory from external projects
 set(CPACK_PACKAGE_EXECUTABLES "PothosGui" "Pothos GUI")
+set(CPACK_CREATE_DESKTOP_LINKS "PothosGui")
 
 #general super license text file for complete license summary in installer
 file(GLOB_RECURSE license_files RELATIVE
