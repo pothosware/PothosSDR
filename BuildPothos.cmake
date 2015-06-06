@@ -82,11 +82,3 @@ install(
         ${SOURCE_DIR}/pothos-gui/qtcolorpicker/LICENSE.LGPL
     DESTINATION licenses/qtcolorpicker
 )
-
-############################################################
-## Pothos GUI shortcut
-############################################################
-install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/Launchers/PothosGui.exe
-    DESTINATION "."
-)
