@@ -20,7 +20,6 @@ set(VOLK_PATCH_COMMAND
     ${GIT_EXECUTABLE} checkout ${GNURADIO_BRANCH} &&
     ${GIT_EXECUTABLE} submodule update && cd volk &&
     ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_skip_profile_app_vc11.diff &&
-    ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_fix_32f_log2_32f_vc11.diff &&
     ${GIT_EXECUTABLE} commit -am "commit patches" && cd .. &&
     ${GIT_EXECUTABLE} checkout --detach &&
     ${GIT_EXECUTABLE} commit -am "commit submodules"
