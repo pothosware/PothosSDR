@@ -17,8 +17,6 @@ endif ()
 if (MSVC12)
     set(PACKAGE_SUFFIX "vc12-x64")
 endif ()
-string(TIMESTAMP PACKAGE_STAMP "%Y.%m.%d-${PACKAGE_SUFFIX}")
-message(STATUS "PACKAGE_STAMP: ${PACKAGE_STAMP}")
 
 add_compile_options(/MP) #multi-core build
 
@@ -40,8 +38,9 @@ include(BuildGNURadio.cmake)
 # Package environment with NSIS
 ########################################################################
 message(STATUS "Configuring NSIS")
+string(TIMESTAMP CPACK_PACKAGE_VERSION "%Y.%m.%d")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "PothosSDR")
-set(CPACK_PACKAGE_FILE_NAME "PothosSDR-${PACKAGE_STAMP}")
+set(CPACK_PACKAGE_FILE_NAME "PothosSDR-${CPACK_PACKAGE_VERSION}-${PACKAGE_SUFFIX}")
 set(CPACK_PACKAGE_VENDOR "Pothosware")
 set(CPACK_INSTALLED_DIRECTORIES "${CMAKE_INSTALL_PREFIX}" ".") #install entire directory from external projects
 set(CPACK_PACKAGE_EXECUTABLES "PothosGui" "Pothos GUI")
@@ -90,8 +89,13 @@ set(CPACK_NSIS_INSTALL_ROOT "C:\\\\Program Files")
 ExternalProject_Get_Property(Pothos SOURCE_DIR)
 set(CPACK_NSIS_MUI_ICON ${SOURCE_DIR}/pothos-gui/icons/PothosGui.ico)
 set(CPACK_NSIS_MODIFY_PATH ON)
-set(CPACK_NSIS_DISPLAY_NAME "Pothos SDR dev environment") #add/remove control panel
-set(CPACK_NSIS_PACKAGE_NAME "Pothos SDR dev environment") #installer package title
+set(CPACK_NSIS_DISPLAY_NAME "Pothos SDR environment (${PACKAGE_SUFFIX})") #add/remove control panel
+set(CPACK_NSIS_PACKAGE_NAME "Pothos SDR environment (${PACKAGE_SUFFIX})") #installer package title
 set(CPACK_NSIS_URL_INFO_ABOUT "https://github.com/pothosware/PothosSDR/wiki")
 set(CPACK_NSIS_CONTACT "https://github.com/pothosware/pothos/wiki/Support")
+set(CPACK_NSIS_HELP_LINK "https://github.com/pothosware/PothosSDR/wiki/Tutorial")
+
+message(STATUS "CPACK_NSIS_DISPLAY_NAME: ${CPACK_NSIS_DISPLAY_NAME}")
+message(STATUS "CPACK_PACKAGE_FILE_NAME: ${CPACK_PACKAGE_FILE_NAME}")
+
 include(CPack)
