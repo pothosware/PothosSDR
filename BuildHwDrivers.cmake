@@ -54,9 +54,6 @@ message(STATUS "Configuring rtl-sdr")
 ExternalProject_Add(rtl-sdr
     GIT_REPOSITORY git://git.osmocom.org/rtl-sdr.git
     GIT_TAG ${RTL_BRANCH}
-    PATCH_COMMAND
-        ${GIT_EXECUTABLE} checkout . &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/rtl_msvc2013_builtin_round_log2.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
