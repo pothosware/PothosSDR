@@ -9,16 +9,20 @@
 ## * uhd/usrp
 ## * umtrx
 ## * SoapySDR
+## * SoapyBladeRF
 ## * SoapyUHD
 ## * SoapyOsmo
 ############################################################
 
 set(RTL_BRANCH master)
-set(BLADERF_BRANCH libbladeRF_v1.2.1)
+set(BLADERF_BRANCH 2015.02)
 set(HACKRF_BRANCH 755a9f67aeb96d7aa6993c4eb96f7b47963593d7)
 set(UHD_BRANCH release_003_008_004)
 set(UMTRX_BRANCH 1.0.3)
-set(SOAPY_BRANCH master)
+set(SOAPY_SDR_BRANCH master)
+set(SOAPY_BLADERF_BRANCH master)
+set(SOAPY_UHD_BRANCH soapy-uhd-0.1.0)
+set(SOAPY_OSMO_BRANCH soapy-osmo-0.1.0)
 
 ############################################################
 ## Build SoapySDR
@@ -28,7 +32,7 @@ set(SOAPY_BRANCH master)
 message(STATUS "Configuring SoapySDR")
 ExternalProject_Add(SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
-    GIT_TAG ${SOAPY_BRANCH}
+    GIT_TAG ${SOAPY_SDR_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -90,6 +94,7 @@ ExternalProject_Add(bladeRF
         -DLIBUSB_PATH=${LIBUSB_ROOT}
         -DLIBPTHREADSWIN32_HEADER_FILE=${THREADS_PTHREADS_INCLUDE_DIR}/pthread.h
         -DLIBPTHREADSWIN32_PATH=${THREADS_PTHREADS_ROOT}
+        -DVERSION_INFO_OVERRIDE=${PROJECT_NAME}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
         #post install: move dll from lib into the runtime path directory
@@ -100,6 +105,28 @@ ExternalProject_Get_Property(bladeRF SOURCE_DIR)
 install(
     DIRECTORY ${SOURCE_DIR}/legal/licenses/
     DESTINATION licenses/bladeRF
+)
+
+############################################################
+## Build SoapyBladeRF
+############################################################
+message(STATUS "Configuring SoapyBladeRF")
+ExternalProject_Add(SoapyBladeRF
+    DEPENDS SoapySDR bladeRF
+    GIT_REPOSITORY https://github.com/pothosware/SoapyBladeRF.git
+    GIT_TAG ${SOAPY_BLADERF_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapyBladeRF SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE.LGPLv2.1
+    DESTINATION licenses/SoapyBladeRF
 )
 
 ############################################################
@@ -132,12 +159,13 @@ install(
 ## Build SoapyOsmo
 ##
 ## * ENABLE_RFSPACE=OFF build errors
+## * ENABLE_BLADERF=OFF see Soapy BladeRF
 ############################################################
 message(STATUS "Configuring SoapyOsmo")
 ExternalProject_Add(SoapyOsmo
-    DEPENDS SoapySDR bladeRF hackRF rtl-sdr
+    DEPENDS SoapySDR hackRF rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
-    GIT_TAG ${SOAPY_BRANCH}
+    GIT_TAG ${SOAPY_OSMO_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -145,6 +173,7 @@ ExternalProject_Add(SoapyOsmo
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DENABLE_RFSPACE=OFF
+        -DENABLE_BLADERF=OFF
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
@@ -154,7 +183,6 @@ install(
     FILES ${SOURCE_DIR}/COPYING
     DESTINATION licenses/SoapyOsmo
 )
-
 
 ############################################################
 ## Build UHD
@@ -216,7 +244,7 @@ message(STATUS "Configuring SoapyUHD")
 ExternalProject_Add(SoapyUHD
     DEPENDS SoapySDR uhd
     GIT_REPOSITORY https://github.com/pothosware/SoapyUHD.git
-    GIT_TAG ${SOAPY_BRANCH}
+    GIT_TAG ${SOAPY_UHD_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
