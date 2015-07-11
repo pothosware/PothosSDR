@@ -47,6 +47,7 @@ ExternalProject_Add(Pothos
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPOTHOS_EXTVER=${EXTRA_VERSION_INFO}
         -DPYTHON_EXECUTABLE=C:/Python34/python.exe
         -DSoapySDR_DIR=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco

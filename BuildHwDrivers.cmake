@@ -37,6 +37,7 @@ ExternalProject_Add(SoapySDR
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DSOAPY_SDR_EXTVER=${EXTRA_VERSION_INFO}
         -DPYTHON_EXECUTABLE=C:/Python34/python.exe
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DSWIG_DIR=${SWIG_DIR}
@@ -94,7 +95,7 @@ ExternalProject_Add(bladeRF
         -DLIBUSB_PATH=${LIBUSB_ROOT}
         -DLIBPTHREADSWIN32_HEADER_FILE=${THREADS_PTHREADS_INCLUDE_DIR}/pthread.h
         -DLIBPTHREADSWIN32_PATH=${THREADS_PTHREADS_ROOT}
-        -DVERSION_INFO_OVERRIDE=${PROJECT_NAME}
+        -DVERSION_INFO_OVERRIDE=${EXTRA_VERSION_INFO}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
         #post install: move dll from lib into the runtime path directory

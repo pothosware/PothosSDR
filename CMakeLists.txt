@@ -18,6 +18,12 @@ if (MSVC12)
     set(PACKAGE_SUFFIX "vc12-x64")
 endif ()
 
+#version tracking based on the day of the build
+string(TIMESTAMP PROJECT_VERSION "%Y.%m.%d")
+
+#some projects can be build with extra info to identify the build
+set(EXTRA_VERSION_INFO "${PROJECT_NAME}-${PROJECT_VERSION}-${PACKAGE_SUFFIX}")
+
 add_compile_options(/MP) #multi-core build
 
 ########################################################################
@@ -38,9 +44,9 @@ include(BuildGNURadio.cmake)
 # Package environment with NSIS
 ########################################################################
 message(STATUS "Configuring NSIS")
-string(TIMESTAMP CPACK_PACKAGE_VERSION "%Y.%m.%d")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "PothosSDR")
-set(CPACK_PACKAGE_FILE_NAME "PothosSDR-${CPACK_PACKAGE_VERSION}-${PACKAGE_SUFFIX}")
+set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}")
+set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-${PACKAGE_SUFFIX}")
 set(CPACK_PACKAGE_VENDOR "Pothosware")
 set(CPACK_INSTALLED_DIRECTORIES "${CMAKE_INSTALL_PREFIX}" ".") #install entire directory from external projects
 set(CPACK_PACKAGE_EXECUTABLES "PothosGui" "Pothos GUI")
