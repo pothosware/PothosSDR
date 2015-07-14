@@ -7,7 +7,7 @@
 ## * gr-pothos (toolkit bindings project)
 ############################################################
 
-set(GNURADIO_BRANCH v3.7.7.1_pothos0)
+set(GNURADIO_BRANCH v3.7.7.1_pothos1)
 set(GR_POTHOS_BRANCH master)
 
 #Use Python27 for Cheetah templates support

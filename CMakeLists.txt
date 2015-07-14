@@ -105,3 +105,16 @@ message(STATUS "CPACK_NSIS_DISPLAY_NAME: ${CPACK_NSIS_DISPLAY_NAME}")
 message(STATUS "CPACK_PACKAGE_FILE_NAME: ${CPACK_PACKAGE_FILE_NAME}")
 
 include(CPack)
+
+########################################################################
+# Generate script for complete rebuild
+########################################################################
+file(WRITE ${PROJECT_BINARY_DIR}/rebuild_all.sh
+    "\"${CMAKE_COMMAND}\" -E remove_directory \"${CMAKE_INSTALL_PREFIX}\"\n"
+    "\"${CMAKE_COMMAND}\" -E make_directory \"${CMAKE_INSTALL_PREFIX}\"\n"
+    "\"${CMAKE_COMMAND}\" \"${PROJECT_SOURCE_DIR}\"\n" #rerun the configuration with latest settings
+    "\"${CMAKE_COMMAND}\" --build ${PROJECT_BINARY_DIR} --config ${CMAKE_BUILD_TYPE} --target clean\n"
+    "\"${CMAKE_COMMAND}\" --build ${PROJECT_BINARY_DIR} --config ${CMAKE_BUILD_TYPE} --target install\n"
+    "\"${CMAKE_COMMAND}\" \"${PROJECT_SOURCE_DIR}\"\n" #needed to regenerate license summary after install
+    "\"${CMAKE_COMMAND}\" --build ${PROJECT_BINARY_DIR} --config ${CMAKE_BUILD_TYPE} --target package\n"
+)

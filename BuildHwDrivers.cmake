@@ -14,13 +14,13 @@
 ## * SoapyOsmo
 ############################################################
 
-set(RTL_BRANCH master)
+set(RTL_BRANCH 5c376fc79c919c0e16a832328c92f5213f0cdd54)
 set(BLADERF_BRANCH 2015.02)
 set(HACKRF_BRANCH 755a9f67aeb96d7aa6993c4eb96f7b47963593d7)
 set(UHD_BRANCH release_003_008_004)
 set(UMTRX_BRANCH 1.0.3)
-set(SOAPY_SDR_BRANCH master)
-set(SOAPY_BLADERF_BRANCH master)
+set(SOAPY_SDR_BRANCH soapy-sdr-0.2.1)
+set(SOAPY_BLADERF_BRANCH soapy-bladerf-0.1.0)
 set(SOAPY_UHD_BRANCH soapy-uhd-0.1.0)
 set(SOAPY_OSMO_BRANCH soapy-osmo-0.1.0)
 
