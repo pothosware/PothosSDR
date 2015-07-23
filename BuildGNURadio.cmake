@@ -35,7 +35,7 @@ endif (MSVC11)
 ## * ENABLE_GR_UHD=OFF replaced by SoapySDR
 ## * NOSWIG=ON to reduce size and build time
 ############################################################
-message(STATUS "Configuring GNURadio")
+message(STATUS "Configuring GNURadio - ${GNURADIO_BRANCH}")
 ExternalProject_Add(GNURadio
     DEPENDS Pothos
     GIT_REPOSITORY https://github.com/pothosware/gnuradio.git
@@ -70,7 +70,7 @@ install(
 ############################################################
 ## GR Pothos bindings
 ############################################################
-message(STATUS "Configuring gr-pothos")
+message(STATUS "Configuring gr-pothos - ${GR_POTHOS_BRANCH}")
 ExternalProject_Add(GrPothos
     DEPENDS GNURadio
     GIT_REPOSITORY https://github.com/pothosware/gr-pothos.git

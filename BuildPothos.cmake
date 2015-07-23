@@ -13,7 +13,7 @@ set(POTHOS_BRANCH master)
 ############################################################
 ## Build Poco
 ############################################################
-message(STATUS "Configuring Poco")
+message(STATUS "Configuring Poco - ${POCO_BRANCH}")
 ExternalProject_Add(Poco
     GIT_REPOSITORY https://github.com/pocoproject/poco.git
     GIT_TAG ${POCO_BRANCH}
@@ -37,7 +37,7 @@ install(
 ##
 ## * ENABLE_JAVA=OFF not useful component yet
 ############################################################
-message(STATUS "Configuring Pothos")
+message(STATUS "Configuring Pothos - ${POTHOS_BRANCH}")
 ExternalProject_Add(Pothos
     DEPENDS Poco SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/pothos.git

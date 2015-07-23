@@ -15,10 +15,10 @@
 ############################################################
 
 set(RTL_BRANCH 5c376fc79c919c0e16a832328c92f5213f0cdd54)
-set(BLADERF_BRANCH 2015.02)
+set(BLADERF_BRANCH 2015.06-rc1.1)
 set(HACKRF_BRANCH 755a9f67aeb96d7aa6993c4eb96f7b47963593d7)
 set(UHD_BRANCH release_003_008_004)
-set(UMTRX_BRANCH 1.0.3)
+set(UMTRX_BRANCH 1.0.4)
 set(SOAPY_SDR_BRANCH soapy-sdr-0.2.1)
 set(SOAPY_BLADERF_BRANCH soapy-bladerf-0.1.0)
 set(SOAPY_UHD_BRANCH soapy-uhd-0.1.0)
@@ -29,7 +29,7 @@ set(SOAPY_OSMO_BRANCH soapy-osmo-0.1.0)
 ##
 ## * GPLOK=OFF disable submodules - build separately
 ############################################################
-message(STATUS "Configuring SoapySDR")
+message(STATUS "Configuring SoapySDR - ${SOAPY_SDR_BRANCH}")
 ExternalProject_Add(SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
     GIT_TAG ${SOAPY_SDR_BRANCH}
@@ -55,7 +55,7 @@ install(
 ############################################################
 ## Build RTL SDR
 ############################################################
-message(STATUS "Configuring rtl-sdr")
+message(STATUS "Configuring rtl-sdr - ${RTL_BRANCH}")
 ExternalProject_Add(rtl-sdr
     GIT_REPOSITORY git://git.osmocom.org/rtl-sdr.git
     GIT_TAG ${RTL_BRANCH}
@@ -80,7 +80,7 @@ install(
 ############################################################
 ## Build BladeRF
 ############################################################
-message(STATUS "Configuring bladeRF")
+message(STATUS "Configuring bladeRF - ${BLADERF_BRANCH}")
 ExternalProject_Add(bladeRF
     GIT_REPOSITORY https://github.com/Nuand/bladeRF.git
     GIT_TAG ${BLADERF_BRANCH}
@@ -111,7 +111,7 @@ install(
 ############################################################
 ## Build SoapyBladeRF
 ############################################################
-message(STATUS "Configuring SoapyBladeRF")
+message(STATUS "Configuring SoapyBladeRF - ${SOAPY_BLADERF_BRANCH}")
 ExternalProject_Add(SoapyBladeRF
     DEPENDS SoapySDR bladeRF
     GIT_REPOSITORY https://github.com/pothosware/SoapyBladeRF.git
@@ -133,7 +133,7 @@ install(
 ############################################################
 ## Build HackRF
 ############################################################
-message(STATUS "Configuring hackRF")
+message(STATUS "Configuring hackRF - ${HACKRF_BRANCH}")
 ExternalProject_Add(hackRF
     GIT_REPOSITORY https://github.com/mossmann/hackrf.git
     GIT_TAG ${HACKRF_BRANCH}
@@ -162,7 +162,7 @@ install(
 ## * ENABLE_RFSPACE=OFF build errors
 ## * ENABLE_BLADERF=OFF see Soapy BladeRF
 ############################################################
-message(STATUS "Configuring SoapyOsmo")
+message(STATUS "Configuring SoapyOsmo - ${SOAPY_OSMO_BRANCH}")
 ExternalProject_Add(SoapyOsmo
     DEPENDS SoapySDR hackRF rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
@@ -188,7 +188,7 @@ install(
 ############################################################
 ## Build UHD
 ############################################################
-message(STATUS "Configuring uhd")
+message(STATUS "Configuring uhd - ${UHD_BRANCH}")
 ExternalProject_Add(uhd
     GIT_REPOSITORY https://github.com/EttusResearch/uhd.git
     GIT_TAG ${UHD_BRANCH}
@@ -219,7 +219,7 @@ install(
 ############################################################
 ## Build UmTRX
 ############################################################
-message(STATUS "Configuring umtrx")
+message(STATUS "Configuring umtrx - ${UMTRX_BRANCH}")
 ExternalProject_Add(umtrx
     DEPENDS uhd
     GIT_REPOSITORY https://github.com/fairwaves/UHD-Fairwaves.git
@@ -241,7 +241,7 @@ ExternalProject_Add(umtrx
 ############################################################
 ## Build SoapyUHD
 ############################################################
-message(STATUS "Configuring SoapyUHD")
+message(STATUS "Configuring SoapyUHD - ${SOAPY_UHD_BRANCH}")
 ExternalProject_Add(SoapyUHD
     DEPENDS SoapySDR uhd
     GIT_REPOSITORY https://github.com/pothosware/SoapyUHD.git
