@@ -19,3 +19,22 @@ index 74ed18d..2d83cbe 100644
  
  # MAKE volk-config-info
  add_executable(volk-config-info volk-config-info.cc)
+diff --git a/lib/CMakeLists.txt b/lib/CMakeLists.txt
+index bc9c54c..69edc76 100644
+--- a/lib/CMakeLists.txt
++++ b/lib/CMakeLists.txt
+@@ -579,6 +579,8 @@ endif(CMAKE_VERSION VERSION_GREATER "2.8.7")
+ # Build the QA test application
+ ########################################################################
+ if(ENABLE_TESTING)
++#skip volk profile in msvc 2012 due to compiler error
++if (NOT MSVC11)
+ 
+     #include Boost headers
+     include_directories(${Boost_INCLUDE_DIRS})
+@@ -595,4 +597,5 @@ if(ENABLE_TESTING)
+         TARGET_DEPS volk
+     )
+ 
++endif (NOT MSVC11)
+ endif(ENABLE_TESTING)
