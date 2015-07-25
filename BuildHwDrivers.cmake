@@ -137,6 +137,9 @@ message(STATUS "Configuring hackRF - ${HACKRF_BRANCH}")
 ExternalProject_Add(hackRF
     GIT_REPOSITORY https://github.com/mossmann/hackrf.git
     GIT_TAG ${HACKRF_BRANCH}
+    PATCH_COMMAND
+        ${GIT_EXECUTABLE} checkout . &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/hackrf_fix_compat_c89_vc11.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
