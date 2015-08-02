@@ -109,7 +109,7 @@ include(CPack)
 ########################################################################
 # Generate script for complete rebuild
 ########################################################################
-file(WRITE ${PROJECT_BINARY_DIR}/rebuild_all.sh
+file(WRITE ${PROJECT_BINARY_DIR}/rebuild_all.bat
     "\"${CMAKE_COMMAND}\" -E remove_directory \"${CMAKE_INSTALL_PREFIX}\"\n"
     "\"${CMAKE_COMMAND}\" -E make_directory \"${CMAKE_INSTALL_PREFIX}\"\n"
     "\"${CMAKE_COMMAND}\" \"${PROJECT_SOURCE_DIR}\"\n" #rerun the configuration with latest settings
