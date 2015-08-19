@@ -15,14 +15,14 @@
 ############################################################
 
 set(RTL_BRANCH 5c376fc79c919c0e16a832328c92f5213f0cdd54)
-set(BLADERF_BRANCH 2015.06-rc1.1)
+set(BLADERF_BRANCH 2015.07)
 set(HACKRF_BRANCH v2015.07.2)
 set(UHD_BRANCH release_003_008_005)
 set(UMTRX_BRANCH 1.0.4)
-set(SOAPY_SDR_BRANCH soapy-sdr-0.2.1)
-set(SOAPY_BLADERF_BRANCH soapy-bladerf-0.1.0)
-set(SOAPY_UHD_BRANCH soapy-uhd-0.1.0)
-set(SOAPY_OSMO_BRANCH soapy-osmo-0.1.0)
+set(SOAPY_SDR_BRANCH soapy-sdr-0.2.2)
+set(SOAPY_BLADERF_BRANCH soapy-bladerf-0.1.1)
+set(SOAPY_UHD_BRANCH soapy-uhd-0.1.1)
+set(SOAPY_OSMO_BRANCH soapy-osmo-0.1.1)
 
 ############################################################
 ## Build SoapySDR
