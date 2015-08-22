@@ -19,15 +19,13 @@ set(BLADERF_BRANCH 2015.07)
 set(HACKRF_BRANCH v2015.07.2)
 set(UHD_BRANCH release_003_008_005)
 set(UMTRX_BRANCH 1.0.4)
-set(SOAPY_SDR_BRANCH soapy-sdr-0.2.2)
+set(SOAPY_SDR_BRANCH master)
 set(SOAPY_BLADERF_BRANCH soapy-bladerf-0.1.1)
 set(SOAPY_UHD_BRANCH soapy-uhd-0.1.1)
 set(SOAPY_OSMO_BRANCH soapy-osmo-0.1.1)
 
 ############################################################
 ## Build SoapySDR
-##
-## * GPLOK=OFF disable submodules - build separately
 ############################################################
 message(STATUS "Configuring SoapySDR - ${SOAPY_SDR_BRANCH}")
 ExternalProject_Add(SoapySDR
@@ -41,7 +39,6 @@ ExternalProject_Add(SoapySDR
         -DPYTHON_EXECUTABLE=C:/Python34/python.exe
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DSWIG_DIR=${SWIG_DIR}
-        -DGPLOK=OFF
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
