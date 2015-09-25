@@ -12,17 +12,21 @@
 ## * SoapyBladeRF
 ## * SoapyUHD
 ## * SoapyOsmo
+## * SoapyRTLSDR
+## * SoapyRemote
 ############################################################
 
-set(RTL_BRANCH 5c376fc79c919c0e16a832328c92f5213f0cdd54)
+set(RTL_BRANCH master)
 set(BLADERF_BRANCH 2015.07)
 set(HACKRF_BRANCH v2015.07.2)
-set(UHD_BRANCH release_003_008_005)
+set(UHD_BRANCH release_003_009_001)
 set(UMTRX_BRANCH 1.0.4)
 set(SOAPY_SDR_BRANCH master)
-set(SOAPY_BLADERF_BRANCH soapy-bladerf-0.1.1)
-set(SOAPY_UHD_BRANCH soapy-uhd-0.1.1)
-set(SOAPY_OSMO_BRANCH soapy-osmo-0.1.1)
+set(SOAPY_BLADERF_BRANCH master)
+set(SOAPY_UHD_BRANCH master)
+set(SOAPY_OSMO_BRANCH update_gr_osmo)
+set(SOAPY_RTLSDR_BRANCH master)
+set(SOAPY_REMOTE_BRANCH master)
 
 ############################################################
 ## Build SoapySDR
@@ -161,6 +165,7 @@ install(
 ##
 ## * ENABLE_RFSPACE=OFF build errors
 ## * ENABLE_BLADERF=OFF see Soapy BladeRF
+## * ENABLE_RTL=OFF see Soapy RTL-SDR
 ############################################################
 message(STATUS "Configuring SoapyOsmo - ${SOAPY_OSMO_BRANCH}")
 ExternalProject_Add(SoapyOsmo
@@ -175,6 +180,7 @@ ExternalProject_Add(SoapyOsmo
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DENABLE_RFSPACE=OFF
         -DENABLE_BLADERF=OFF
+        -DENABLE_RTL=OFF
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
@@ -186,6 +192,50 @@ install(
 )
 
 ############################################################
+## Build SoapyRTLSDR
+############################################################
+message(STATUS "Configuring SoapyRTLSDR - ${SOAPY_RTLSDR_BRANCH}")
+ExternalProject_Add(SoapyRTLSDR
+    DEPENDS SoapySDR rtl-sdr
+    GIT_REPOSITORY https://github.com/pothosware/SoapyRTLSDR.git
+    GIT_TAG ${SOAPY_RTLSDR_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapyRTLSDR SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE.txt
+    DESTINATION licenses/SoapyRTLSDR
+)
+
+############################################################
+## Build SoapyRemote
+############################################################
+message(STATUS "Configuring SoapyRemote - ${SOAPY_REMOTE_BRANCH}")
+ExternalProject_Add(SoapyRemote
+    DEPENDS SoapySDR
+    GIT_REPOSITORY https://github.com/pothosware/SoapyRemote.git
+    GIT_TAG ${SOAPY_REMOTE_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapyRemote SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
+    DESTINATION licenses/SoapyRemote
+)
+
+############################################################
 ## Build UHD
 ############################################################
 message(STATUS "Configuring uhd - ${UHD_BRANCH}")
@@ -194,7 +244,6 @@ ExternalProject_Add(uhd
     GIT_TAG ${UHD_BRANCH}
     PATCH_COMMAND
         ${GIT_EXECUTABLE} checkout . &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/uhd_fix_cbx_bind_boost_1_58.diff &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/uhd_fix_gain_group_floor_round.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
@@ -206,7 +255,6 @@ ExternalProject_Add(uhd
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DBOOST_ALL_DYN_LINK=TRUE
-        -DPYTHON_EXECUTABLE=C:/Python27/python.exe
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )

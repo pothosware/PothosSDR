@@ -61,25 +61,25 @@ ExternalProject_Add(Pothos
 
 ExternalProject_Get_Property(Pothos SOURCE_DIR)
 install(
-    FILES ${SOURCE_DIR}/pothos-library/LICENSE_1_0.txt
+    FILES ${SOURCE_DIR}/library/LICENSE_1_0.txt
     DESTINATION licenses/Pothos
 )
 install(
-    FILES ${SOURCE_DIR}/pothos-widgets/qwt/COPYING
+    FILES ${SOURCE_DIR}/plotters/qwt-6.1.2/COPYING
     DESTINATION licenses/qwt
 )
 install(
-    FILES ${SOURCE_DIR}/pothos-util/muparserx/License.txt
+    FILES ${SOURCE_DIR}/util/muparserx/License.txt
     DESTINATION licenses/muparserx
 )
 install(
-    FILES ${SOURCE_DIR}/pothos-blocks/network/udt4/LICENSE.txt
+    FILES ${SOURCE_DIR}/blocks/network/udt4/LICENSE.txt
     DESTINATION licenses/udt
 )
 install(
     FILES
-        ${SOURCE_DIR}/pothos-gui/qtcolorpicker/LGPL_EXCEPTION.txt
-        ${SOURCE_DIR}/pothos-gui/qtcolorpicker/LICENSE.GPL3
-        ${SOURCE_DIR}/pothos-gui/qtcolorpicker/LICENSE.LGPL
+        ${SOURCE_DIR}/gui/qtcolorpicker/LGPL_EXCEPTION.txt
+        ${SOURCE_DIR}/gui/qtcolorpicker/LICENSE.GPL3
+        ${SOURCE_DIR}/gui/qtcolorpicker/LICENSE.LGPL
     DESTINATION licenses/qtcolorpicker
 )
