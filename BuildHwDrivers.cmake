@@ -10,6 +10,7 @@
 ## * umtrx
 ## * SoapySDR
 ## * SoapyBladeRF
+## * SoapyHackRF
 ## * SoapyUHD
 ## * SoapyOsmo
 ## * SoapyRTLSDR
@@ -23,8 +24,9 @@ set(UHD_BRANCH release_003_009_001)
 set(UMTRX_BRANCH 1.0.4)
 set(SOAPY_SDR_BRANCH master)
 set(SOAPY_BLADERF_BRANCH master)
+set(SOAPY_HACKRF_BRANCH master)
 set(SOAPY_UHD_BRANCH master)
-set(SOAPY_OSMO_BRANCH update_gr_osmo)
+set(SOAPY_OSMO_BRANCH master)
 set(SOAPY_RTLSDR_BRANCH master)
 set(SOAPY_REMOTE_BRANCH master)
 
@@ -152,6 +154,9 @@ ExternalProject_Add(hackRF
         -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+        #post install: move lib from bin into the library path directory
+        && ${CMAKE_COMMAND} -E rename ${CMAKE_INSTALL_PREFIX}/bin/hackrf.lib ${CMAKE_INSTALL_PREFIX}/lib/hackrf.lib
+        && ${CMAKE_COMMAND} -E rename ${CMAKE_INSTALL_PREFIX}/bin/hackrf_static.lib ${CMAKE_INSTALL_PREFIX}/lib/hackrf_static.lib
 )
 
 ExternalProject_Get_Property(hackRF SOURCE_DIR)
@@ -161,15 +166,40 @@ install(
 )
 
 ############################################################
+## Build SoapyHackRF
+############################################################
+message(STATUS "Configuring SoapyHackRF - ${SOAPY_HACKRF_BRANCH}")
+ExternalProject_Add(SoapyHackRF
+    DEPENDS SoapySDR hackRF
+    GIT_REPOSITORY https://github.com/pothosware/SoapyHackRF.git
+    GIT_TAG ${SOAPY_BLADERF_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DLIBHACKRF_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include/libhackrf
+        -DLIBHACKRF_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/hackrf.lib
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapyHackRF SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE
+    DESTINATION licenses/SoapyHackRF
+)
+
+############################################################
 ## Build SoapyOsmo
 ##
 ## * ENABLE_RFSPACE=OFF build errors
 ## * ENABLE_BLADERF=OFF see Soapy BladeRF
+## * ENABLE_HACKRF=OFF see Soapy HackRF
 ## * ENABLE_RTL=OFF see Soapy RTL-SDR
 ############################################################
 message(STATUS "Configuring SoapyOsmo - ${SOAPY_OSMO_BRANCH}")
 ExternalProject_Add(SoapyOsmo
-    DEPENDS SoapySDR hackRF rtl-sdr
+    DEPENDS SoapySDR #bladeRF hackRF rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
     GIT_TAG ${SOAPY_OSMO_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -180,6 +210,7 @@ ExternalProject_Add(SoapyOsmo
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DENABLE_RFSPACE=OFF
         -DENABLE_BLADERF=OFF
+        -DENABLE_HACKRF=OFF
         -DENABLE_RTL=OFF
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
