@@ -37,6 +37,7 @@ include(ExternalProject)
 ########################################################################
 include(InstallPrebuilt.cmake)
 include(BuildHwDrivers.cmake)
+include(BuildSoapySDR.cmake)
 include(BuildPothos.cmake)
 include(BuildGNURadio.cmake)
 

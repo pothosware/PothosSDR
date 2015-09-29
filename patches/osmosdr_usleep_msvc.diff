@@ -1,0 +1,19 @@
+diff --git a/software/libosmosdr/src/libosmosdr.c b/software/libosmosdr/src/libosmosdr.c
+index 139a96b..67a1517 100644
+--- a/software/libosmosdr/src/libosmosdr.c
++++ b/software/libosmosdr/src/libosmosdr.c
+@@ -27,6 +27,14 @@
+ #define min(a, b) (((a) < (b)) ? (a) : (b))
+ #endif
+ 
++//cross platform usleep()
++#ifdef _MSC_VER
++#include <windows.h>
++#define usleep(t) Sleep((t)/1000)
++#else
++#include <unistd.h>
++#endif
++
+ #include <libusb.h>
+ 
+ /*

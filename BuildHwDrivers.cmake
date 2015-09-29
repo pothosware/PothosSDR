@@ -1,58 +1,50 @@
 ############################################################
 ## Pothos SDR environment build sub-script
 ##
-## This script builds SoapySDR and vendor drivers
+## This script builds SDR hardware drivers
 ##
+## * osmo-sdr
 ## * rtl-sdr
 ## * bladerf
 ## * hackrf
 ## * uhd/usrp
 ## * umtrx
-## * SoapySDR
-## * SoapyBladeRF
-## * SoapyHackRF
-## * SoapyUHD
-## * SoapyOsmo
-## * SoapyRTLSDR
-## * SoapyRemote
+## * airspy
 ############################################################
 
+set(OSMO_BRANCH master)
 set(RTL_BRANCH master)
 set(BLADERF_BRANCH 2015.07)
 set(HACKRF_BRANCH v2015.07.2)
 set(UHD_BRANCH release_003_009_001)
 set(UMTRX_BRANCH 1.0.4)
-set(SOAPY_SDR_BRANCH master)
-set(SOAPY_BLADERF_BRANCH master)
-set(SOAPY_HACKRF_BRANCH master)
-set(SOAPY_UHD_BRANCH master)
-set(SOAPY_OSMO_BRANCH master)
-set(SOAPY_RTLSDR_BRANCH master)
-set(SOAPY_REMOTE_BRANCH master)
+set(AIRSPY_BRANCH v1.0.6)
 
 ############################################################
-## Build SoapySDR
+## Build Osmo SDR
 ############################################################
-message(STATUS "Configuring SoapySDR - ${SOAPY_SDR_BRANCH}")
-ExternalProject_Add(SoapySDR
-    GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
-    GIT_TAG ${SOAPY_SDR_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    CMAKE_ARGS
+message(STATUS "Configuring osmo-sdr - ${OSMO_BRANCH}")
+ExternalProject_Add(osmo-sdr
+    GIT_REPOSITORY git://git.osmocom.org/osmo-sdr.git
+    GIT_TAG ${OSMO_BRANCH}
+    PATCH_COMMAND
+        ${GIT_EXECUTABLE} checkout . &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/osmosdr_usleep_msvc.diff
+    CONFIGURE_COMMAND
+        "${CMAKE_COMMAND}" <SOURCE_DIR>/software/libosmosdr
+        -G ${CMAKE_GENERATOR}
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DSOAPY_SDR_EXTVER=${EXTRA_VERSION_INFO}
-        -DPYTHON_EXECUTABLE=C:/Python34/python.exe
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DSWIG_DIR=${SWIG_DIR}
+        -DLIBUSB_INCLUDE_DIR=${LIBUSB_INCLUDE_DIR}
+        -DLIBUSB_LIBRARIES=${LIBUSB_LIBRARIES}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
 
-ExternalProject_Get_Property(SoapySDR SOURCE_DIR)
+ExternalProject_Get_Property(osmo-sdr SOURCE_DIR)
 install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/SoapySDR
+    FILES ${SOURCE_DIR}/software/libosmosdr/COPYING
+    DESTINATION licenses/osmo-sdr
 )
 
 ############################################################
@@ -112,28 +104,6 @@ install(
 )
 
 ############################################################
-## Build SoapyBladeRF
-############################################################
-message(STATUS "Configuring SoapyBladeRF - ${SOAPY_BLADERF_BRANCH}")
-ExternalProject_Add(SoapyBladeRF
-    DEPENDS SoapySDR bladeRF
-    GIT_REPOSITORY https://github.com/pothosware/SoapyBladeRF.git
-    GIT_TAG ${SOAPY_BLADERF_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyBladeRF SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE.LGPLv2.1
-    DESTINATION licenses/SoapyBladeRF
-)
-
-############################################################
 ## Build HackRF
 ############################################################
 message(STATUS "Configuring hackRF - ${HACKRF_BRANCH}")
@@ -163,107 +133,6 @@ ExternalProject_Get_Property(hackRF SOURCE_DIR)
 install(
     FILES ${SOURCE_DIR}/COPYING
     DESTINATION licenses/hackRF
-)
-
-############################################################
-## Build SoapyHackRF
-############################################################
-message(STATUS "Configuring SoapyHackRF - ${SOAPY_HACKRF_BRANCH}")
-ExternalProject_Add(SoapyHackRF
-    DEPENDS SoapySDR hackRF
-    GIT_REPOSITORY https://github.com/pothosware/SoapyHackRF.git
-    GIT_TAG ${SOAPY_BLADERF_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    CMAKE_ARGS
-        -DLIBHACKRF_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include/libhackrf
-        -DLIBHACKRF_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/hackrf.lib
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyHackRF SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE
-    DESTINATION licenses/SoapyHackRF
-)
-
-############################################################
-## Build SoapyOsmo
-##
-## * ENABLE_RFSPACE=OFF build errors
-## * ENABLE_BLADERF=OFF see Soapy BladeRF
-## * ENABLE_HACKRF=OFF see Soapy HackRF
-## * ENABLE_RTL=OFF see Soapy RTL-SDR
-############################################################
-message(STATUS "Configuring SoapyOsmo - ${SOAPY_OSMO_BRANCH}")
-ExternalProject_Add(SoapyOsmo
-    DEPENDS SoapySDR #bladeRF hackRF rtl-sdr
-    GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
-    GIT_TAG ${SOAPY_OSMO_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DENABLE_RFSPACE=OFF
-        -DENABLE_BLADERF=OFF
-        -DENABLE_HACKRF=OFF
-        -DENABLE_RTL=OFF
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyOsmo SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/SoapyOsmo
-)
-
-############################################################
-## Build SoapyRTLSDR
-############################################################
-message(STATUS "Configuring SoapyRTLSDR - ${SOAPY_RTLSDR_BRANCH}")
-ExternalProject_Add(SoapyRTLSDR
-    DEPENDS SoapySDR rtl-sdr
-    GIT_REPOSITORY https://github.com/pothosware/SoapyRTLSDR.git
-    GIT_TAG ${SOAPY_RTLSDR_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyRTLSDR SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE.txt
-    DESTINATION licenses/SoapyRTLSDR
-)
-
-############################################################
-## Build SoapyRemote
-############################################################
-message(STATUS "Configuring SoapyRemote - ${SOAPY_REMOTE_BRANCH}")
-ExternalProject_Add(SoapyRemote
-    DEPENDS SoapySDR
-    GIT_REPOSITORY https://github.com/pothosware/SoapyRemote.git
-    GIT_TAG ${SOAPY_REMOTE_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyRemote SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/SoapyRemote
 )
 
 ############################################################
@@ -319,27 +188,23 @@ ExternalProject_Add(umtrx
 )
 
 ############################################################
-## Build SoapyUHD
+## Build Airspy
 ############################################################
-message(STATUS "Configuring SoapyUHD - ${SOAPY_UHD_BRANCH}")
-ExternalProject_Add(SoapyUHD
-    DEPENDS SoapySDR uhd
-    GIT_REPOSITORY https://github.com/pothosware/SoapyUHD.git
-    GIT_TAG ${SOAPY_UHD_BRANCH}
+message(STATUS "Configuring airspy - ${AIRSPY_BRANCH}")
+ExternalProject_Add(airspy
+    GIT_REPOSITORY https://github.com/airspy/host.git
+    GIT_TAG ${AIRSPY_BRANCH}
+    PATCH_COMMAND
+        ${GIT_EXECUTABLE} checkout . &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/airspy_build_msvc.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DUHD_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include
-        -DUHD_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/uhd.lib
+        -DLIBUSB_INCLUDE_DIR=${LIBUSB_INCLUDE_DIR}
+        -DLIBUSB_LIBRARIES=${LIBUSB_LIBRARIES}
+        -DTHREADS_PTHREADS_INCLUDE_DIR=${THREADS_PTHREADS_INCLUDE_DIR}
+        -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyUHD SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/SoapyUHD
 )

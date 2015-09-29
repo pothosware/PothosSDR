@@ -1,0 +1,42 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index dd27de9..5ef09b4 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -24,7 +24,7 @@ add_custom_target(uninstall
+ # Copy Files Win32 only
+ ########################################################################
+ 
+-if(WIN32)
++if(FALSE)
+  configure_file(
+      ${CMAKE_CURRENT_BINARY_DIR}/../libs_win32/libusb-1.0.dll
+      ${CMAKE_CURRENT_BINARY_DIR}/airspy-tools/src/libusb-1.0.dll
+diff --git a/airspy-tools/src/CMakeLists.txt b/airspy-tools/src/CMakeLists.txt
+index e0c2178..fc1d9fb 100644
+--- a/airspy-tools/src/CMakeLists.txt
++++ b/airspy-tools/src/CMakeLists.txt
+@@ -21,6 +21,10 @@
+ 
+ # Based heavily upon the libftdi cmake setup.
+ 
++if(MSVC11)
++    add_definitions(-Dstrtoull=_strtoui64)
++endif(MSVC11)
++
+ set(INSTALL_DEFAULT_BINDIR "bin" CACHE STRING "Appended to CMAKE_INSTALL_PREFIX")
+ 
+ if(MSVC)
+diff --git a/libairspy/src/iqconverter_float.c b/libairspy/src/iqconverter_float.c
+index 004c846..88a9bac 100644
+--- a/libairspy/src/iqconverter_float.c
++++ b/libairspy/src/iqconverter_float.c
+@@ -47,7 +47,8 @@ THE SOFTWARE.
+   //#define FIR_AUTO_VECTOR
+ #else
+ 	#if (_MSC_VER >= 1300)
+-		#define FIR_USE_SSE2
++        //does not build -- disabling it
++		//#define FIR_USE_SSE2
+ 		#include <immintrin.h>
+ 	#endif
+ #endif
