@@ -10,9 +10,11 @@
 ## * uhd/usrp
 ## * umtrx
 ## * airspy
+## * mirisdr
 ############################################################
 
 set(OSMO_BRANCH master)
+set(MIRISDR_BRANCH master)
 set(RTL_BRANCH master)
 set(BLADERF_BRANCH 2015.07)
 set(HACKRF_BRANCH v2015.07.2)
@@ -45,6 +47,29 @@ ExternalProject_Get_Property(osmo-sdr SOURCE_DIR)
 install(
     FILES ${SOURCE_DIR}/software/libosmosdr/COPYING
     DESTINATION licenses/osmo-sdr
+)
+
+############################################################
+## Build Miri SDR
+############################################################
+message(STATUS "Configuring miri-sdr - ${MIRISDR_BRANCH}")
+ExternalProject_Add(miri-sdr
+    GIT_REPOSITORY git://git.osmocom.org/libmirisdr.git
+    GIT_TAG ${MIRISDR_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DLIBUSB_INCLUDE_DIR=${LIBUSB_INCLUDE_DIR}
+        -DLIBUSB_LIBRARIES=${LIBUSB_LIBRARIES}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(miri-sdr SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/miri-sdr
 )
 
 ############################################################

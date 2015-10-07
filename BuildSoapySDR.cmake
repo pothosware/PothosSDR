@@ -102,7 +102,7 @@ install(
 ############################################################
 message(STATUS "Configuring SoapyOsmo - ${SOAPY_OSMO_BRANCH}")
 ExternalProject_Add(SoapyOsmo
-    DEPENDS SoapySDR osmo-sdr airspy #bladeRF hackRF rtl-sdr
+    DEPENDS SoapySDR osmo-sdr miri-sdr airspy #bladeRF hackRF rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
     GIT_TAG ${SOAPY_OSMO_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -116,6 +116,7 @@ ExternalProject_Add(SoapyOsmo
         -DENABLE_HACKRF=OFF
         -DENABLE_RTL=OFF
         -DENABLE_OSMOSDR=ON
+        -DENABLE_MIRI=ON
         -DENABLE_AIRSPY=ON
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
