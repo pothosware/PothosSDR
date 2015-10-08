@@ -53,7 +53,5 @@ cd build
 cmake ../ -G "Visual Studio 11 2012 Win64" ^
     -DCMAKE_INSTALL_PREFIX=C:/PothosSDR ^
     -DCMAKE_BUILD_TYPE=RelWithDebInfo
-cmake --build .
-cmake --build . --target install
-cmake --build . --target package
+rebuild_all.bat
 ```
