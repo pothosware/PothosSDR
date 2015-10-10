@@ -97,7 +97,7 @@ install(FILES "${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.dll" DESTINATION 
 ## Qt5 (prebuilt)
 ############################################################
 if (MSVC12)
-    set(QT5_DLL_ROOT C:/Qt/Qt5.4.2/5.4/msvc2013_64)
+    set(QT5_DLL_ROOT C:/Qt/Qt5.5.0/5.5/msvc2013_64)
 endif ()
 
 if (MSVC11)
@@ -127,7 +127,7 @@ install(FILES "${QT5_DLL_ROOT}/plugins/platforms/qwindows.dll" DESTINATION bin/p
 ############################################################
 ## LibUSB dependency (prebuilt)
 ############################################################
-set(LIBUSB_ROOT C:/libusb-1.0.19)
+set(LIBUSB_ROOT C:/libusb-1.0.20)
 set(LIBUSB_INCLUDE_DIR ${LIBUSB_ROOT}/include/libusb-1.0)
 set(LIBUSB_LIBRARIES ${LIBUSB_ROOT}/MS64/dll/libusb-1.0.lib)
 
@@ -138,7 +138,7 @@ install(FILES "${LIBUSB_ROOT}/MS64/dll/libusb-1.0.dll" DESTINATION bin)
 ############################################################
 ## SWIG dependency (prebuilt)
 ############################################################
-set(SWIG_ROOT C:/swigwin-3.0.5)
+set(SWIG_ROOT C:/swigwin-3.0.7)
 set(SWIG_EXECUTABLE ${SWIG_ROOT}/swig.exe)
 set(SWIG_DIR ${SWIG_ROOT}/Lib)
 
