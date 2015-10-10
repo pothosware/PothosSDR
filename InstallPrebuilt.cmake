@@ -33,16 +33,21 @@ install(FILES "${CMAKE_BINARY_DIR}/${ZADIG_NAME}" DESTINATION ".")
 ############################################################
 ## Boost dependency (prebuilt)
 ############################################################
-set(BOOST_ROOT C:/local/boost_1_58_0)
+set(BOOST_ROOT C:/local/boost_1_59_0)
+
+if (MSVC14)
+    set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-14.0)
+    set(BOOST_DLL_SUFFIX vc140-mt-1_59.dll)
+endif ()
 
 if (MSVC12)
     set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-12.0)
-    set(BOOST_DLL_SUFFIX vc120-mt-1_58.dll)
+    set(BOOST_DLL_SUFFIX vc120-mt-1_59.dll)
 endif ()
 
 if (MSVC11)
     set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-11.0)
-    set(BOOST_DLL_SUFFIX vc110-mt-1_58.dll)
+    set(BOOST_DLL_SUFFIX vc110-mt-1_59.dll)
 endif ()
 
 message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")

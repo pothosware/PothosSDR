@@ -17,6 +17,9 @@ endif ()
 if (MSVC12)
     set(PACKAGE_SUFFIX "vc12-x64")
 endif ()
+if (MSVC14)
+    set(PACKAGE_SUFFIX "vc14-x64")
+endif ()
 
 #version tracking based on the day of the build
 string(TIMESTAMP PROJECT_VERSION "%Y.%m.%d")
