@@ -48,8 +48,6 @@ install(
 
 ############################################################
 ## Build GNU Radio
-##
-## -DENABLE_GR_DTV=OFF - build errors
 ############################################################
 message(STATUS "Configuring GNURadio - ${GNURADIO_BRANCH}")
 ExternalProject_Add(GNURadio
@@ -59,6 +57,7 @@ ExternalProject_Add(GNURadio
     PATCH_COMMAND
         ${GIT_EXECUTABLE} checkout . &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_use_swig.diff &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_alloca.diff &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_fdmdv_round.diff &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_pfb_clock_sync_fff.diff &&
@@ -80,7 +79,6 @@ ExternalProject_Add(GNURadio
         -DUHD_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include
         -DUHD_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/uhd.lib
         -DENABLE_TESTING=OFF
-        -DENABLE_GR_DTV=OFF
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
