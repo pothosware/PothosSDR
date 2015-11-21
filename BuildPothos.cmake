@@ -7,7 +7,7 @@
 ## * pothos (top level project)
 ############################################################
 
-set(POCO_BRANCH poco-1.6.0-release)
+set(POCO_BRANCH poco-1.6.1-release)
 set(POTHOS_BRANCH master)
 
 ############################################################

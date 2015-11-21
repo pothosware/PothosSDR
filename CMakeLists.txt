@@ -43,6 +43,7 @@ include(BuildHwDrivers.cmake)
 include(BuildSoapySDR.cmake)
 include(BuildPothos.cmake)
 include(BuildGNURadio.cmake)
+include(BuildGrPothos.cmake)
 
 ########################################################################
 # Package environment with NSIS
