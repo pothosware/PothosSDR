@@ -6,6 +6,8 @@
 ## * gr-pothos (toolkit bindings project)
 ############################################################
 
+return() #For now...
+
 set(GR_POTHOS_BRANCH master)
 
 ############################################################
