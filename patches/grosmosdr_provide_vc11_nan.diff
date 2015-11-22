@@ -1,0 +1,32 @@
+diff --git a/lib/sink_impl.cc b/lib/sink_impl.cc
+index 6f01522..99945aa 100644
+--- a/lib/sink_impl.cc
++++ b/lib/sink_impl.cc
+@@ -27,6 +27,11 @@
+ #include "config.h"
+ #endif
+ 
++#if defined(_MSC_VER) && (_MSC_VER < 1800)
++#include <limits>
++#define NAN std::numeric_limits<double>::quiet_NaN()
++#endif
++
+ #include <gnuradio/io_signature.h>
+ #include <gnuradio/constants.h>
+ #include <gnuradio/blocks/throttle.h>
+diff --git a/lib/source_impl.cc b/lib/source_impl.cc
+index 5d7d305..1cf4581 100644
+--- a/lib/source_impl.cc
++++ b/lib/source_impl.cc
+@@ -27,6 +27,11 @@
+ #include "config.h"
+ #endif
+ 
++#if defined(_MSC_VER) && (_MSC_VER < 1800)
++#include <limits>
++#define NAN std::numeric_limits<double>::quiet_NaN()
++#endif
++
+ #include <gnuradio/io_signature.h>
+ #include <gnuradio/blocks/null_source.h>
+ #include <gnuradio/blocks/throttle.h>

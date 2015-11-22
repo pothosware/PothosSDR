@@ -103,6 +103,7 @@ ExternalProject_Add(GrOsmoSDR
     PATCH_COMMAND
         ${GIT_EXECUTABLE} checkout . &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/osmo_soapy_fix_iq_bal_mode.diff &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/grosmosdr_provide_vc11_nan.diff &&
         ${GIT_EXECUTABLE} apply --ignore-whitespace ${PROJECT_SOURCE_DIR}/patches/rtl_tcp_source_fix_ssize_t.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
