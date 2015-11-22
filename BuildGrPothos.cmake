@@ -39,7 +39,7 @@ install(
 ############################################################
 message(STATUS "Configuring gr-pothos - ${GR_POTHOS_BRANCH}")
 ExternalProject_Add(GrPothos
-    DEPENDS GNURadio
+    DEPENDS GNURadio GrOsmoSDR
     GIT_REPOSITORY https://github.com/pothosware/gr-pothos.git
     GIT_TAG ${GR_POTHOS_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
