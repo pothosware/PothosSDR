@@ -42,6 +42,9 @@ ExternalProject_Add(Pothos
     DEPENDS Poco SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/pothos.git
     GIT_TAG ${POTHOS_BRANCH}
+    PATCH_COMMAND
+        ${GIT_EXECUTABLE} checkout . &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/spuce_vc11_fixes.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
