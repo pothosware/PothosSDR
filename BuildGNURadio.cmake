@@ -58,6 +58,7 @@ ExternalProject_Add(GNURadio
         ${GIT_EXECUTABLE} checkout . &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_use_swig.diff &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_alloca.diff &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_vc11_log2.diff &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_fdmdv_round.diff &&
         ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_pfb_clock_sync_fff.diff &&
