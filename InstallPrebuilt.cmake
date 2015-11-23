@@ -97,7 +97,7 @@ install(FILES "${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.dll" DESTINATION 
 ## Qt5 (prebuilt)
 ############################################################
 if (MSVC12)
-    set(QT5_DLL_ROOT C:/Qt/Qt5.5.0/5.5/msvc2013_64)
+    set(QT5_DLL_ROOT C:/Qt/Qt5.5.1/5.5/msvc2013_64)
 endif ()
 
 if (MSVC11)
