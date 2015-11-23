@@ -1,0 +1,13 @@
+diff --git a/gr-vocoder/lib/codec2/fdmdv.c b/gr-vocoder/lib/codec2/fdmdv.c
+index 8855f76..4925492 100644
+--- a/gr-vocoder/lib/codec2/fdmdv.c
++++ b/gr-vocoder/lib/codec2/fdmdv.c
+@@ -25,7 +25,7 @@
+   along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) && (_MSC_VER < 1800)
+ #define round(number) number < 0.0 ? ceil(number - 0.5) : floor(number + 0.5)
+ #endif
+ 

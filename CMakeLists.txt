@@ -43,6 +43,7 @@ include(BuildHwDrivers.cmake)
 include(BuildSoapySDR.cmake)
 include(BuildPothos.cmake)
 include(BuildGNURadio.cmake)
+include(BuildGrPothos.cmake)
 
 ########################################################################
 # Package environment with NSIS
@@ -79,6 +80,9 @@ foreach (license_file ${license_files})
 "${license_text}\n")
 endforeach(license_file)
 
+file(TO_NATIVE_PATH share/gnuradio/grc/blocks GRC_BLOCKS_PATH)
+string(REPLACE "\\" "\\\\" GRC_BLOCKS_PATH ${GRC_BLOCKS_PATH})
+
 SET(HLKM_ENV
     "\\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\"")
 
@@ -86,12 +90,14 @@ SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
     WriteRegStr HKLM ${HLKM_ENV} \\\"POTHOS_ROOT\\\" \\\"$INSTDIR\\\"
     WriteRegStr HKLM ${HLKM_ENV} \\\"SOAPY_SDR_ROOT\\\" \\\"$INSTDIR\\\"
     WriteRegStr HKLM ${HLKM_ENV} \\\"UHD_PKG_PATH\\\" \\\"$INSTDIR\\\"
+    WriteRegStr HKLM ${HLKM_ENV} \\\"GRC_BLOCKS_PATH\\\" \\\"$INSTDIR\\\\${GRC_BLOCKS_PATH}\\\"
 ")
 
 SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
     DeleteRegValue HKLM ${HLKM_ENV} \\\"POTHOS_ROOT\\\"
     DeleteRegValue HKLM ${HLKM_ENV} \\\"SOAPY_SDR_ROOT\\\"
     DeleteRegValue HKLM ${HLKM_ENV} \\\"UHD_PKG_PATH\\\"
+    DeleteRegValue HKLM ${HLKM_ENV} \\\"GRC_BLOCKS_PATH\\\"
 ")
 
 set(CPACK_GENERATOR "NSIS")

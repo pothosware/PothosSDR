@@ -32,7 +32,9 @@ ExternalProject_Add(SoapySDR
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DSOAPY_SDR_EXTVER=${EXTRA_VERSION_INFO}
-        -DPYTHON_EXECUTABLE=C:/Python34/python.exe
+        -DPYTHON_EXECUTABLE=C:/Python27/python.exe
+        -DPYTHON3_EXECUTABLE=C:/Python34/python.exe
+        -DPYTHON3_LIBRARY=C:/Python34/libs/python34.lib
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DSWIG_DIR=${SWIG_DIR}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
@@ -44,7 +46,6 @@ install(
     FILES ${SOURCE_DIR}/LICENSE_1_0.txt
     DESTINATION licenses/SoapySDR
 )
-
 
 ############################################################
 ## Build SoapyBladeRF
