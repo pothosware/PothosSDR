@@ -22,11 +22,10 @@ message(STATUS "Configuring volk - ${VOLK_BRANCH}")
 ExternalProject_Add(volk
     GIT_REPOSITORY https://github.com/gnuradio/volk.git
     GIT_TAG ${VOLK_BRANCH}
-    PATCH_COMMAND
-        ${GIT_EXECUTABLE} checkout . &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_cpuid_count_for_msvc.diff &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_config_log2_vc11.diff &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/volk_skip_profile_app_vc11.diff
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/volk_cpuid_count_for_msvc.diff
+        ${PROJECT_SOURCE_DIR}/patches/volk_config_log2_vc11.diff
+        ${PROJECT_SOURCE_DIR}/patches/volk_skip_profile_app_vc11.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
@@ -54,15 +53,14 @@ ExternalProject_Add(GNURadio
     DEPENDS volk uhd
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
-    PATCH_COMMAND
-        ${GIT_EXECUTABLE} checkout . &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_use_swig.diff &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_alloca.diff &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_vc11_log2.diff &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_fdmdv_round.diff &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_pfb_clock_sync_fff.diff &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_filter_truncation.diff
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_use_swig.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_alloca.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_vc11_log2.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_fdmdv_round.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_pfb_clock_sync_fff.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_filter_truncation.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
@@ -100,11 +98,10 @@ ExternalProject_Add(GrOsmoSDR
     DEPENDS GNURadio SoapySDR bladeRF uhd hackRF rtl-sdr osmo-sdr miri-sdr airspy
     GIT_REPOSITORY git://git.osmocom.org/gr-osmosdr
     GIT_TAG ${GROSMOSDR_BRANCH}
-    PATCH_COMMAND
-        ${GIT_EXECUTABLE} checkout . &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/osmo_soapy_fix_iq_bal_mode.diff &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/grosmosdr_provide_vc11_nan.diff &&
-        ${GIT_EXECUTABLE} apply --ignore-whitespace ${PROJECT_SOURCE_DIR}/patches/rtl_tcp_source_fix_ssize_t.diff
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/osmo_soapy_fix_iq_bal_mode.diff
+        ${PROJECT_SOURCE_DIR}/patches/grosmosdr_provide_vc11_nan.diff
+        ${PROJECT_SOURCE_DIR}/patches/rtl_tcp_source_fix_ssize_t.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev

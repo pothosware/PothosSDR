@@ -29,6 +29,8 @@ set(EXTRA_VERSION_INFO "${PROJECT_NAME}-${PROJECT_VERSION}-${PACKAGE_SUFFIX}")
 
 add_compile_options(/MP) #multi-core build
 
+set(GIT_PATCH_HELPER C:/Python34/python.exe ${PROJECT_SOURCE_DIR}/GitPatchHelper.py)
+
 ########################################################################
 # Setup the external projects for a flat structure
 ########################################################################

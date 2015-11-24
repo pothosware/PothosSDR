@@ -29,9 +29,8 @@ message(STATUS "Configuring osmo-sdr - ${OSMO_BRANCH}")
 ExternalProject_Add(osmo-sdr
     GIT_REPOSITORY git://git.osmocom.org/osmo-sdr.git
     GIT_TAG ${OSMO_BRANCH}
-    PATCH_COMMAND
-        ${GIT_EXECUTABLE} checkout . &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/osmosdr_usleep_msvc.diff
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/osmosdr_usleep_msvc.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/software/libosmosdr
         -G ${CMAKE_GENERATOR}
@@ -135,9 +134,8 @@ message(STATUS "Configuring hackRF - ${HACKRF_BRANCH}")
 ExternalProject_Add(hackRF
     GIT_REPOSITORY https://github.com/mossmann/hackrf.git
     GIT_TAG ${HACKRF_BRANCH}
-    PATCH_COMMAND
-        ${GIT_EXECUTABLE} checkout . &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/hackrf_fix_compat_c89_vc11.diff
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/hackrf_fix_compat_c89_vc11.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
@@ -167,9 +165,8 @@ message(STATUS "Configuring uhd - ${UHD_BRANCH}")
 ExternalProject_Add(uhd
     GIT_REPOSITORY https://github.com/EttusResearch/uhd.git
     GIT_TAG ${UHD_BRANCH}
-    PATCH_COMMAND
-        ${GIT_EXECUTABLE} checkout . &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/uhd_fix_gain_group_floor_round.diff
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/uhd_fix_gain_group_floor_round.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
@@ -219,9 +216,8 @@ message(STATUS "Configuring airspy - ${AIRSPY_BRANCH}")
 ExternalProject_Add(airspy
     GIT_REPOSITORY https://github.com/airspy/host.git
     GIT_TAG ${AIRSPY_BRANCH}
-    PATCH_COMMAND
-        ${GIT_EXECUTABLE} checkout . &&
-        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/airspy_build_msvc.diff
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/airspy_build_msvc.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
