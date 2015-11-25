@@ -1,22 +1,7 @@
-diff --git a/comms/filter/IIRFilter.cpp b/comms/filter/IIRFilter.cpp
-index 48c8ae8..e684642 100644
---- a/comms/filter/IIRFilter.cpp
-+++ b/comms/filter/IIRFilter.cpp
-@@ -50,8 +50,8 @@ template <typename Type> class IIRFilter : public Pothos::Block {
-     this->registerCall(this, POTHOS_FCN_TUPLE(IIRFilter, setTaps));
-     this->registerCall(this, POTHOS_FCN_TUPLE(IIRFilter, setWaitTaps));
-     this->registerCall(this, POTHOS_FCN_TUPLE(IIRFilter, getWaitTaps));
--	std::vector<double> taps = {0.0676, 0.135, 0.0676, 1, -1.142, 0.412};
--	this->setTaps(taps);  // initial update
-+	double taps[] = {0.0676, 0.135, 0.0676, 1, -1.142, 0.412};
-+	this->setTaps(std::vector<double>(taps, taps+6));  // initial update
-   }
- 
-   void setWaitTaps(const bool waitTaps) { _waitTapsMode = waitTaps; }
-diff --git a/comms/spuce/filters/iir_coeff.cpp b/comms/spuce/filters/iir_coeff.cpp
+diff --git a/spuce/filters/iir_coeff.cpp b/spuce/filters/iir_coeff.cpp
 index 53b6880..cdfd027 100644
---- a/comms/spuce/filters/iir_coeff.cpp
-+++ b/comms/spuce/filters/iir_coeff.cpp
+--- a/spuce/filters/iir_coeff.cpp
++++ b/spuce/filters/iir_coeff.cpp
 @@ -152,9 +152,9 @@ void iir_coeff::make_band(float_type c) {
      b_tf.pop_back();
      b_tf.pop_back();
@@ -40,10 +25,10 @@ index 53b6880..cdfd027 100644
    }
  }
  
-diff --git a/comms/spuce/filters/remez_estimate.cpp b/comms/spuce/filters/remez_estimate.cpp
+diff --git a/spuce/filters/remez_estimate.cpp b/spuce/filters/remez_estimate.cpp
 index 1552327..a28c8b2 100644
---- a/comms/spuce/filters/remez_estimate.cpp
-+++ b/comms/spuce/filters/remez_estimate.cpp
+--- a/spuce/filters/remez_estimate.cpp
++++ b/spuce/filters/remez_estimate.cpp
 @@ -61,7 +61,7 @@ float_type remez_estimate_atten(size_t num_taps, float_type trans_bw, float_type
  */
  size_t remez_estimate_num_taps(float_type trans_bw, float_type ripple, float_type atten) {  
@@ -80,10 +65,10 @@ index 1552327..a28c8b2 100644
  
    size_t off=0;
    for (size_t j=0;j<3;j++) {
-diff --git a/comms/spuce/filters/window.cpp b/comms/spuce/filters/window.cpp
+diff --git a/spuce/filters/window.cpp b/spuce/filters/window.cpp
 index 2530874..aa0211e 100644
---- a/comms/spuce/filters/window.cpp
-+++ b/comms/spuce/filters/window.cpp
+--- a/spuce/filters/window.cpp
++++ b/spuce/filters/window.cpp
 @@ -7,6 +7,9 @@
  #include <spuce/filters/fir_inv_dft.h>
  #include <iostream>

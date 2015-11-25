@@ -29,7 +29,8 @@ def getListOfPatchesFiles(patch):
         if line.startswith('diff --git'):
             args = line.split()
             filePath = args[2][2:]
-            assert os.path.exists(filePath)
+            if not os.path.exists(filePath):
+                raise Exception('%s referenced by %s does not exist'%(filePath, patch))
             yield filePath
 
 def applyPatch(patch, changedFiles):
