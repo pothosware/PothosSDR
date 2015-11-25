@@ -8,6 +8,7 @@
 ############################################################
 
 set(POCO_BRANCH poco-1.6.1-release)
+set(SPUCE_BRANCH master)
 set(POTHOS_BRANCH master)
 
 ############################################################
@@ -33,17 +34,42 @@ install(
 )
 
 ############################################################
+## Build Spuce
+############################################################
+message(STATUS "Configuring Spuce - ${SPUCE_BRANCH}")
+ExternalProject_Add(Spuce
+    GIT_REPOSITORY https://github.com/audiofilter/spuce.git
+    GIT_TAG ${SPUCE_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/spuce_vc11_fixes.diff
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DBUILD_SHARED_LIBS=OFF
+        -DENABLE_PYTHON=OFF
+        -DCMAKE_PREFIX_PATH=${QT5_DLL_ROOT}
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(Spuce SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
+    DESTINATION licenses/Spuce
+)
+
+############################################################
 ## Build Pothos
 ##
 ## * ENABLE_JAVA=OFF not useful component yet
 ############################################################
 message(STATUS "Configuring Pothos - ${POTHOS_BRANCH}")
 ExternalProject_Add(Pothos
-    DEPENDS Poco SoapySDR
+    DEPENDS Poco SoapySDR Spuce
     GIT_REPOSITORY https://github.com/pothosware/pothos.git
     GIT_TAG ${POTHOS_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/spuce_vc11_fixes.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
