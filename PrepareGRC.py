@@ -5,9 +5,19 @@
 import os
 import sys
 import inspect
+import tempfile
 from ctypes.util import find_library
 
+########################################################################
+## Pip helpers
+########################################################################
 PIP_EXE = "%s"%os.path.join(os.path.dirname(sys.executable), 'Scripts', 'pip.exe')
+
+def pip_install_url(url):
+    ret = os.system("%s install %s"%(PIP_EXE, url))
+    if ret != 0:
+        print("Error: pip failed to install %s"%url)
+        exit(-1)
 
 ########################################################################
 ## Python checks
@@ -41,14 +51,45 @@ def check_gtk_runtime():
     return libgtk
 
 def handle_gtk_runtime():
-    pass
+
+    GTK_URL = 'http://downloads.myriadrf.org/binaries/python27_amd64/gtk2-runtime-2.22.1-2014-02-01-ts-win64.exe'
+    GTK_EXE = os.path.join(tempfile.gettempdir(), 'gtk2-runtime-2.22.1-2014-02-01-ts-win64.exe')
+
+    if not os.path.exists(GTK_EXE):
+
+        #need requests to download the exe
+        try: import requests
+        except: os.system("%s install requests"%PIP_EXE)
+        import requests
+
+        #download from the url to the destination
+        r = requests.get(GTK_URL)
+        with open(GTK_EXE, 'wb') as fd:
+            for chunk in r.iter_content(1024*1024):
+                fd.write(chunk)
+
+    if not os.path.exists(GTK_EXE):
+        print("Cant find installer: %s"%GTK_EXE)
+        print("Failed to download: %s"%GTK_URL)
+        exit(-1)
+
+    print("Running installer: %s"%GTK_EXE)
+    ret = os.system("%s /S"%GTK_EXE) #silent install
+    if ret == 0:
+        print("The GTK installer should have modified the system path")
+    else:
+        print("The GTK installer failed with exit code %d"%ret)
+    print("Open a new command window and re-run this script...")
+    exit(ret)
 
 def check_import_gtk():
     import gtk
     return inspect.getfile(gtk)
 
 def handle_import_gtk():
-    pass
+    pip_install_url('http://downloads.myriadrf.org/binaries/python27_amd64/pygtk-2.22.0-cp27-none-win_amd64.whl')
+    pip_install_url('http://downloads.myriadrf.org/binaries/python27_amd64/pygobject-2.28.6-cp27-none-win_amd64.whl')
+    pip_install_url('http://downloads.myriadrf.org/binaries/python27_amd64/pycairo_gtk-1.10.0-cp27-none-win_amd64.whl')
 
 ########################################################################
 ## GNU Radio checks
@@ -72,7 +113,11 @@ def check_import_gr():
     return inspect.getfile(gnuradio)
 
 def handle_import_gr():
-    pass
+    binDir = os.path.dirname(find_library("gnuradio-runtime.dll"))
+    path = os.path.join(os.path.dirname(binDir), 'lib/site-packages')
+    print("Error: GNURadio modules missing from PYTHONPATH")
+    print("  Add %s to the PYTHONPATH"%os.path.normpath(path))
+    exit(-1)
 
 ########################################################################
 ## Other module checks
@@ -82,14 +127,14 @@ def check_import_numpy():
     return inspect.getfile(numpy)
 
 def handle_import_numpy():
-    pass
+    pip_install_url('http://downloads.myriadrf.org/binaries/python27_amd64/numpy-1.9.3+vanilla-cp27-none-win_amd64.whl')
 
 def check_import_lxml():
     import lxml
     return inspect.getfile(lxml)
 
 def handle_import_lxml():
-    pass
+    pip_install_url('http://downloads.myriadrf.org/binaries/python27_amd64/lxml-3.5.0-cp27-none-win_amd64.whl')
 
 def check_import_cheetah():
     import Cheetah
@@ -97,7 +142,10 @@ def check_import_cheetah():
 
 def handle_import_cheetah():
     print("Installing cheetah templates with pip:")
-    os.system("%s install cheetah"%PIP_EXE)
+    ret = os.system("%s install cheetah"%PIP_EXE)
+    if ret != 0:
+        print("Error: pip failed to install cheetah")
+        exit(-1)
     print("  Done!")
 
 def check_import_wxpython():
@@ -106,15 +154,19 @@ def check_import_wxpython():
     return inspect.getfile(wx)
 
 def handle_import_wxpython():
-    pass
+    pip_install_url('http://downloads.myriadrf.org/binaries/python27_amd64/wxPython-3.0.2.0-cp27-none-win_amd64.whl')
+    pip_install_url('http://downloads.myriadrf.org/binaries/python27_amd64/wxPython_common-3.0.2.0-py2-none-any.whl')
 
-def check_import_opengl():
+def check_import_pyopengl():
     import OpenGL
     import OpenGL.GL
     return inspect.getfile(OpenGL)
 
-def handle_import_opengl():
-    pass
+def handle_import_pyopengl():
+    print("Installing PyOpenGL with pip:")
+    pip_install_url('http://downloads.myriadrf.org/binaries/python27_amd64/PyOpenGL-3.1.1b1-cp27-none-win_amd64.whl')
+    pip_install_url('http://downloads.myriadrf.org/binaries/python27_amd64/PyOpenGL_accelerate-3.1.1a1-cp27-none-win_amd64.whl')
+    print("  Done!")
 
 CHECKS = [
     ("PYVERSION",      'Python version is 2.7',   check_python_version, handle_python_version),
@@ -126,7 +178,7 @@ CHECKS = [
     ("IMPORT_LXML",    'import lxml module',      check_import_lxml, handle_import_lxml),
     ("IMPORT_CHEETAH", 'import Cheetah module',   check_import_cheetah, handle_import_cheetah),
     ("IMPORT_WX",      'import wx module',        check_import_wxpython, handle_import_wxpython),
-    ("IMPORT_OPENGL",  'import OpenGL module',    check_import_opengl, handle_import_opengl),
+    ("IMPORT_OPENGL",  'import OpenGL module',    check_import_pyopengl, handle_import_pyopengl),
 ]
 
 if __name__ == '__main__':
@@ -166,6 +218,7 @@ if __name__ == '__main__':
             if statuses[key]: print("%s:\t%s"%(key, msgs[key]))
 
     if numFails == 0:
+        print("")
         print("All checked passed! GRC is ready to use.")
         exit(0)
 
@@ -185,4 +238,5 @@ if __name__ == '__main__':
         for key, what, check, handle in CHECKS:
             if not statuses[key]: handle()
 
+    print("")
     print("Changes made! Please re-run this script.")
