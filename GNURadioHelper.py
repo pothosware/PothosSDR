@@ -75,12 +75,12 @@ def handle_gtk_runtime():
 
     print("Running installer: %s"%GTK_EXE)
     ret = os.system("%s /S"%GTK_EXE) #silent install
-    if ret == 0:
-        print("The GTK installer should have modified the system path")
-    else:
+    if ret != 0:
         print("The GTK installer failed with exit code %d"%ret)
+        exit(ret)
+
+    print("The GTK installer should have modified the system path")
     print("Open a new command window and re-run this script...")
-    exit(ret)
 
 def check_import_gtk():
     import gtk
@@ -219,7 +219,7 @@ if __name__ == '__main__':
 
     if numFails == 0:
         print("")
-        print("All checked passed! GRC is ready to use.")
+        print("All checked passed! gnuradio-companion is ready to use.")
         exit(0)
 
     if numFails:
@@ -239,4 +239,4 @@ if __name__ == '__main__':
             if not statuses[key]: handle()
 
     print("")
-    print("Changes made! Please re-run this script.")
+    print("Changes made! Please re-run this script in a new terminal.")
