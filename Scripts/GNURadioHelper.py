@@ -1,7 +1,6 @@
 ########################################################################
 ## Do checks and prepare dependencies for GRC
 ########################################################################
-
 import os
 import sys
 import inspect
@@ -17,7 +16,7 @@ def pip_install_url(url):
     ret = os.system("%s install %s"%(PIP_EXE, url))
     if ret != 0:
         print("Error: pip failed to install %s"%url)
-        exit(-1)
+        return -1
 
 ########################################################################
 ## Python checks
@@ -37,7 +36,7 @@ def check_python_version():
 
 def handle_python_version():
     print("Error: Invoke/Reinstall Python2.7 for amd64")
-    exit(-1)
+    return -1
 
 ########################################################################
 ## GTK checks
@@ -71,7 +70,7 @@ def handle_gtk_runtime():
     if not os.path.exists(GTK_EXE):
         print("Cant find installer: %s"%GTK_EXE)
         print("Failed to download: %s"%GTK_URL)
-        exit(-1)
+        return -1
 
     print("Running installer: %s"%GTK_EXE)
     ret = os.system("%s /S"%GTK_EXE) #silent install
@@ -105,7 +104,7 @@ def check_gr_runtime():
 def handle_gr_runtime():
     print("Error: PothosSDR missing from system path")
     print("  see https://github.com/pothosware/PothosSDR/wiki/Tutorial")
-    exit(-1)
+    return -1
 
 def check_import_gr():
     import gnuradio
@@ -117,7 +116,7 @@ def handle_import_gr():
     path = os.path.join(os.path.dirname(binDir), 'lib/site-packages')
     print("Error: GNURadio modules missing from PYTHONPATH")
     print("  Add %s to the PYTHONPATH"%os.path.normpath(path))
-    exit(-1)
+    return -1
 
 ########################################################################
 ## Other module checks
@@ -145,7 +144,7 @@ def handle_import_cheetah():
     ret = os.system("%s install cheetah"%PIP_EXE)
     if ret != 0:
         print("Error: pip failed to install cheetah")
-        exit(-1)
+        return -1
     print("  Done!")
 
 def check_import_wxpython():
@@ -181,7 +180,7 @@ CHECKS = [
     ("IMPORT_OPENGL",  'import OpenGL module',    check_import_pyopengl, handle_import_pyopengl),
 ]
 
-if __name__ == '__main__':
+def main():
     print("")
     print("="*40)
     print("== Runtime and import checks")
@@ -220,7 +219,7 @@ if __name__ == '__main__':
     if numFails == 0:
         print("")
         print("All checked passed! gnuradio-companion is ready to use.")
-        exit(0)
+        return 0
 
     if numFails:
         print("")
@@ -236,7 +235,28 @@ if __name__ == '__main__':
         print("== Fixing problems")
         print("="*40)
         for key, what, check, handle in CHECKS:
-            if not statuses[key]: handle()
+            if not statuses[key]:
+                print("Handling issues for %s..."%key)
+                ret = handle()
+                #exit asap when return code provided
+                if ret is not None: return ret
 
     print("")
     print("Changes made! Please re-run this script in a new terminal.")
+
+if __name__ == '__main__':
+
+    #run main with exception handling
+    ret = None
+    try: ret = main()
+    except Exception as ex:
+        print("Error: %s"%str(ex))
+
+    #give time to read message if opened from explorer
+    #wait for user to press a key
+    print("")
+    os.system('pause')
+
+    #return the error code from main
+    if ret is None: ret = 0
+    exit(ret)
