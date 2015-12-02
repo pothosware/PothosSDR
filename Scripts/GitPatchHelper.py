@@ -37,7 +37,7 @@ def applyPatch(patch, changedFiles):
     p = subprocess.Popen(args=[GIT_EXECUTABLE, "checkout"] + list(changedFiles), shell=True)
     if p.wait() != 0:
         raise Exception('Failed to revert state: %s'%patch)
-    
+
     p = subprocess.Popen(args=[GIT_EXECUTABLE, "apply", "--ignore-whitespace", patch], shell=True)
     if p.wait() != 0:
         raise Exception('Failed to apply patch: %s'%patch)
@@ -65,7 +65,7 @@ def main():
             continue
         else:
             print("    ---- Applying patch now...")
-            applyPatch(patch, changedFiles)
+            applyPatch(patch, patchedFiles)
             print("    ---- Done!")
 
 if __name__ == '__main__': main()
