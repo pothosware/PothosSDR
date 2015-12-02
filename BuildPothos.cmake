@@ -8,7 +8,7 @@
 ############################################################
 
 set(POCO_BRANCH poco-1.6.1-release)
-set(SPUCE_BRANCH master)
+set(SPUCE_BRANCH 0.4.1)
 set(POTHOS_BRANCH master)
 
 ############################################################
