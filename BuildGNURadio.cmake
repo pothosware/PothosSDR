@@ -101,10 +101,6 @@ ExternalProject_Add(GrOsmoSDR
     DEPENDS GNURadio SoapySDR bladeRF uhd hackRF rtl-sdr osmo-sdr miri-sdr airspy
     GIT_REPOSITORY git://git.osmocom.org/gr-osmosdr
     GIT_TAG ${GROSMOSDR_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/osmo_soapy_fix_iq_bal_mode.diff
-        ${PROJECT_SOURCE_DIR}/patches/grosmosdr_provide_vc11_nan.diff
-        ${PROJECT_SOURCE_DIR}/patches/rtl_tcp_source_fix_ssize_t.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
