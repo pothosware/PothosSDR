@@ -19,7 +19,7 @@ set(RTL_BRANCH master)
 set(BLADERF_BRANCH 2015.07)
 set(HACKRF_BRANCH v2015.07.2)
 set(UHD_BRANCH release_003_009_001)
-set(UMTRX_BRANCH 1.0.4)
+set(UMTRX_BRANCH 1.0.5)
 set(AIRSPY_BRANCH v1.0.7)
 
 ############################################################
