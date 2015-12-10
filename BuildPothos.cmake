@@ -9,6 +9,7 @@
 
 set(POCO_BRANCH poco-1.6.1-release)
 set(SPUCE_BRANCH 0.4.1)
+set(POTHOS_SERIALIZATION_BRANCH 0.2.0)
 set(POTHOS_BRANCH master)
 
 ############################################################
@@ -61,13 +62,35 @@ install(
 )
 
 ############################################################
+## Build Pothos Serialization
+############################################################
+message(STATUS "Configuring PothosSerialization - ${POTHOS_SERIALIZATION_BRANCH}")
+ExternalProject_Add(PothosSerialization
+    GIT_REPOSITORY https://github.com/pothosware/pothos-serialization.git
+    GIT_TAG ${POTHOS_SERIALIZATION_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(PothosSerialization SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
+    DESTINATION licenses/PothosSerialization
+)
+
+############################################################
 ## Build Pothos
 ##
 ## * ENABLE_JAVA=OFF not useful component yet
 ############################################################
 message(STATUS "Configuring Pothos - ${POTHOS_BRANCH}")
 ExternalProject_Add(Pothos
-    DEPENDS Poco SoapySDR Spuce
+    DEPENDS Poco SoapySDR Spuce PothosSerialization
     GIT_REPOSITORY https://github.com/pothosware/pothos.git
     GIT_TAG ${POTHOS_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
