@@ -29,8 +29,6 @@ message(STATUS "Configuring osmo-sdr - ${OSMO_BRANCH}")
 ExternalProject_Add(osmo-sdr
     GIT_REPOSITORY git://git.osmocom.org/osmo-sdr.git
     GIT_TAG ${OSMO_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/osmosdr_usleep_msvc.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/software/libosmosdr
         -G ${CMAKE_GENERATOR}
