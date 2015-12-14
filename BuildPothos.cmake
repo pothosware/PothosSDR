@@ -69,7 +69,7 @@ install(
 ############################################################
 message(STATUS "Configuring muparserx - ${MUPARSERX_BRANCH}")
 ExternalProject_Add(muparserx
-    GIT_REPOSITORY https://github.com/pothosware/muparserx.git
+    GIT_REPOSITORY https://github.com/beltoforion/muparserx.git
     GIT_TAG ${MUPARSERX_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
