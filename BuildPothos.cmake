@@ -232,6 +232,11 @@ install(
     DESTINATION licenses/PothosComms
 )
 
+install(
+    FILES ${SOURCE_DIR}/fft/COPYING.kissfft
+    DESTINATION licenses/kissfft
+)
+
 ############################################################
 ## Build Pothos Gui toolkit
 ############################################################
