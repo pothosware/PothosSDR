@@ -50,6 +50,7 @@ include(InstallPrebuilt.cmake)
 include(BuildHwDrivers.cmake)
 include(BuildSoapySDR.cmake)
 include(BuildPothos.cmake)
+include(BuildToolkits.cmake)
 include(BuildGNURadio.cmake)
 include(BuildGrPothos.cmake)
 
