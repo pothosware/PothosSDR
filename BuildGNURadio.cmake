@@ -95,6 +95,7 @@ install(
 ## Build GrOsmoSDR
 ##
 ## * ENABLE_RFSPACE=OFF build errors
+## * ENABLE_REDPITAYA=OFF build errors
 ############################################################
 message(STATUS "Configuring GrOsmoSDR - ${GROSMOSDR_BRANCH}")
 ExternalProject_Add(GrOsmoSDR
@@ -115,6 +116,7 @@ ExternalProject_Add(GrOsmoSDR
         -DSWIG_DIR=${SWIG_DIR}
         -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
         -DENABLE_RFSPACE=OFF
+        -DENABLE_REDPITAYA=OFF
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
