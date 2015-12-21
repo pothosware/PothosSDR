@@ -111,8 +111,8 @@ SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
 
 set(CPACK_GENERATOR "NSIS")
 set(CPACK_NSIS_INSTALL_ROOT "C:\\\\Program Files")
-ExternalProject_Get_Property(Pothos SOURCE_DIR)
-set(CPACK_NSIS_MUI_ICON ${SOURCE_DIR}/gui/icons/PothosGui.ico)
+ExternalProject_Get_Property(PothosGui SOURCE_DIR)
+set(CPACK_NSIS_MUI_ICON ${SOURCE_DIR}/icons/PothosGui.ico)
 set(CPACK_NSIS_MODIFY_PATH ON)
 set(CPACK_NSIS_DISPLAY_NAME "Pothos SDR environment (${PACKAGE_SUFFIX})") #add/remove control panel
 set(CPACK_NSIS_PACKAGE_NAME "Pothos SDR environment (${PACKAGE_SUFFIX})") #installer package title
