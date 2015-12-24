@@ -20,7 +20,7 @@ set(BLADERF_BRANCH 2015.07)
 set(HACKRF_BRANCH v2015.07.2)
 set(UHD_BRANCH release_003_009_001)
 set(UMTRX_BRANCH 1.0.5)
-set(AIRSPY_BRANCH v1.0.7)
+set(AIRSPY_BRANCH 5d2940305b47f92d961ab7d5a7e713c17652e923) #v1.0.7+winfixes
 
 ############################################################
 ## Build Osmo SDR
@@ -214,8 +214,6 @@ message(STATUS "Configuring airspy - ${AIRSPY_BRANCH}")
 ExternalProject_Add(airspy
     GIT_REPOSITORY https://github.com/airspy/host.git
     GIT_TAG ${AIRSPY_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/airspy_build_msvc.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

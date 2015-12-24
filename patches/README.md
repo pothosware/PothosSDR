@@ -2,7 +2,6 @@
 
 | Project       | Patch                                | Tracker                                               |
 | ------------- | ------------------------------------ | ----------------------------------------------------- |
-| Airspy        | airspy_build_msvc.diff               | https://github.com/airspy/host/issues/31              |
 | GNURadio      | gnuradio_dtv_use_alloca.diff         | https://github.com/pothosware/gnuradio/issues/20      |
 | GNURadio      | gnuradio_dtv_vc11_log2.diff          | https://github.com/pothosware/gnuradio/issues/19      |
 | GNURadio      | gnuradio_fix_codec2_fdmdv_round.diff | https://github.com/pothosware/gnuradio/issues/11      |
