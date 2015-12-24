@@ -10,6 +10,7 @@
 ## * SoapyOsmo
 ## * SoapyRTLSDR
 ## * SoapyRemote
+## * SoapyRedPitaya
 ############################################################
 
 set(SOAPY_SDR_BRANCH soapy-sdr-0.4.0)
@@ -19,6 +20,7 @@ set(SOAPY_UHD_BRANCH soapy-uhd-0.3.0)
 set(SOAPY_OSMO_BRANCH soapy-osmo-0.2.1)
 set(SOAPY_RTLSDR_BRANCH soapy-rtlsdr-0.2.0)
 set(SOAPY_REMOTE_BRANCH soapy-remote-0.2.0)
+set(SOAPY_RED_PITAYA_BRANCH master)
 
 ############################################################
 ## Build SoapySDR
@@ -197,4 +199,26 @@ ExternalProject_Get_Property(SoapyUHD SOURCE_DIR)
 install(
     FILES ${SOURCE_DIR}/COPYING
     DESTINATION licenses/SoapyUHD
+)
+
+############################################################
+## Build SoapyRedPitaya
+############################################################
+message(STATUS "Configuring SoapyRedPitaya - ${SOAPY_RED_PITAYA_BRANCH}")
+ExternalProject_Add(SoapyRedPitaya
+    DEPENDS SoapySDR
+    GIT_REPOSITORY https://github.com/pothosware/SoapyRedPitaya.git
+    GIT_TAG ${SOAPY_RED_PITAYA_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapyRedPitaya SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/SoapyRedPitaya
 )
