@@ -62,6 +62,7 @@ ExternalProject_Add(GNURadio
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_pfb_clock_sync_fff.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_filter_truncation.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_portaudio_add_io_h.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_udp_source_linger.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
