@@ -15,7 +15,7 @@
 
 set(POTHOS_AUDIO_BRANCH pothos-audio-0.1.2)
 set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.3.0)
-set(POTHOS_COMMS_BRANCH master)
+set(POTHOS_COMMS_BRANCH pothos-comms-0.1.1)
 set(POTHOS_GUI_BRANCH pothos-gui-0.3.0)
 set(POTHOS_PLOTTERS_BRANCH pothos-plotters-0.1.0)
 set(POTHOS_PYTHON_BRANCH pothos-python-0.1.2)
