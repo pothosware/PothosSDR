@@ -11,6 +11,7 @@
 ## * SoapyRTLSDR
 ## * SoapyRemote
 ## * SoapyRedPitaya
+## * SoapyAudio
 ############################################################
 
 set(SOAPY_SDR_BRANCH soapy-sdr-0.4.0)
@@ -21,6 +22,7 @@ set(SOAPY_OSMO_BRANCH soapy-osmo-0.2.2)
 set(SOAPY_RTLSDR_BRANCH soapy-rtlsdr-0.2.0)
 set(SOAPY_REMOTE_BRANCH soapy-remote-0.2.0)
 set(SOAPY_RED_PITAYA_BRANCH master)
+set(SOAPY_AUDIO_BRANCH master)
 
 ############################################################
 ## Build SoapySDR
@@ -221,4 +223,26 @@ ExternalProject_Get_Property(SoapyRedPitaya SOURCE_DIR)
 install(
     FILES ${SOURCE_DIR}/COPYING
     DESTINATION licenses/SoapyRedPitaya
+)
+
+############################################################
+## Build SoapyAudio
+############################################################
+message(STATUS "Configuring SoapyAudio - ${SOAPY_AUDIO_BRANCH}")
+ExternalProject_Add(SoapyAudio
+    DEPENDS SoapySDR
+    GIT_REPOSITORY https://github.com/pothosware/SoapyAudio.git
+    GIT_TAG ${SOAPY_AUDIO_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapyAudio SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE.txt
+    DESTINATION licenses/SoapyAudio
 )
