@@ -47,6 +47,7 @@ ExternalProject_Add(Spuce
     GIT_TAG ${SPUCE_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/spuce_vc11_fixes.diff
+		${PROJECT_SOURCE_DIR}/patches/spuce_fix_msvc14.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
