@@ -5,7 +5,7 @@ Compilation Instructions of GNURadio and PothosSDR using Visual Studio 2015 Comm
 https://www.visualstudio.com/de-de/products/visual-studio-community-vs.aspx
 Select Custom Install, then check C++ under Development Tools
 
-2. Download and install Python 2.7 to C:\python27 and Python 3.4 to C:\python34
+2. Download and install Python 2.7 to C:\Python27 and Python 3.4 to C:\Python34
 https://www.python.org/downloads/
 
 3. Download and install QT 5.6.0
@@ -14,23 +14,20 @@ http://download.qt.io/development_releases/qt/5.6/5.6.0-beta/qt-opensource-windo
 4. Extract prebuilt.zip package (boost,portaudio,etc.) to C:\local
 
 5. Preinstall python modules needed
-set PATH=%PATH%;c:\python27
+set PATH=%PATH%;c:\Python27;c:\Python27\Scripts
 python Scripts\GNURadioHelper.py
+pip install mako
+pip install Cheetah
 
 6. Install Git for Windows and CMake for Windows
 https://git-scm.com/download/win
 https://cmake.org/files/v3.4/cmake-3.4.1-win32-x86.exe
 
-7. Install Mako and Cheetah python libraries
-set PATH=%PATH$;c:\python27\Scripts
-pip install mako
-pip install Cheetah
-
-8. Install doxygen
+7. Install doxygen
 http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.11-setup.exe
 
-9. Compile PothosSDR
-set PATH=%PATH%;"c:\Program Files\Git\bin";"C:\Program Files (x86)\CMake\bin";"C:\Program Files\doxygen\bin"
+8. Compile PothosSDR
+set PATH=c:\Python34;%PATH%;"c:\Program Files\Git\bin";"C:\Program Files (x86)\CMake\bin";"C:\Program Files\doxygen\bin"
 mkdir build
 cd build
 cmake ../ -G "Visual Studio 14 2015 Win64" -DCMAKE_INSTALL_PREFIX=C:/PothosSDR -DCMAKE_BUILD_TYPE=RelWithDebInfo
