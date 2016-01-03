@@ -13,7 +13,7 @@ set(GNURADIO_BRANCH v3.7.8.1)
 set(GROSMOSDR_BRANCH master)
 
 #Use Python27 for Cheetah templates support
-set(PYTHON2_EXECUTABLE c:/python27/python.exe)
+set(PYTHON2_EXECUTABLE c:/Python27/python.exe)
 
 ############################################################
 ## Build Volk
