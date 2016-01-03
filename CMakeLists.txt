@@ -32,7 +32,7 @@ add_compile_options(/MP) #multi-core build
 ########################################################################
 # Install helper scripts
 ########################################################################
-set(GIT_PATCH_HELPER c:/python34/python.exe ${PROJECT_SOURCE_DIR}/Scripts/GitPatchHelper.py)
+set(GIT_PATCH_HELPER C:/python34/python.exe ${PROJECT_SOURCE_DIR}/Scripts/GitPatchHelper.py)
 
 install(DIRECTORY Scripts DESTINATION ".")
 install(DIRECTORY patches DESTINATION ".")
