@@ -14,7 +14,7 @@ set(POCO_BRANCH poco-1.6.2)
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH master)
 set(POTHOS_SERIALIZATION_BRANCH pothos-serialization-0.2.0)
-set(POTHOS_BRANCH master)
+set(POTHOS_BRANCH pothos-0.3.1)
 
 ############################################################
 ## Build Poco

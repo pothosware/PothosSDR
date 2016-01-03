@@ -36,10 +36,10 @@ ExternalProject_Add(SoapySDR
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DSOAPY_SDR_EXTVER=${EXTRA_VERSION_INFO}
-        -DPYTHON_EXECUTABLE=c:/python27/python.exe
-		-DPYTHON_LIBRARY=c:/python27/libs/python27.lib
-        -DPYTHON3_EXECUTABLE=c:/python34/python.exe
-        -DPYTHON3_LIBRARY=c:/python34/libs/python34.lib
+        -DPYTHON_EXECUTABLE=c:/Python27/python.exe
+		-DPYTHON_LIBRARY=c:/Python27/libs/python27.lib
+        -DPYTHON3_EXECUTABLE=c:/Python34/python.exe
+        -DPYTHON3_LIBRARY=c:/Python34/libs/python34.lib
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DSWIG_DIR=${SWIG_DIR}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
