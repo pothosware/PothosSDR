@@ -26,7 +26,10 @@ set PATH=%PATH$;c:\python27\Scripts
 pip install mako
 pip install Cheetah
 
-8. Compile PothosSDR
+8. Install doxygen
+http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.11-setup.exe
+
+9. Compile PothosSDR
 set PATH=%PATH%;"c:\Program Files\Git\bin";"C:\Program Files (x86)\CMake\bin"
 mkdir build
 cd build
