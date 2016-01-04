@@ -55,3 +55,5 @@ cmake ../ -G "Visual Studio 11 2012 Win64" ^
     -DCMAKE_BUILD_TYPE=RelWithDebInfo
 rebuild_all.bat
 ```
+
+For full compilation instructions, see README.build.
