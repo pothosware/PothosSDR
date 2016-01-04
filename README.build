@@ -28,7 +28,7 @@ http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.11-setup.exe
 http://mirrors.ctan.org/systems/win32/miktex/setup/basic-miktex-2.9.5823.exe
 
 8. Compile PothosSDR
-set PATH=c:\Python34;%PATH%;"c:\Program Files\Git\bin";"C:\Program Files (x86)\CMake\bin";"C:\Program Files\doxygen\bin"
+set PATH=c:\Python27;%PATH%;"c:\Program Files\Git\bin";"C:\Program Files (x86)\CMake\bin";"C:\Program Files\doxygen\bin"
 mkdir build
 cd build
 cmake ../ -G "Visual Studio 14 2015 Win64" -DCMAKE_INSTALL_PREFIX=C:/PothosSDR -DCMAKE_BUILD_TYPE=RelWithDebInfo
