@@ -68,7 +68,7 @@ install(FILES
 ############################################################
 ## Pthreads (prebuilt)
 ############################################################
-set(THREADS_PTHREADS_ROOT C:/pthreads)
+set(THREADS_PTHREADS_ROOT C:/local/pthreads-w32-2.9.1)
 set(THREADS_PTHREADS_INCLUDE_DIR ${THREADS_PTHREADS_ROOT}/include)
 set(THREADS_PTHREADS_WIN32_LIBRARY ${THREADS_PTHREADS_ROOT}/lib/x64/pthreadVC2.lib)
 
@@ -85,7 +85,7 @@ install(FILES
 ############################################################
 ## PortAudio dependency (prebuilt)
 ############################################################
-set(PORTAUDIO_ROOT C:/portaudio-r1891-build)
+set(PORTAUDIO_ROOT C:/local/portaudio-r1891-build)
 set(PORTAUDIO_INCLUDE_DIR ${PORTAUDIO_ROOT}/include)
 set(PORTAUDIO_LIBRARY ${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.lib)
 
@@ -96,6 +96,10 @@ install(FILES "${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.dll" DESTINATION 
 ############################################################
 ## Qt5 (prebuilt)
 ############################################################
+if (MSVC14)
+    set(QT5_DLL_ROOT C:/Qt/Qt5.6.0/5.6/msvc2015_64)
+endif ()
+
 if (MSVC12)
     set(QT5_DLL_ROOT C:/Qt/Qt5.5.1/5.5/msvc2013_64)
 endif ()
@@ -127,7 +131,7 @@ install(FILES "${QT5_DLL_ROOT}/plugins/platforms/qwindows.dll" DESTINATION bin/p
 ############################################################
 ## LibUSB dependency (prebuilt)
 ############################################################
-set(LIBUSB_ROOT C:/libusb-1.0.20)
+set(LIBUSB_ROOT C:/local/libusb-1.0.20)
 set(LIBUSB_INCLUDE_DIR ${LIBUSB_ROOT}/include/libusb-1.0)
 set(LIBUSB_LIBRARIES ${LIBUSB_ROOT}/MS64/dll/libusb-1.0.lib)
 
@@ -138,7 +142,7 @@ install(FILES "${LIBUSB_ROOT}/MS64/dll/libusb-1.0.dll" DESTINATION bin)
 ############################################################
 ## SWIG dependency (prebuilt)
 ############################################################
-set(SWIG_ROOT C:/swigwin-3.0.7)
+set(SWIG_ROOT C:/local/swigwin-3.0.8)
 set(SWIG_EXECUTABLE ${SWIG_ROOT}/swig.exe)
 set(SWIG_DIR ${SWIG_ROOT}/Lib)
 
@@ -147,7 +151,7 @@ message(STATUS "SWIG_ROOT: ${SWIG_ROOT}")
 ############################################################
 ## FFTW (prebuilt)
 ############################################################
-set(FFTW3F_ROOT C:/fftw-3.3.4-dll64)
+set(FFTW3F_ROOT C:/local/fftw-3.3.4-dll64)
 set(FFTW3F_INCLUDE_DIRS ${FFTW3F_ROOT})
 set(FFTW3F_LIBRARIES ${FFTW3F_ROOT}/libfftw3f-3.lib)
 

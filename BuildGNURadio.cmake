@@ -26,6 +26,7 @@ ExternalProject_Add(volk
         ${PROJECT_SOURCE_DIR}/patches/volk_cpuid_count_for_msvc.diff
         ${PROJECT_SOURCE_DIR}/patches/volk_config_log2_vc11.diff
         ${PROJECT_SOURCE_DIR}/patches/volk_skip_profile_app_vc11.diff
+		${PROJECT_SOURCE_DIR}/patches/volk_fix_msvc14.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
@@ -63,6 +64,7 @@ ExternalProject_Add(GNURadio
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_filter_truncation.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_portaudio_add_io_h.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_udp_source_linger.diff
+		${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_msvc14.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
