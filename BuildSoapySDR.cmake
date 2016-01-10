@@ -15,7 +15,7 @@
 ############################################################
 
 set(SOAPY_SDR_BRANCH soapy-sdr-0.4.0)
-set(SOAPY_BLADERF_BRANCH soapy-bladerf-0.3.0)
+set(SOAPY_BLADERF_BRANCH master)
 set(SOAPY_HACKRF_BRANCH soapy-hackrf-0.2.0)
 set(SOAPY_UHD_BRANCH soapy-uhd-0.3.0)
 set(SOAPY_OSMO_BRANCH soapy-osmo-0.2.2)
