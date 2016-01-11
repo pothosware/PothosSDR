@@ -20,3 +20,4 @@
 | VOLK          | volk_cpuid_count_for_msvc.diff       | https://github.com/pothosware/gnuradio/issues/17      |
 | VOLK          | volk_skip_profile_app_vc11.diff      | https://github.com/pothosware/gnuradio/issues/16      |
 | VOLK          | volk_fix_msvc14.diff                 | Adds MSVC14 version string to CMake build             |
+| PothosComms   | pothos_comms_vc11_c89_atan.diff      | Patch fxpt_atan2.c for VC11 C89 compiler              |

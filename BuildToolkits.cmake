@@ -85,6 +85,8 @@ ExternalProject_Add(PothosComms
     DEPENDS Pothos Spuce
     GIT_REPOSITORY https://github.com/pothosware/pothos-comms.git
     GIT_TAG ${POTHOS_COMMS_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/pothos_comms_vc11_c89_atan.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
