@@ -79,3 +79,4 @@ index 2530874..aa0211e 100644
  namespace spuce {
  
  inline std::complex<float_type> expj(float_type x) { return (std::complex<float_type>(std::cos(x), std::sin(x))); }
+ 

@@ -11,9 +11,13 @@
 | GNURadio      | gnuradio_fix_use_swig.diff           | http://gnuradio.org/redmine/issues/799                |
 | GNURadio      | gnuradio_portaudio_add_io_h.diff     | https://github.com/pothosware/gnuradio/issues/21      |
 | GNURadio      | gnuradio_udp_source_linger.diff      | https://github.com/pothosware/gnuradio/issues/23      |
+| GNURadio      | gnuradio_fix_msvc14.diff             | Adds MSVC14 version string to CMake build             |
+| GNURadio      | gnuradio_fix_infinity_redefined.diff | Fix redundant INFINITY define from msvc/config.h      |
 | HackRF        | hackrf_fix_compat_c89_vc11.diff      | https://github.com/mossmann/hackrf/issues/203         |
+| BladeRF       | bladerf_msvc14_fix.diff              | snprintf/vsnprintf available in MSVC2015              |
 | Spuce         | spuce_vc11_fixes.diff                |                                                       |
 | UHD           | uhd_fix_gain_group_floor_round.diff  | https://github.com/EttusResearch/uhd/issues/31        |
 | VOLK          | volk_config_log2_vc11.diff           | https://github.com/pothosware/gnuradio/issues/15      |
 | VOLK          | volk_cpuid_count_for_msvc.diff       | https://github.com/pothosware/gnuradio/issues/17      |
 | VOLK          | volk_skip_profile_app_vc11.diff      | https://github.com/pothosware/gnuradio/issues/16      |
+| VOLK          | volk_fix_msvc14.diff                 | Adds MSVC14 version string to CMake build             |
