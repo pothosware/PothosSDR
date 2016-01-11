@@ -16,7 +16,7 @@
 set(OSMO_BRANCH master)
 set(MIRISDR_BRANCH master)
 set(RTL_BRANCH master)
-set(BLADERF_BRANCH 2016.01-rc1)
+set(BLADERF_BRANCH a459c212096e1a3a4f3f101b09d8acb49163d217) #2016.01-rc1+msvc2015fix
 set(HACKRF_BRANCH v2015.07.2)
 set(UHD_BRANCH release_003_009_002)
 set(UMTRX_BRANCH 1.0.5)
@@ -97,12 +97,18 @@ install(
 ############################################################
 ## Build BladeRF
 ############################################################
+if (MSVC11)
+    set(BLADE_RF_CONFIG_EXTRA
+        && ${CMAKE_COMMAND} -E copy
+        <SOURCE_DIR>/host/common/include/windows/c99/stdbool.h
+        <BINARY_DIR>/common/include
+    )
+endif (MSVC11)
+
 message(STATUS "Configuring bladeRF - ${BLADERF_BRANCH}")
 ExternalProject_Add(bladeRF
     GIT_REPOSITORY https://github.com/Nuand/bladeRF.git
     GIT_TAG ${BLADERF_BRANCH}
-	PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/bladerf_msvc14_fix.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
@@ -115,6 +121,7 @@ ExternalProject_Add(bladeRF
         -DLIBPTHREADSWIN32_HEADER_FILE=${THREADS_PTHREADS_INCLUDE_DIR}/pthread.h
         -DLIBPTHREADSWIN32_PATH=${THREADS_PTHREADS_ROOT}
         -DVERSION_INFO_OVERRIDE=${EXTRA_VERSION_INFO}
+        ${BLADE_RF_CONFIG_EXTRA}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
         #post install: move dll from lib into the runtime path directory
