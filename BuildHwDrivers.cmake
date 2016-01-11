@@ -101,7 +101,7 @@ if (MSVC11)
     set(BLADE_RF_CONFIG_EXTRA
         && ${CMAKE_COMMAND} -E copy
         <SOURCE_DIR>/host/common/include/windows/c99/stdbool.h
-        <BINARY_DIR>/common/include
+        <SOURCE_DIR>/host/libraries/libbladeRF/include/
     )
 endif (MSVC11)
 

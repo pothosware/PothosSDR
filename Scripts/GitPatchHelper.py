@@ -33,11 +33,12 @@ def getListOfPatchesFiles(patch):
                 raise Exception('%s referenced by %s does not exist'%(filePath, patch))
             yield filePath
 
-def applyPatch(patch, changedFiles):
+def revertFiles(changedFiles):
     p = subprocess.Popen(args=[GIT_EXECUTABLE, "checkout"] + list(changedFiles), shell=True)
     if p.wait() != 0:
         raise Exception('Failed to revert state: %s'%patch)
 
+def applyPatch(patch):
     p = subprocess.Popen(args=[GIT_EXECUTABLE, "apply", "--ignore-whitespace", patch], shell=True)
     if p.wait() != 0:
         raise Exception('Failed to apply patch: %s'%patch)
@@ -54,6 +55,21 @@ def main():
     print("Parsing git status for change files:")
     changedFiles = set(getListOfChangedFiles())
     for filePath in changedFiles: print("   * %s"%filePath)
+    if not changedFiles: print("   None found")
+
+    if changedFiles:
+        filesToRevert = list()
+        for patch in args:
+            patchedFiles = set(getListOfPatchesFiles(patch))
+            if not changedFiles.issuperset(patchedFiles):
+                filesToRevert += patchedFiles
+
+        filesToRevert = set(filesToRevert)
+        if filesToRevert:
+            print("")
+            print("Reverting files:")
+            for fileToRevert in filesToRevert: print("   * %s"%fileToRevert)
+        revertFiles(filesToRevert)
 
     for patch in args:
         print("")
@@ -65,7 +81,7 @@ def main():
             continue
         else:
             print("    ---- Applying patch now...")
-            applyPatch(patch, patchedFiles)
+            applyPatch(patch)
             print("    ---- Done!")
 
 if __name__ == '__main__': main()
