@@ -26,7 +26,7 @@ ExternalProject_Add(volk
         ${PROJECT_SOURCE_DIR}/patches/volk_cpuid_count_for_msvc.diff
         ${PROJECT_SOURCE_DIR}/patches/volk_config_log2_vc11.diff
         ${PROJECT_SOURCE_DIR}/patches/volk_skip_profile_app_vc11.diff
-		${PROJECT_SOURCE_DIR}/patches/volk_fix_msvc14.diff
+        ${PROJECT_SOURCE_DIR}/patches/volk_fix_msvc14.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
@@ -64,7 +64,8 @@ ExternalProject_Add(GNURadio
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_filter_truncation.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_portaudio_add_io_h.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_udp_source_linger.diff
-		${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_msvc14.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_infinity_redefined.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_msvc14.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
@@ -98,7 +99,6 @@ install(
 ## Build GrOsmoSDR
 ##
 ## * ENABLE_RFSPACE=OFF build errors
-## * ENABLE_REDPITAYA=OFF build errors
 ############################################################
 message(STATUS "Configuring GrOsmoSDR - ${GROSMOSDR_BRANCH}")
 ExternalProject_Add(GrOsmoSDR
@@ -119,7 +119,7 @@ ExternalProject_Add(GrOsmoSDR
         -DSWIG_DIR=${SWIG_DIR}
         -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
         -DENABLE_RFSPACE=OFF
-        -DENABLE_REDPITAYA=OFF
+        -DENABLE_REDPITAYA=ON
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
