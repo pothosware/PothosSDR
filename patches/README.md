@@ -1,6 +1,6 @@
 # Manifest for tracking patches for PothosSDR
 
-| Project       | Patch                                | Tracker                                               |
+| Project       | Patch                                | Tracker/Comments                                      |
 | ------------- | ------------------------------------ | ----------------------------------------------------- |
 | GNURadio      | gnuradio_dtv_use_alloca.diff         | https://github.com/pothosware/gnuradio/issues/20      |
 | GNURadio      | gnuradio_dtv_vc11_log2.diff          | https://github.com/pothosware/gnuradio/issues/19      |
@@ -15,7 +15,7 @@
 | GNURadio      | gnuradio_fix_infinity_redefined.diff | Fix redundant INFINITY define from msvc/config.h      |
 | HackRF        | hackrf_fix_compat_c89_vc11.diff      | https://github.com/mossmann/hackrf/issues/203         |
 | BladeRF       | bladerf_msvc14_fix.diff              | snprintf/vsnprintf available in MSVC2015              |
-| Spuce         | spuce_vc11_fixes.diff                |                                                       |
+| Spuce         | spuce_vc11_fixes.diff                | Provide acosh() and list initialization workaround    |
 | UHD           | uhd_fix_gain_group_floor_round.diff  | https://github.com/EttusResearch/uhd/issues/31        |
 | VOLK          | volk_config_log2_vc11.diff           | https://github.com/pothosware/gnuradio/issues/15      |
 | VOLK          | volk_cpuid_count_for_msvc.diff       | https://github.com/pothosware/gnuradio/issues/17      |
