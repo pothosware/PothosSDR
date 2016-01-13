@@ -115,7 +115,13 @@ def handle_import_gr():
     binDir = os.path.dirname(find_library("gnuradio-runtime.dll"))
     path = os.path.join(os.path.dirname(binDir), 'lib/site-packages')
     print("Error: GNURadio modules missing from PYTHONPATH")
-    print("  Add %s to the PYTHONPATH"%os.path.normpath(path))
+
+    print("")
+    print("Current search path:")
+    for searchPath in sys.path: print("  * %s"%searchPath)
+    print("")
+
+    print("Please add %s to the PYTHONPATH"%os.path.normpath(path))
     return -1
 
 ########################################################################
