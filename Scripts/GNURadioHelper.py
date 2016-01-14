@@ -160,7 +160,7 @@ def check_import_gr():
 
 def handle_import_gr():
     binDir = os.path.dirname(find_library("gnuradio-runtime.dll"))
-    path = os.path.join(os.path.dirname(binDir), 'lib/site-packages')
+    path = os.path.join(os.path.dirname(binDir), 'lib', 'site-packages')
     path = os.path.normpath(path)
     print("Error: GNURadio modules missing from PYTHONPATH")
 
@@ -183,7 +183,30 @@ def handle_import_gr():
     print("")
     print("The PYTHONPATH for the current user has been modified")
     print("Open a new command window and re-run this script...")
+    return -1
 
+def check_grc_blocks_path():
+    GRC_BLOCKS_PATH = os.environ.get('GRC_BLOCKS_PATH', '')
+    if not GRC_BLOCKS_PATH:
+        raise Exception("GRC_BLOCKS_PATH is not set")
+    if not os.path.exists(GRC_BLOCKS_PATH):
+        raise Exception("GRC_BLOCKS_PATH '%s' does not exist"%GRC_BLOCKS_PATH)
+    if not os.path.exists(os.path.join(GRC_BLOCKS_PATH, 'options.xml')):
+        raise Exception("GRC_BLOCKS_PATH '%s' does not contain options.xml"%GRC_BLOCKS_PATH)
+    return GRC_BLOCKS_PATH
+
+def handle_grc_blocks_path():
+    binDir = os.path.dirname(find_library("gnuradio-runtime.dll"))
+    path = os.path.join(os.path.dirname(binDir), 'share', 'gnuradio', 'grc', 'blocks')
+    path = os.path.normpath(path)
+
+    print("Setting the GRC_BLOCKS_PATH to %s"%path)
+    e = Environment()
+    e.set('GRC_BLOCKS_PATH', path)
+
+    print("")
+    print("The GRC_BLOCKS_PATH for the current user has been modified")
+    print("Open a new command window and re-run this script...")
     return -1
 
 ########################################################################
@@ -246,6 +269,7 @@ CHECKS = [
     ("IMPORT_CHEETAH", 'import Cheetah module',   check_import_cheetah, handle_import_cheetah),
     ("IMPORT_WX",      'import wx module',        check_import_wxpython, handle_import_wxpython),
     ("IMPORT_OPENGL",  'import OpenGL module',    check_import_pyopengl, handle_import_pyopengl),
+    ("GRC_BLOCKS",     'GRC blocks path set',     check_grc_blocks_path, handle_grc_blocks_path),
 ]
 
 def main():
