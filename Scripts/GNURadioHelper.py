@@ -231,12 +231,7 @@ def check_import_cheetah():
     return inspect.getfile(Cheetah)
 
 def handle_import_cheetah():
-    print("Installing cheetah templates with pip:")
-    ret = os.system("%s install cheetah"%PIP_EXE)
-    if ret != 0:
-        print("Error: pip failed to install cheetah")
-        return -1
-    print("  Done!")
+    pip_install_url('http://downloads.myriadrf.org/binaries/python27_amd64/Cheetah-2.4.4-cp27-none-win_amd64.whl')
 
 def check_import_wxpython():
     import wx
