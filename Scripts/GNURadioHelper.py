@@ -173,7 +173,7 @@ def handle_import_gr():
     PYTHONPATH = e.get('PYTHONPATH', '')
     print("Current PYTHONPATH: '%s'"%PYTHONPATH)
     if not PYTHONPATH: PYTHONPATH = list()
-    else: PYTHONPATH = PYTHONPATH.split()
+    else: PYTHONPATH = PYTHONPATH.split(';')
 
     if path not in PYTHONPATH:
         print("Adding %s to the PYTHONPATH"%path)
