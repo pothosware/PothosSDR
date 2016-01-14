@@ -254,17 +254,24 @@ def handle_import_pyopengl():
     print("  Done!")
 
 CHECKS = [
-    ("PYVERSION",      'Python version is 2.7',   check_python_version, handle_python_version),
-    ("GTK_RUNTIME",    'locate GTK+ runtime',     check_gtk_runtime, handle_gtk_runtime),
-    ("IMPORT_GTK",     'import gtk module',       check_import_gtk, handle_import_gtk),
+    #first check gr runtime so we can locate the install based on runtime dll in PATH
     ("GR_RUNTIME",     'locate GNURadio runtime', check_gr_runtime, handle_gr_runtime),
-    ("IMPORT_GR",      'import GNURadio module',  check_import_gr, handle_import_gr),
+
+    #gtk runtime is similar check for dlls in the seatch PATH (no python required)
+    ("GTK_RUNTIME",    'locate GTK+ runtime',     check_gtk_runtime, handle_gtk_runtime),
+
+    #basic python environment and import checks and using pip to install from a URL
+    ("PYVERSION",      'Python version is 2.7',   check_python_version, handle_python_version),
+    ("IMPORT_GTK",     'import gtk module',       check_import_gtk, handle_import_gtk),
     ("IMPORT_NUMPY",   'import numpy module',     check_import_numpy, handle_import_numpy),
     ("IMPORT_LXML",    'import lxml module',      check_import_lxml, handle_import_lxml),
     ("IMPORT_CHEETAH", 'import Cheetah module',   check_import_cheetah, handle_import_cheetah),
     ("IMPORT_WX",      'import wx module',        check_import_wxpython, handle_import_wxpython),
     ("IMPORT_OPENGL",  'import OpenGL module',    check_import_pyopengl, handle_import_pyopengl),
+
+    #final checks for GNU Radio and GRC that set local environment variables
     ("GRC_BLOCKS",     'GRC blocks path set',     check_grc_blocks_path, handle_grc_blocks_path),
+    ("IMPORT_GR",      'import GNURadio module',  check_import_gr, handle_import_gr),
 ]
 
 def main():
