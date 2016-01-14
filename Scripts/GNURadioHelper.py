@@ -8,6 +8,53 @@ import tempfile
 from ctypes.util import find_library
 
 ########################################################################
+## Registry/Environment helpers
+########################################################################
+import ctypes
+from ctypes.wintypes import HWND, UINT, WPARAM, LPARAM, LPVOID
+LRESULT = LPARAM
+import os
+import sys
+try:
+    import winreg
+    unicode = str
+except ImportError:
+    import _winreg as winreg  # Python 2.x
+
+class Environment(object):
+    #path = r'SYSTEM\CurrentControlSet\Control\Session Manager\Environment'
+    #hklm = winreg.ConnectRegistry(None, winreg.HKEY_LOCAL_MACHINE)
+    path = r'Environment'
+    hklm = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+    key = winreg.OpenKey(hklm, path, 0, winreg.KEY_READ | winreg.KEY_WRITE)
+    SendMessage = ctypes.windll.user32.SendMessageW
+    SendMessage.argtypes = HWND, UINT, WPARAM, LPVOID
+    SendMessage.restype = LRESULT
+    HWND_BROADCAST = 0xFFFF
+    WM_SETTINGCHANGE = 0x1A
+    NO_DEFAULT = type('NO_DEFAULT', (object,), {})()
+
+    def get(self, name, default=NO_DEFAULT):
+        try:
+            value = winreg.QueryValueEx(self.key, name)[0]
+        except WindowsError:
+            if default is self.NO_DEFAULT:
+                raise ValueError("No such registry key", name)
+            value = default
+        return value
+
+    def set(self, name, value):
+        if value:
+            winreg.SetValueEx(self.key, name, 0, winreg.REG_EXPAND_SZ, value)
+        else:
+            winreg.DeleteValue(self.key, name)
+        self.notify()
+
+    def notify(self):
+        self.SendMessage(
+            self.HWND_BROADCAST, self.WM_SETTINGCHANGE, 0, u'Environment')
+
+########################################################################
 ## Pip helpers
 ########################################################################
 PIP_EXE = "%s"%os.path.join(os.path.dirname(sys.executable), 'Scripts', 'pip.exe')
@@ -114,6 +161,7 @@ def check_import_gr():
 def handle_import_gr():
     binDir = os.path.dirname(find_library("gnuradio-runtime.dll"))
     path = os.path.join(os.path.dirname(binDir), 'lib/site-packages')
+    path = os.path.normpath(path)
     print("Error: GNURadio modules missing from PYTHONPATH")
 
     print("")
@@ -121,7 +169,21 @@ def handle_import_gr():
     for searchPath in sys.path: print("  * %s"%searchPath)
     print("")
 
-    print("Please add %s to the PYTHONPATH"%os.path.normpath(path))
+    e = Environment()
+    PYTHONPATH = e.get('PYTHONPATH', '')
+    print("Current PYTHONPATH: '%s'"%PYTHONPATH)
+    if not PYTHONPATH: PYTHONPATH = list()
+    else: PYTHONPATH = PYTHONPATH.split()
+
+    if path not in PYTHONPATH:
+        print("Adding %s to the PYTHONPATH"%path)
+        PYTHONPATH.append(path)
+        e.set('PYTHONPATH', ';'.join(PYTHONPATH))
+
+    print("")
+    print("The PYTHONPATH for the current user has been modified")
+    print("Open a new command window and re-run this script...")
+
     return -1
 
 ########################################################################
