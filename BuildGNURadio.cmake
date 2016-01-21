@@ -66,8 +66,10 @@ ExternalProject_Add(GNURadio
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_portaudio_add_io_h.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_udp_source_linger.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_infinity_redefined.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_not_for_random.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_msvc14.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_not_for_random.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_dllr_factor.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_gr_aligned.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
