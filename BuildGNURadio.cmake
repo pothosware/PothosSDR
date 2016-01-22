@@ -66,7 +66,6 @@ ExternalProject_Add(GNURadio
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_udp_source_linger.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_msvc_math.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_msvc14.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_not_for_random.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_dllr_factor.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_gr_aligned.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_ldpc_config_h.diff

@@ -1,8 +1,20 @@
 diff --git a/cmake/msvc/config.h b/cmake/msvc/config.h
-index 43792c7..b813f38 100644
+index 43792c7..d04e8df 100644
 --- a/cmake/msvc/config.h
 +++ b/cmake/msvc/config.h
-@@ -29,10 +29,26 @@ static inline long long llrintf(float x){return (long long)(x > 0.0f ? x + 0.5f
+@@ -6,6 +6,11 @@
+ #define _MSC_CONFIG_H_
+ 
+ ////////////////////////////////////////////////////////////////////////
++// and, not, or operators
++////////////////////////////////////////////////////////////////////////
++#include <iso646.h>
++
++////////////////////////////////////////////////////////////////////////
+ // enable inline functions for C code
+ ////////////////////////////////////////////////////////////////////////
+ #ifndef __cplusplus
+@@ -29,10 +34,26 @@ static inline long long llrintf(float x){return (long long)(x > 0.0f ? x + 0.5f
  static inline double rint(double x){return (x > 0.0)? floor(x + 0.5) : ceil(x - 0.5);}
  static inline float rintf(float x){return (x > 0.0f)? floorf(x + 0.5f) : ceilf(x - 0.5f);}
  
