@@ -3,7 +3,7 @@
 | Project       | Patch                                | Tracker/Comments                                      |
 | ------------- | ------------------------------------ | ----------------------------------------------------- |
 | GNURadio      | gnuradio_dtv_use_alloca.diff         | https://github.com/pothosware/gnuradio/issues/20      |
-| GNURadio      | gnuradio_dtv_vc11_log2.diff          | https://github.com/pothosware/gnuradio/issues/19      |
+| GNURadio      | gnuradio_config_msvc_math.diff       | https://github.com/pothosware/gnuradio/issues/19      |
 | GNURadio      | gnuradio_fix_codec2_fdmdv_round.diff | https://github.com/pothosware/gnuradio/issues/11      |
 | GNURadio      | gnuradio_fix_codec2_public_defs.diff | https://github.com/pothosware/gnuradio/issues/10      |
 | GNURadio      | gnuradio_fix_filter_truncation.diff  | https://github.com/pothosware/gnuradio/issues/7       |
@@ -12,14 +12,15 @@
 | GNURadio      | gnuradio_portaudio_add_io_h.diff     | https://github.com/pothosware/gnuradio/issues/21      |
 | GNURadio      | gnuradio_udp_source_linger.diff      | https://github.com/pothosware/gnuradio/issues/23      |
 | GNURadio      | gnuradio_fix_msvc14.diff             | Adds MSVC14 version string to CMake build             |
-| GNURadio      | gnuradio_fix_infinity_redefined.diff | Fix redundant INFINITY define from msvc/config.h      |
+| GNURadio      | gnuradio_config_msvc_math.diff       | Math compat functions+constants for msvc/config.h     |
 | GNURadio      | gnuradio_not_for_random.diff         | Replace use of "not" (ciso646) with "!" operator      |
 | GNURadio      | gnuradio_fec_dllr_factor.diff        | Declare float static constantant in C++ source        |
 | GNURadio      | gnuradio_dtv_use_gr_aligned.diff     | Use the __GR_ALIGNED cross platform macro             |
+| GNURadio      | gnuradio_fec_ldpc_config_h.diff      | Include config.h to supply round() implementation     |
 | HackRF        | hackrf_fix_compat_c89_vc11.diff      | https://github.com/mossmann/hackrf/issues/203         |
 | Spuce         | spuce_vc11_fixes.diff                | Provide acosh() and list initialization workaround    |
 | UHD           | uhd_fix_gain_group_floor_round.diff  | https://github.com/EttusResearch/uhd/issues/31        |
-| VOLK          | volk_config_log2_vc11.diff           | https://github.com/pothosware/gnuradio/issues/15      |
+| VOLK          | volk_config_math_vc11.diff           | https://github.com/pothosware/gnuradio/issues/15      |
 | VOLK          | volk_cpuid_count_for_msvc.diff       | https://github.com/pothosware/gnuradio/issues/17      |
 | VOLK          | volk_skip_profile_app_vc11.diff      | https://github.com/pothosware/gnuradio/issues/16      |
 | VOLK          | volk_fix_msvc14.diff                 | Adds MSVC14 version string to CMake build             |
