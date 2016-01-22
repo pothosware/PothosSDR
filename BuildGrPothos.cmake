@@ -7,7 +7,7 @@
 ## * gr-pothos (toolkit bindings project)
 ############################################################
 
-set(GR_RUNTIME_BRANCH gr-runtime-v3.7.8.1)
+set(GR_RUNTIME_BRANCH master)
 set(GR_POTHOS_BRANCH master)
 
 ############################################################

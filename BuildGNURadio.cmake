@@ -8,8 +8,8 @@
 ## * gr-osmosdr
 ############################################################
 
-set(VOLK_BRANCH v1.1.1)
-set(GNURADIO_BRANCH v3.7.8.1)
+set(VOLK_BRANCH v1.2)
+set(GNURADIO_BRANCH v3.7.9)
 set(GROSMOSDR_BRANCH master)
 
 #Use Python27 for Cheetah templates support
@@ -24,9 +24,10 @@ ExternalProject_Add(volk
     GIT_TAG ${VOLK_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/volk_cpuid_count_for_msvc.diff
-        ${PROJECT_SOURCE_DIR}/patches/volk_config_log2_vc11.diff
+        ${PROJECT_SOURCE_DIR}/patches/volk_config_math_vc11.diff
         ${PROJECT_SOURCE_DIR}/patches/volk_skip_profile_app_vc11.diff
         ${PROJECT_SOURCE_DIR}/patches/volk_fix_msvc14.diff
+        ${PROJECT_SOURCE_DIR}/patches/volk_qa_utils_config_h.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
@@ -57,15 +58,18 @@ ExternalProject_Add(GNURadio
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_use_swig.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_alloca.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_vc11_log2.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_fdmdv_round.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_pfb_clock_sync_fff.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_filter_truncation.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_portaudio_add_io_h.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_udp_source_linger.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_infinity_redefined.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_msvc_math.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_msvc14.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_not_for_random.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_dllr_factor.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_gr_aligned.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_ldpc_config_h.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
