@@ -10,7 +10,7 @@
 ## * gr-osmosdr
 ############################################################
 
-set(ZEROMQ_BRANCH v4.0.7)
+set(ZEROMQ_BRANCH master)
 set(CPPZMQ_BRANCH master)
 set(VOLK_BRANCH v1.2)
 set(GNURADIO_BRANCH v3.7.9)
@@ -26,8 +26,6 @@ message(STATUS "Configuring ZeroMQ - ${ZEROMQ_BRANCH}")
 ExternalProject_Add(ZeroMQ
     GIT_REPOSITORY https://github.com/zeromq/zeromq4-x.git
     GIT_TAG ${ZEROMQ_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/zeromq_fix_msvc_c_linkage.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
