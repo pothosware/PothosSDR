@@ -12,10 +12,46 @@
 import os
 import subprocess
 from optparse import OptionParser
+import hashlib
+import json
 
 GIT_EXECUTABLE = 'git'
 
+STAMP_FILE = os.path.join('.git', 'GitPatchHelper.json')
+
+def hashFile(filePath):
+    """
+    Make a unique hash of the patch set
+    so we can check if it has been applied before.
+    """
+    hasher = hashlib.md5()
+    with open(filePath, 'rb') as afile:
+        buf = afile.read()
+        hasher.update(buf)
+    return hasher.hexdigest()
+
+def dumpPatchState(patches):
+    """
+    Dump a summary of the patch files in use.
+    """
+    st = dict([(os.path.basename(p), hashFile(p)) for p in patches])
+    dump = json.dumps(st, sort_keys=True, indent=4, separators=(',', ': '))
+    open(STAMP_FILE, 'w').write(dump)
+
+def didPatchChange(patch):
+    """
+    Did this patch change since it was last applied?
+    """
+    try:
+        dump = open(STAMP_FILE, 'r').read()
+        st = json.loads(dump)
+        return st[os.path.basename(patch)] != hashFile(patch)
+    except: return True
+
 def getListOfChangedFiles():
+    """
+    Determine the source files that have modifications (git status)
+    """
     p = subprocess.Popen(args=[GIT_EXECUTABLE, "status", "--short"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdoutdata, stderrdata = p.communicate()
     for line in stdoutdata.splitlines():
@@ -25,6 +61,9 @@ def getListOfChangedFiles():
             yield filePath
 
 def getListOfPatchesFiles(patch):
+    """
+    Get a list of files affected by this patch
+    """
     for line in open(patch).readlines():
         if line.startswith('diff --git'):
             args = line.split()
@@ -34,11 +73,17 @@ def getListOfPatchesFiles(patch):
             yield filePath
 
 def revertFiles(changedFiles):
+    """
+    Revert changes to a list of files
+    """
     p = subprocess.Popen(args=[GIT_EXECUTABLE, "checkout"] + list(changedFiles), shell=True)
     if p.wait() != 0:
         raise Exception('Failed to revert state: %s'%patch)
 
 def applyPatch(patch):
+    """
+    Apply the specified patch
+    """
     p = subprocess.Popen(args=[GIT_EXECUTABLE, "apply", "--ignore-whitespace", patch], shell=True)
     if p.wait() != 0:
         raise Exception('Failed to apply patch: %s'%patch)
@@ -61,7 +106,8 @@ def main():
         filesToRevert = list()
         for patch in args:
             patchedFiles = set(getListOfPatchesFiles(patch))
-            if not changedFiles.issuperset(patchedFiles):
+            probablyApplied = changedFiles.issuperset(patchedFiles)
+            if not probablyApplied or didPatchChange(patch):
                 filesToRevert += patchedFiles
 
         filesToRevert = set(filesToRevert)
@@ -70,6 +116,7 @@ def main():
             print("Reverting files:")
             for fileToRevert in filesToRevert: print("   * %s"%fileToRevert)
         revertFiles(filesToRevert)
+        changedFiles -= filesToRevert
 
     for patch in args:
         print("")
@@ -83,5 +130,7 @@ def main():
             print("    ---- Applying patch now...")
             applyPatch(patch)
             print("    ---- Done!")
+
+    dumpPatchState(args)
 
 if __name__ == '__main__': main()
