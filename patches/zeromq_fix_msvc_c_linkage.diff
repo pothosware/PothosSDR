@@ -1,0 +1,50 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 1d720c5..c7418d1 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -501,7 +501,7 @@ if(MSVC)
+     RELEASE_POSTFIX "${_zmq_COMPILER}-mt-s-${ZMQ_VERSION_MAJOR}_${ZMQ_VERSION_MINOR}_${ZMQ_VERSION_PATCH}"
+     DEBUG_POSTFIX "${_zmq_COMPILER}-mt-sgd-${ZMQ_VERSION_MAJOR}_${ZMQ_VERSION_MINOR}_${ZMQ_VERSION_PATCH}"
+     COMPILE_FLAGS "/D ZMQ_STATIC"
+-    OUTPUT_NAME "libzmq")
++    OUTPUT_NAME "libzmq-static")
+ else()
+     add_library(libzmq SHARED ${sources} ${public_headers} ${html-docs} ${readme-docs} ${zmq-pkgconfig})
+     if(ZMQ_BUILD_FRAMEWORK)
+diff --git a/src/zmq.cpp b/src/zmq.cpp
+index daf4f08..e453f42 100644
+--- a/src/zmq.cpp
++++ b/src/zmq.cpp
+@@ -92,6 +92,7 @@ struct iovec {
+ typedef char check_msg_t_size
+     [sizeof (zmq::msg_t) ==  sizeof (zmq_msg_t) ? 1 : -1];
+ 
++extern "C" {
+ 
+ void zmq_version (int *major_, int *minor_, int *patch_)
+ {
+@@ -1049,3 +1050,5 @@ int zmq_device (int /* type */, void *frontend_, void *backend_)
+         (zmq::socket_base_t*) frontend_,
+         (zmq::socket_base_t*) backend_, NULL);
+ }
++
++} //extern "C"
+\ No newline at end of file
+diff --git a/src/zmq_utils.cpp b/src/zmq_utils.cpp
+index 148ef95..548471e 100644
+--- a/src/zmq_utils.cpp
++++ b/src/zmq_utils.cpp
+@@ -34,6 +34,7 @@
+ #   include <sodium.h>
+ #endif
+ 
++extern "C" {
+ 
+ void zmq_sleep (int seconds_)
+ {
+@@ -198,3 +199,5 @@ int zmq_curve_keypair (char *z85_public_key, char *z85_secret_key)
+     return -1;
+ #endif
+ }
++
++} //extern "C"

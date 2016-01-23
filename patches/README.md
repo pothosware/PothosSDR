@@ -25,3 +25,4 @@
 | VOLK          | volk_fix_msvc14.diff                 | Adds MSVC14 version string to CMake build             |
 | VOLK          | patches/volk_qa_utils_config_h.diff  | https://github.com/pothosware/gnuradio/issues/15      |
 | PothosComms   | pothos_comms_vc11_c89_atan.diff      | Patch fxpt_atan2.c for VC11 C89 compiler              |
+| ZeroMQ        | zeromq_fix_msvc_c_linkage.diff       | C linkage on zmq functions + fix static lib name      |
