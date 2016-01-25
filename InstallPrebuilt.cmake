@@ -123,6 +123,7 @@ install(FILES
     "${QT5_DLL_ROOT}/bin/Qt5OpenGL.dll"
     "${QT5_DLL_ROOT}/bin/Qt5Svg.dll"
     "${QT5_DLL_ROOT}/bin/Qt5PrintSupport.dll"
+    "${QT5_DLL_ROOT}/bin/Qt5Network.dll"
     DESTINATION bin
 )
 

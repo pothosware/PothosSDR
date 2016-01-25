@@ -9,6 +9,7 @@
 ## * gnuradio
 ## * gr-osmosdr
 ## * gr-rds
+## * gqrx
 ############################################################
 
 set(ZEROMQ_BRANCH master)
@@ -17,6 +18,7 @@ set(VOLK_BRANCH v1.2)
 set(GNURADIO_BRANCH v3.7.9)
 set(GROSMOSDR_BRANCH master)
 set(GRRDS_BRANCH master)
+set(GQRX_BRANCH v2.5.2)
 
 #Use Python27 for Cheetah templates support
 set(PYTHON2_EXECUTABLE C:/Python27/python.exe)
@@ -215,4 +217,32 @@ ExternalProject_Get_Property(GrRDS SOURCE_DIR)
 install(
     FILES ${SOURCE_DIR}/COPYING
     DESTINATION licenses/GrRDS
+)
+
+############################################################
+## Build GQRX
+############################################################
+message(STATUS "Configuring GQRX - ${GQRX_BRANCH}")
+ExternalProject_Add(GQRX
+    DEPENDS GNURadio GrOsmoSDR
+    GIT_REPOSITORY https://github.com/csete/gqrx.git
+    GIT_TAG ${GQRX_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/gqrx_msvc_fixes.diff
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        -DCMAKE_PREFIX_PATH=${QT5_DLL_ROOT}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(GQRX SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/GQRX
 )
