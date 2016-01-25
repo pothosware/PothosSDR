@@ -1,0 +1,15 @@
+diff --git a/grc/python/Generator.py b/grc/python/Generator.py
+index d688beb..e959d44 100644
+--- a/grc/python/Generator.py
++++ b/grc/python/Generator.py
+@@ -130,8 +130,8 @@ class TopBlockGenerator(object):
+             return ' '.join(repr(arg) if ' ' in arg else arg for arg in args)
+ 
+         run_command = self._flow_graph.get_option('run_command')
+-        cmds = shlex.split(run_command.format(python=sys.executable,
+-                                              filename=self.get_file_path()))
++        cmds = shlex.split(run_command.format(python=sys.executable.replace("\\","/"),
++                                              filename=self.get_file_path().replace("\\","/")))
+ 
+         # when in no gui mode on linux, use a graphical terminal (looks nice)
+         xterm_executable = find_executable(XTERM_EXECUTABLE)

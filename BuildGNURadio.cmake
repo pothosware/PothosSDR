@@ -121,6 +121,7 @@ ExternalProject_Add(GNURadio
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_dllr_factor.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_gr_aligned.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_ldpc_config_h.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_grc_windows_paths.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
