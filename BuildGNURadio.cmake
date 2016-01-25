@@ -8,6 +8,7 @@
 ## * volk
 ## * gnuradio
 ## * gr-osmosdr
+## * gr-rds
 ############################################################
 
 set(ZEROMQ_BRANCH master)
@@ -15,6 +16,7 @@ set(CPPZMQ_BRANCH master)
 set(VOLK_BRANCH v1.2)
 set(GNURADIO_BRANCH v3.7.9)
 set(GROSMOSDR_BRANCH master)
+set(GRRDS_BRANCH master)
 
 #Use Python27 for Cheetah templates support
 set(PYTHON2_EXECUTABLE C:/Python27/python.exe)
@@ -181,4 +183,35 @@ ExternalProject_Get_Property(GrOsmoSDR SOURCE_DIR)
 install(
     FILES ${SOURCE_DIR}/COPYING
     DESTINATION licenses/GrOsmoSDR
+)
+
+############################################################
+## Build gr-rds
+############################################################
+message(STATUS "Configuring GrRDS - ${GRRDS_BRANCH}")
+ExternalProject_Add(GrRDS
+    DEPENDS GNURadio
+    GIT_REPOSITORY https://github.com/bastibl/gr-rds.git
+    GIT_TAG ${GRRDS_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/gr_rds_msvc_fixes.diff
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        -DBOOST_ALL_DYN_LINK=TRUE
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DSWIG_DIR=${SWIG_DIR}
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(GrRDS SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/GrRDS
 )
