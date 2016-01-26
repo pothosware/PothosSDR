@@ -16,7 +16,7 @@
 | GNURadio      | gnuradio_fec_dllr_factor.diff        | https://github.com/pothosware/gnuradio/issues/26      |
 | GNURadio      | gnuradio_dtv_use_gr_aligned.diff     | https://github.com/pothosware/gnuradio/issues/25      |
 | GNURadio      | gnuradio_fec_ldpc_config_h.diff      | https://github.com/pothosware/gnuradio/issues/24      |
-| GNURadio      | gnuradio_grc_windows_paths.diff      | Fix windows paths in GRC, shlex.split() issue         |
+| GNURadio      | gnuradio_grc_windows_paths.diff      | https://github.com/pothosware/gnuradio/issues/27      |
 | HackRF        | hackrf_fix_compat_c89_vc11.diff      | https://github.com/mossmann/hackrf/issues/203         |
 | Spuce         | spuce_vc11_fixes.diff                | Provide acosh() and list initialization workaround    |
 | UHD           | uhd_fix_gain_group_floor_round.diff  | https://github.com/EttusResearch/uhd/issues/31        |
