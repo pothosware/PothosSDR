@@ -18,7 +18,7 @@ set(VOLK_BRANCH v1.2)
 set(GNURADIO_BRANCH v3.7.9)
 set(GROSMOSDR_BRANCH master)
 set(GRRDS_BRANCH master)
-set(GQRX_BRANCH v2.5.2)
+set(GQRX_BRANCH master)
 
 #Use Python27 for Cheetah templates support
 set(PYTHON2_EXECUTABLE C:/Python27/python.exe)
@@ -228,8 +228,6 @@ ExternalProject_Add(GQRX
     GIT_REPOSITORY https://github.com/csete/gqrx.git
     GIT_TAG ${GQRX_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/gqrx_msvc_fixes.diff
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
