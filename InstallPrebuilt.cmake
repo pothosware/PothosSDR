@@ -128,6 +128,7 @@ install(FILES
 )
 
 install(FILES "${QT5_DLL_ROOT}/plugins/platforms/qwindows.dll" DESTINATION bin/platforms)
+install(FILES "${QT5_DLL_ROOT}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
 
 ############################################################
 ## LibUSB dependency (prebuilt)
