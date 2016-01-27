@@ -17,7 +17,7 @@ set(OSMO_BRANCH master)
 set(MIRISDR_BRANCH master)
 set(RTL_BRANCH master)
 set(BLADERF_BRANCH a459c212096e1a3a4f3f101b09d8acb49163d217) #2016.01-rc1+msvc2015fix
-set(HACKRF_BRANCH v2015.07.2)
+set(HACKRF_BRANCH master)
 set(UHD_BRANCH release_003_009_002)
 set(UMTRX_BRANCH 1.0.8)
 set(AIRSPY_BRANCH 5d2940305b47f92d961ab7d5a7e713c17652e923) #v1.0.7+winfixes
@@ -141,8 +141,6 @@ message(STATUS "Configuring hackRF - ${HACKRF_BRANCH}")
 ExternalProject_Add(hackRF
     GIT_REPOSITORY https://github.com/mossmann/hackrf.git
     GIT_TAG ${HACKRF_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/hackrf_fix_compat_c89_vc11.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
