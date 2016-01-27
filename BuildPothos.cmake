@@ -113,10 +113,13 @@ install(
 
 ############################################################
 ## Build Pothos
+##
+## Note: Although spuce is only a toolkit dependency,
+## add it here to avoid building the spuce submodule.
 ############################################################
 message(STATUS "Configuring Pothos - ${POTHOS_BRANCH}")
 ExternalProject_Add(Pothos
-    DEPENDS Poco PothosSerialization muparserx
+    DEPENDS Poco PothosSerialization muparserx Spuce
     GIT_REPOSITORY https://github.com/pothosware/pothos.git
     GIT_TAG ${POTHOS_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
