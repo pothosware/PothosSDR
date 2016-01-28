@@ -14,7 +14,7 @@
 ## * SoapyAudio
 ############################################################
 
-set(SOAPY_SDR_BRANCH soapy-sdr-0.4.0)
+set(SOAPY_SDR_BRANCH soapy-sdr-0.4.1)
 set(SOAPY_BLADERF_BRANCH master)
 set(SOAPY_HACKRF_BRANCH soapy-hackrf-0.2.0)
 set(SOAPY_UHD_BRANCH soapy-uhd-0.3.0)
