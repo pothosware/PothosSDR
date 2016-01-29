@@ -15,7 +15,7 @@
 
 set(POTHOS_AUDIO_BRANCH pothos-audio-0.1.2)
 set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.3.0)
-set(POTHOS_COMMS_BRANCH pothos-comms-0.1.1)
+set(POTHOS_COMMS_BRANCH pothos-comms-0.1.2)
 set(POTHOS_GUI_BRANCH pothos-gui-0.3.0)
 set(POTHOS_PLOTTERS_BRANCH pothos-plotters-0.1.0)
 set(POTHOS_PYTHON_BRANCH pothos-python-0.1.2)
@@ -85,8 +85,6 @@ ExternalProject_Add(PothosComms
     DEPENDS Pothos Spuce
     GIT_REPOSITORY https://github.com/pothosware/pothos-comms.git
     GIT_TAG ${POTHOS_COMMS_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/pothos_comms_vc11_c89_atan.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
