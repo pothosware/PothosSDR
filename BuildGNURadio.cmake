@@ -18,7 +18,7 @@ set(VOLK_BRANCH v1.2)
 set(GNURADIO_BRANCH v3.7.9)
 set(GROSMOSDR_BRANCH master)
 set(GRRDS_BRANCH master)
-set(GQRX_BRANCH master)
+set(GQRX_BRANCH b424dd92a0e1e747038d86e16b92d3ddf011afab)
 
 #Use Python27 for Cheetah templates support
 set(PYTHON2_EXECUTABLE C:/Python27/python.exe)
