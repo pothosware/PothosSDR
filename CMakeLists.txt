@@ -89,24 +89,27 @@ foreach (license_file ${license_files})
 "${license_text}\n")
 endforeach(license_file)
 
-file(TO_NATIVE_PATH share/gnuradio/grc/blocks GRC_BLOCKS_PATH)
-string(REPLACE "\\" "\\\\" GRC_BLOCKS_PATH ${GRC_BLOCKS_PATH})
+set(HLKM_ENV "\\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\"")
 
-SET(HLKM_ENV
-    "\\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\"")
+set(Q3 "$\\\\\\\"") #escape quotes within the NSIS command
 
-SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-    WriteRegStr HKLM ${HLKM_ENV} \\\"POTHOS_ROOT\\\" \\\"$INSTDIR\\\"
-    WriteRegStr HKLM ${HLKM_ENV} \\\"SOAPY_SDR_ROOT\\\" \\\"$INSTDIR\\\"
-    WriteRegStr HKLM ${HLKM_ENV} \\\"UHD_PKG_PATH\\\" \\\"$INSTDIR\\\"
-    WriteRegStr HKLM ${HLKM_ENV} \\\"GRC_BLOCKS_PATH\\\" \\\"$INSTDIR\\\\${GRC_BLOCKS_PATH}\\\"
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+WriteRegStr HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"POTHOS_ROOT\\\" \\\"$INSTDIR\\\"
+WriteRegStr HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"SOAPY_SDR_ROOT\\\" \\\"$INSTDIR\\\"
+WriteRegStr HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"UHD_PKG_PATH\\\" \\\"$INSTDIR\\\"
+WriteRegStr HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"GRC_BLOCKS_PATH\\\" \\\"$INSTDIR\\\\share\\\\gnuradio\\\\grc\\\\blocks\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\".pth\\\" \\\"\\\" \\\"PothosSDR\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\"PothosSDR\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\share\\\\Pothos\\\\icons\\\\PothosGui.ico\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\"PothosSDR\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${Q3}$INSTDIR\\\\bin\\\\PothosGui.exe${Q3} ${Q3}%1${Q3} %*\\\"
 ")
 
-SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
-    DeleteRegValue HKLM ${HLKM_ENV} \\\"POTHOS_ROOT\\\"
-    DeleteRegValue HKLM ${HLKM_ENV} \\\"SOAPY_SDR_ROOT\\\"
-    DeleteRegValue HKLM ${HLKM_ENV} \\\"UHD_PKG_PATH\\\"
-    DeleteRegValue HKLM ${HLKM_ENV} \\\"GRC_BLOCKS_PATH\\\"
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
+DeleteRegValue HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"POTHOS_ROOT\\\"
+DeleteRegValue HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"SOAPY_SDR_ROOT\\\"
+DeleteRegValue HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"UHD_PKG_PATH\\\"
+DeleteRegValue HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"GRC_BLOCKS_PATH\\\"
+DeleteRegKey HKEY_CLASSES_ROOT \\\".pth\\\"
+DeleteRegKey HKEY_CLASSES_ROOT \\\"PothosSDR\\\"
 ")
 
 set(CPACK_GENERATOR "NSIS")
