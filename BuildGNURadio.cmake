@@ -153,6 +153,35 @@ install(
     DESTINATION licenses/GNURadio
 )
 
+list(APPEND CPACK_PACKAGE_EXECUTABLES "gnuradio-companion" "GNURadio Companion")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "gnuradio-companion")
+
+########################################################################
+## gnuradio-companion.exe
+########################################################################
+get_filename_component(PYTHON2_INSTALL ${PYTHON2_EXECUTABLE} DIRECTORY)
+set(PYINSTALLER_EXECUTABLE ${PYTHON2_INSTALL}/Scripts/pyinstaller.exe)
+set(GNURADIO_COMPANION_EXE ${CMAKE_BINARY_DIR}/dist/gnuradio-companion.exe)
+
+if (EXISTS ${PYINSTALLER_EXECUTABLE})
+    add_custom_command(
+        OUTPUT ${GNURADIO_COMPANION_EXE}
+        DEPENDS
+            ${CMAKE_SOURCE_DIR}/icons/grc-icon-256.ico
+            ${CMAKE_SOURCE_DIR}/Scripts/gnuradio-companion.py
+        COMMAND ${PYINSTALLER_EXECUTABLE} --onefile
+            --icon=${CMAKE_SOURCE_DIR}/icons/grc-icon-256.ico
+            ${CMAKE_SOURCE_DIR}/Scripts/gnuradio-companion.py
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+
+    add_custom_target(grc_exe ALL DEPENDS ${GNURADIO_COMPANION_EXE})
+
+    install(FILES ${GNURADIO_COMPANION_EXE} DESTINATION bin)
+else ()
+    message(WARNING "Skipping GRC executable -- missing ${PYINSTALLER_EXECUTABLE}")
+endif ()
+
 ############################################################
 ## Build GrOsmoSDR
 ##
