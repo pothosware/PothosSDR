@@ -139,6 +139,9 @@ install(
     DESTINATION licenses/qtcolorpicker
 )
 
+list(APPEND CPACK_PACKAGE_EXECUTABLES "PothosGui" "Pothos GUI")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "PothosGui")
+
 ############################################################
 ## Build Pothos Plotters toolkit
 ############################################################

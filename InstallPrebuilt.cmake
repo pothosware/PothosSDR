@@ -28,7 +28,10 @@ if (NOT EXISTS "${CMAKE_BINARY_DIR}/${ZADIG_NAME}")
     message(STATUS "...done")
 endif ()
 
-install(FILES "${CMAKE_BINARY_DIR}/${ZADIG_NAME}" DESTINATION ".")
+install(FILES "${CMAKE_BINARY_DIR}/${ZADIG_NAME}" DESTINATION bin)
+
+list(APPEND CPACK_PACKAGE_EXECUTABLES "zadig_2.1.2" "Zadig v2.1.2")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig_2.1.2")
 
 ############################################################
 ## Boost dependency (prebuilt)
