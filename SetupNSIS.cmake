@@ -31,34 +31,6 @@ foreach (license_file ${license_files})
 "${license_text}\n")
 endforeach(license_file)
 
-set(HLKM_ENV "\\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\"")
-
-set(Q3 "$\\\\\\\"") #escape quotes within the NSIS command
-
-set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-WriteRegStr HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"POTHOS_ROOT\\\" \\\"$INSTDIR\\\"
-WriteRegStr HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"SOAPY_SDR_ROOT\\\" \\\"$INSTDIR\\\"
-WriteRegStr HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"UHD_PKG_PATH\\\" \\\"$INSTDIR\\\"
-WriteRegStr HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"GRC_BLOCKS_PATH\\\" \\\"$INSTDIR\\\\share\\\\gnuradio\\\\grc\\\\blocks\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\".pth\\\" \\\"\\\" \\\"PothosSDR\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\"PothosSDR\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\share\\\\Pothos\\\\icons\\\\PothosGui.ico\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\"PothosSDR\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${Q3}$INSTDIR\\\\bin\\\\PothosGui.exe${Q3} ${Q3}%1${Q3} %*\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\".grc\\\" \\\"\\\" \\\"GNURadio.Companion\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\icons\\\\grc-icon-256.ico\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${Q3}$INSTDIR\\\\bin\\\\gnuradio-companion.exe${Q3} ${Q3}%1${Q3} %*\\\"
-")
-
-set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
-DeleteRegValue HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"POTHOS_ROOT\\\"
-DeleteRegValue HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"SOAPY_SDR_ROOT\\\"
-DeleteRegValue HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"UHD_PKG_PATH\\\"
-DeleteRegValue HKEY_LOCAL_MACHINE ${HLKM_ENV} \\\"GRC_BLOCKS_PATH\\\"
-DeleteRegKey HKEY_CLASSES_ROOT \\\".pth\\\"
-DeleteRegKey HKEY_CLASSES_ROOT \\\"PothosSDR\\\"
-DeleteRegKey HKEY_CLASSES_ROOT \\\".grc\\\"
-DeleteRegKey HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\"
-")
-
 set(CPACK_GENERATOR "NSIS")
 set(CPACK_NSIS_INSTALL_ROOT "C:\\\\Program Files")
 ExternalProject_Get_Property(PothosGui SOURCE_DIR)

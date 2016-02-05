@@ -29,6 +29,12 @@ set(EXTRA_VERSION_INFO "${PROJECT_NAME}-${PROJECT_VERSION}-${PACKAGE_SUFFIX}")
 
 add_compile_options(/MP) #multi-core build
 
+#NSIS escaped registry path for environment variables
+set(NSIS_ENV "SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment")
+
+#NSIS escaped quote - gives us an escaped quote \" in an NSIS command
+set(NEQ "$\\\\\\\"")
+
 ########################################################################
 # Install helper scripts
 ########################################################################

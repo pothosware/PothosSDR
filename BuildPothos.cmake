@@ -77,6 +77,14 @@ install(
     DESTINATION licenses/Pothos
 )
 
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
+WriteRegStr HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"POTHOS_ROOT\\\" \\\"$INSTDIR\\\"
+")
+
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
+DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"POTHOS_ROOT\\\"
+")
+
 ############################################################
 ## Build Pothos Audio toolkit
 ############################################################
@@ -196,6 +204,17 @@ install(
 
 list(APPEND CPACK_PACKAGE_EXECUTABLES "PothosGui" "Pothos GUI")
 list(APPEND CPACK_CREATE_DESKTOP_LINKS "PothosGui")
+
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
+WriteRegStr HKEY_CLASSES_ROOT \\\".pth\\\" \\\"\\\" \\\"PothosSDR\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\"PothosSDR\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\share\\\\Pothos\\\\icons\\\\PothosGui.ico\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\"PothosSDR\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${NEQ}$INSTDIR\\\\bin\\\\PothosGui.exe${NEQ} ${NEQ}%1${NEQ} %*\\\"
+")
+
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
+DeleteRegKey HKEY_CLASSES_ROOT \\\".pth\\\"
+DeleteRegKey HKEY_CLASSES_ROOT \\\"PothosSDR\\\"
+")
 
 ############################################################
 ## Build Pothos Plotters toolkit
