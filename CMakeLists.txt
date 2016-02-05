@@ -48,12 +48,11 @@ include(ExternalProject)
 # Build and install external software projects
 ########################################################################
 include(InstallPrebuilt.cmake)
+include(BuildCommon.cmake)
 include(BuildHwDrivers.cmake)
 include(BuildSoapySDR.cmake)
 include(BuildPothos.cmake)
-include(BuildToolkits.cmake)
 include(BuildGNURadio.cmake)
-include(BuildGrPothos.cmake)
 
 ########################################################################
 # Package environment with NSIS
