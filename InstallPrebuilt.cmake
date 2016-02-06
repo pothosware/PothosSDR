@@ -12,6 +12,7 @@
 ## * swig (prebuilt generator)
 ## * qt5 (prebuilt runtime dlls)
 ## * fftw (prebuilt runtime dlls)
+## * wxgui (prebuilt runtime dlls)
 ############################################################
 
 ############################################################
@@ -173,3 +174,26 @@ install(FILES
     "${FFTW3F_ROOT}/COPYRIGHT"
     DESTINATION licenses/fftw
 )
+
+############################################################
+## wxWidgets (prebuilt)
+############################################################
+set(wxWidgets_ROOT_DIR C:/local/wxWidgets-3.0.2)
+
+if (MSVC14)
+    set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc140_x64_dll)
+endif ()
+
+if (MSVC12)
+    set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc120_x64_dll)
+endif ()
+
+if (MSVC11)
+    set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc110_x64_dll)
+endif()
+
+message(STATUS "wxWidgets_ROOT_DIR: ${wxWidgets_ROOT_DIR}")
+message(STATUS "wxWidgets_LIB_DIR: ${wxWidgets_LIB_DIR}")
+
+file(GLOB WX_DLLS "${wxWidgets_LIB_DIR}/*.dll")
+install(FILES ${WX_DLLS} DESTINATION bin)
