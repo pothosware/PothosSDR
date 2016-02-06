@@ -195,5 +195,6 @@ endif()
 message(STATUS "wxWidgets_ROOT_DIR: ${wxWidgets_ROOT_DIR}")
 message(STATUS "wxWidgets_LIB_DIR: ${wxWidgets_LIB_DIR}")
 
-file(GLOB WX_DLLS "${wxWidgets_LIB_DIR}/*.dll")
-install(FILES ${WX_DLLS} DESTINATION bin)
+file(GLOB WX_MSW_DLLS "${wxWidgets_LIB_DIR}/wxmsw30u_*.dll")
+file(GLOB WX_BASE_DLLS "${wxWidgets_LIB_DIR}/wxbase30u_*.dll")
+install(FILES ${WX_MSW_DLLS} ${WX_BASE_DLLS} DESTINATION bin)
