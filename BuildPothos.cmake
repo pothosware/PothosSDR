@@ -53,6 +53,7 @@ install(
 ##
 ## Note: Although spuce is only a toolkit dependency,
 ## add it here to avoid building the spuce submodule.
+## TODO remove this note and Spuce depends for 0.3.2
 ############################################################
 message(STATUS "Configuring PothosFramework - ${POTHOS_BRANCH}")
 ExternalProject_Add(Pothos
@@ -66,6 +67,10 @@ ExternalProject_Add(Pothos
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPOTHOS_EXTVER=${EXTRA_VERSION_INFO}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
+        -DENABLE_INTERNAL_POCO=OFF
+        -DENABLE_INTERNAL_SPUCE=OFF
+        -DENABLE_INTERNAL_MUPARSERX=OFF
+        -DENABLE_INTERNAL_SERIALIZATION=OFF
         -DENABLE_TOOLKITS=OFF
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
