@@ -20,7 +20,7 @@ set(POTHOS_BRANCH pothos-0.3.1)
 set(POTHOS_AUDIO_BRANCH pothos-audio-0.1.2)
 set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.3.0)
 set(POTHOS_COMMS_BRANCH pothos-comms-0.1.2)
-set(POTHOS_GUI_BRANCH pothos-gui-0.3.0)
+set(POTHOS_GUI_BRANCH 4ba2e3df4f5cd70a65778b5cd220f612458296cb) #windows path fix + pothos-gui-0.3.0
 set(POTHOS_PLOTTERS_BRANCH pothos-plotters-0.1.0)
 set(POTHOS_PYTHON_BRANCH pothos-python-0.1.2)
 set(POTHOS_SDR_BRANCH pothos-sdr-0.3.0)
