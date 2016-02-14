@@ -44,11 +44,14 @@ install(
     DESTINATION licenses/CubicSDR
 )
 
+file(GLOB CUBICSDR_RESOURCES "${SOURCE_DIR}/font/*.*")
+
 ExternalProject_Get_Property(CubicSDR BINARY_DIR)
 install(
     FILES
         ${SOURCE_DIR}/external/liquid-dsp/msvc/64/libliquid.dll
         ${BINARY_DIR}/x64/${CMAKE_BUILD_TYPE}/CubicSDR.exe
+        ${CUBICSDR_RESOURCES}
     DESTINATION bin
 )
 
