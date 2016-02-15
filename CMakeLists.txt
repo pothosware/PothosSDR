@@ -42,7 +42,6 @@ set(GIT_PATCH_HELPER C:/python34/python.exe ${PROJECT_SOURCE_DIR}/Scripts/GitPat
 
 install(DIRECTORY Scripts DESTINATION ".")
 install(DIRECTORY patches DESTINATION ".")
-install(DIRECTORY icons DESTINATION ".")
 
 ########################################################################
 # Setup the external projects for a flat structure
