@@ -8,7 +8,8 @@
 
 set(CUBIC_SDR_BRANCH master)
 
-if ("${MSVC_VERSION}" VERSION_LESS "1800")
+#only support msvc 2015 build to match dlls in CubicSDR/external
+if (NOT MSVC14)
     return()
 endif()
 
@@ -34,8 +35,7 @@ ExternalProject_Add(CubicSDR
         -DFFTW_LIBRARIES=${FFTW3F_LIBRARIES}
         -DSoapySDR_DIR=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    #INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-    INSTALL_COMMAND echo "FIXME: external install rules are used in place of install target"
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
 
 ExternalProject_Get_Property(CubicSDR SOURCE_DIR)
@@ -44,14 +44,9 @@ install(
     DESTINATION licenses/CubicSDR
 )
 
-file(GLOB CUBICSDR_RESOURCES "${SOURCE_DIR}/font/*.*")
-
-ExternalProject_Get_Property(CubicSDR BINARY_DIR)
+#install pre-built liquid dsp dll from external/
 install(
-    FILES
-        ${SOURCE_DIR}/external/liquid-dsp/msvc/64/libliquid.dll
-        ${BINARY_DIR}/x64/${CMAKE_BUILD_TYPE}/CubicSDR.exe
-        ${CUBICSDR_RESOURCES}
+    FILES ${SOURCE_DIR}/external/liquid-dsp/msvc/64/libliquid.dll
     DESTINATION bin
 )
 
