@@ -25,3 +25,4 @@
 | VOLK          | volk_fix_msvc14.diff                 | Adds MSVC14 version string to CMake build             |
 | VOLK          | patches/volk_qa_utils_config_h.diff  | https://github.com/pothosware/gnuradio/issues/15      |
 | gr-rds        | gr_rds_msvc_fixes.diff               | Minor MSVC patches for encoder_impl.cc                |
+| zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |
