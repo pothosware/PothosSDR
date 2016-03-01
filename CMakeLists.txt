@@ -38,8 +38,6 @@ set(NEQ "$\\\\\\\"")
 ########################################################################
 # Install helper scripts
 ########################################################################
-set(GIT_PATCH_HELPER C:/python34/python.exe ${PROJECT_SOURCE_DIR}/Scripts/GitPatchHelper.py)
-
 install(DIRECTORY Scripts DESTINATION ".")
 install(DIRECTORY patches DESTINATION ".")
 
@@ -53,6 +51,7 @@ include(ExternalProject)
 # Build and install external software projects
 ########################################################################
 include(InstallPrebuilt.cmake)
+include(SetupPython.cmake)
 include(BuildCommon.cmake)
 include(BuildHwDrivers.cmake)
 include(BuildSoapySDR.cmake)

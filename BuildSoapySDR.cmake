@@ -14,9 +14,9 @@
 ## * SoapyAudio
 ############################################################
 
-set(SOAPY_SDR_BRANCH soapy-sdr-0.4.1)
+set(SOAPY_SDR_BRANCH master)
 set(SOAPY_BLADERF_BRANCH master)
-set(SOAPY_HACKRF_BRANCH soapy-hackrf-0.2.0)
+set(SOAPY_HACKRF_BRANCH soapy-hackrf-0.2.1)
 set(SOAPY_UHD_BRANCH soapy-uhd-0.3.0)
 set(SOAPY_OSMO_BRANCH soapy-osmo-0.2.2)
 set(SOAPY_RTLSDR_BRANCH soapy-rtlsdr-0.2.0)
@@ -36,10 +36,12 @@ ExternalProject_Add(SoapySDR
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DSOAPY_SDR_EXTVER=${EXTRA_VERSION_INFO}
-        -DPYTHON_EXECUTABLE=C:/Python27/python.exe
-        -DPYTHON_LIBRARY=C:/Python27/libs/python27.lib
-        -DPYTHON3_EXECUTABLE=C:/Python34/python.exe
-        -DPYTHON3_LIBRARY=C:/Python34/libs/python34.lib
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DPYTHON_LIBRARY=${PYTHON2_LIBRARY}
+        -DPYTHON_INSTALL_DIR=${PYTHON2_INSTALL_DIR}
+        -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE}
+        -DPYTHON3_LIBRARY=${PYTHON3_LIBRARY}
+        -DPYTHON3_INSTALL_DIR=${PYTHON3_INSTALL_DIR}
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DSWIG_DIR=${SWIG_DIR}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}

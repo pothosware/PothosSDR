@@ -22,7 +22,7 @@ set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.3.0)
 set(POTHOS_COMMS_BRANCH pothos-comms-0.1.2)
 set(POTHOS_GUI_BRANCH 4ba2e3df4f5cd70a65778b5cd220f612458296cb) #windows path fix + pothos-gui-0.3.0
 set(POTHOS_PLOTTERS_BRANCH pothos-plotters-0.1.0)
-set(POTHOS_PYTHON_BRANCH pothos-python-0.1.2)
+set(POTHOS_PYTHON_BRANCH master)
 set(POTHOS_SDR_BRANCH pothos-sdr-0.3.0)
 set(POTHOS_WIDGETS_BRANCH pothos-widgets-0.3.0)
 
@@ -265,7 +265,9 @@ ExternalProject_Add(PothosPython
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-        -DPYTHON_EXECUTABLE=C:/Python34/python.exe
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
+        -DPYTHON_LIBRARY=${PYTHON3_LIBRARY}
+        -DPOTHOS_PYTHON_DIR=${PYTHON3_INSTALL_DIR}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )

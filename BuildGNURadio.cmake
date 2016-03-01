@@ -20,9 +20,6 @@ set(GROSMOSDR_BRANCH master)
 set(GRRDS_BRANCH master)
 set(GQRX_BRANCH b424dd92a0e1e747038d86e16b92d3ddf011afab)
 
-#Use Python27 for Cheetah templates support
-set(PYTHON2_EXECUTABLE C:/Python27/python.exe)
-
 ############################################################
 ## Build Volk
 ############################################################
@@ -90,6 +87,8 @@ ExternalProject_Add(GNURadio
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DSWIG_DIR=${SWIG_DIR}
         -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DPYTHON_LIBRARY=${PYTHON2_LIBRARY}
+        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
         -DFFTW3F_INCLUDE_DIRS=${FFTW3F_INCLUDE_DIRS}
         -DFFTW3F_LIBRARIES=${FFTW3F_LIBRARIES}
         -DUHD_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include
