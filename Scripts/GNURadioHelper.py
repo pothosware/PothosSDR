@@ -160,7 +160,9 @@ def check_import_gr():
 
 def handle_import_gr():
     binDir = os.path.dirname(find_library("gnuradio-runtime.dll"))
-    path = os.path.join(os.path.dirname(binDir), 'lib', 'site-packages')
+    path = os.path.join(os.path.dirname(binDir), 'lib', 'python2.7', 'site-packages')
+    if not os.path.exists(path): #or use old-style path without python version
+        path = os.path.join(os.path.dirname(binDir), 'lib', 'site-packages')
     path = os.path.normpath(path)
     print("Error: GNURadio modules missing from PYTHONPATH")
 
