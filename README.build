@@ -5,7 +5,7 @@ Compilation instructions of GNURadio 3.7.8.1 and PothosSDR using Visual Studio 2
 https://www.visualstudio.com/de-de/products/visual-studio-community-vs.aspx
 Select Custom Install, then check C++ under Development Tools
 
-2. Download and install Python 2.7 64-Bit to C:\Python27 and Python 3.4 64-Bit to C:\Python34
+2. Download and install Python 2.7 64-Bit to C:\Python27 and Python 3.5 64-Bit to C:\Python35
 https://www.python.org/downloads/
 
 3. Download and install QT 5.6.0
@@ -18,7 +18,7 @@ set PATH=%PATH%;c:\Python27;c:\Python27\Scripts
 python Scripts\GNURadioHelper.py
 pip install mako
 pip install Cheetah
-set PATH=c:\Python34;c:\Python34\Scripts;%PATH%
+set PATH=c:\Python35;c:\Python35\Scripts;%PATH%
 pip install mako
 
 6. Install Git for Windows and CMake for Windows
@@ -31,7 +31,7 @@ http://mirrors.ctan.org/systems/win32/miktex/setup/basic-miktex-2.9.5823.exe
 http://downloads.ghostscript.com/public/gs918w32.exe
 
 8. Compile PothosSDR
-set PATH=c:\Python34;%PATH%;"c:\Program Files\Git\bin";"C:\Program Files (x86)\CMake\bin";"C:\Program Files\doxygen\bin";"c:\Program Files (x86)\gs\gs9.18\bin"
+set PATH=c:\Python35;%PATH%;"c:\Program Files\Git\bin";"C:\Program Files (x86)\CMake\bin";"C:\Program Files\doxygen\bin";"c:\Program Files (x86)\gs\gs9.18\bin"
 mkdir build
 cd build
 cmake ../ -G "Visual Studio 14 2015 Win64" -DCMAKE_INSTALL_PREFIX=C:/PothosSDR -DCMAKE_BUILD_TYPE=RelWithDebInfo
