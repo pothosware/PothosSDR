@@ -253,10 +253,38 @@ install(
 
 ############################################################
 ## Build Pothos Python toolkit
+##
+## Two builds here for python2 and python3:
+## Python3 depends on python2 so it will install last,
+## and overwrite the python2 module to become default.
+## Each module is also copied to a version-specific name
+## so the user can switch between python versions.
 ############################################################
 message(STATUS "Configuring PothosPython - ${POTHOS_PYTHON_BRANCH}")
-ExternalProject_Add(PothosPython
+
+ExternalProject_Add(PothosPython2
     DEPENDS Pothos
+    GIT_REPOSITORY https://github.com/pothosware/pothos-python.git
+    GIT_TAG ${POTHOS_PYTHON_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DPYTHON_INCLUDE_DIR=${PYTHON2_INCLUDE_DIR}
+        -DPYTHON_LIBRARY=${PYTHON2_LIBRARY}
+        -DPOTHOS_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+        && ${CMAKE_COMMAND} -E copy
+            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/modules/proxy/environment/PythonSupport.dll
+            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/modules/proxy/environment/PythonSupport.dll.2
+)
+
+ExternalProject_Add(PothosPython3
+    DEPENDS Pothos PothosPython2
     GIT_REPOSITORY https://github.com/pothosware/pothos-python.git
     GIT_TAG ${POTHOS_PYTHON_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -271,9 +299,12 @@ ExternalProject_Add(PothosPython
         -DPOTHOS_PYTHON_DIR=${PYTHON3_INSTALL_DIR}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+        && ${CMAKE_COMMAND} -E copy
+            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/modules/proxy/environment/PythonSupport.dll
+            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/modules/proxy/environment/PythonSupport.dll.3
 )
 
-ExternalProject_Get_Property(PothosPython SOURCE_DIR)
+ExternalProject_Get_Property(PothosPython3 SOURCE_DIR)
 install(
     FILES ${SOURCE_DIR}/LICENSE_1_0.txt
     DESTINATION licenses/PothosPython
