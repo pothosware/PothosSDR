@@ -29,8 +29,6 @@ ExternalProject_Add(volk
     GIT_TAG ${VOLK_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/volk_cpuid_count_for_msvc.diff
-        ${PROJECT_SOURCE_DIR}/patches/volk_config_math_vc11.diff
-        ${PROJECT_SOURCE_DIR}/patches/volk_skip_profile_app_vc11.diff
         ${PROJECT_SOURCE_DIR}/patches/volk_fix_msvc14.diff
         ${PROJECT_SOURCE_DIR}/patches/volk_qa_utils_config_h.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}

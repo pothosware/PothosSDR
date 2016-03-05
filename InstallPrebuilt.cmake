@@ -49,11 +49,6 @@ if (MSVC12)
     set(BOOST_DLL_SUFFIX vc120-mt-1_60.dll)
 endif ()
 
-if (MSVC11)
-    set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-11.0)
-    set(BOOST_DLL_SUFFIX vc110-mt-1_60.dll)
-endif ()
-
 message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")
 message(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
 
@@ -107,10 +102,6 @@ endif ()
 if (MSVC12)
     set(QT5_DLL_ROOT C:/Qt/Qt5.5.1/5.5/msvc2013_64)
 endif ()
-
-if (MSVC11)
-    set(QT5_DLL_ROOT C:/Qt/Qt5.2.1/5.2.1/msvc2012_64)
-endif()
 
 message(STATUS "QT5_DLL_ROOT: ${QT5_DLL_ROOT}")
 
@@ -187,10 +178,6 @@ endif ()
 if (MSVC12)
     set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc120_x64_lib)
 endif ()
-
-if (MSVC11)
-    set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc110_x64_lib)
-endif()
 
 message(STATUS "wxWidgets_ROOT_DIR: ${wxWidgets_ROOT_DIR}")
 message(STATUS "wxWidgets_LIB_DIR: ${wxWidgets_LIB_DIR}")
