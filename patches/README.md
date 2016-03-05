@@ -17,12 +17,9 @@
 | GNURadio      | gnuradio_dtv_use_gr_aligned.diff     | https://github.com/pothosware/gnuradio/issues/25      |
 | GNURadio      | gnuradio_fec_ldpc_config_h.diff      | https://github.com/pothosware/gnuradio/issues/24      |
 | GNURadio      | gnuradio_grc_windows_paths.diff      | https://github.com/pothosware/gnuradio/issues/27      |
-| Spuce         | spuce_vc11_fixes.diff                | Provide acosh() and list initialization workaround    |
 | UHD           | uhd_fix_gain_group_floor_round.diff  | https://github.com/EttusResearch/uhd/issues/31        |
-| VOLK          | volk_config_math_vc11.diff           | https://github.com/pothosware/gnuradio/issues/15      |
 | VOLK          | volk_cpuid_count_for_msvc.diff       | https://github.com/pothosware/gnuradio/issues/17      |
-| VOLK          | volk_skip_profile_app_vc11.diff      | https://github.com/pothosware/gnuradio/issues/16      |
 | VOLK          | volk_fix_msvc14.diff                 | Adds MSVC14 version string to CMake build             |
-| VOLK          | patches/volk_qa_utils_config_h.diff  | https://github.com/pothosware/gnuradio/issues/15      |
+| VOLK          | volk_qa_utils_config_h.diff          | https://github.com/pothosware/gnuradio/issues/15      |
 | gr-rds        | gr_rds_msvc_fixes.diff               | Minor MSVC patches for encoder_impl.cc                |
 | zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |

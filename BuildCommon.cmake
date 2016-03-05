@@ -93,8 +93,6 @@ message(STATUS "Configuring Spuce - ${SPUCE_BRANCH}")
 ExternalProject_Add(Spuce
     GIT_REPOSITORY https://github.com/audiofilter/spuce.git
     GIT_TAG ${SPUCE_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/spuce_vc11_fixes.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
