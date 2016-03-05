@@ -39,7 +39,6 @@ and can be to replicate the complete build environment.
 * Boost 1.60: http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/
 * Qt MSVC2015: https://download.qt.io/development_releases/qt/5.6/5.6.0-beta/
 * Qt MSVC2013: https://download.qt.io/archive/qt/5.5/5.5.1/
-* Qt MSVC2012: https://download.qt.io/archive/qt/5.2/5.2.1/
 * Pthreads: http://sourceforge.net/projects/pthreads4w/files/latest/download
 * PortAudio: https://github.com/adfernandes/precompiled-portaudio-windows
 * LibUSB: http://sourceforge.net/projects/libusb/files/libusb-1.0/libusb-1.0.20/
@@ -48,7 +47,7 @@ and can be to replicate the complete build environment.
 * NSIS: http://sourceforge.net/projects/nsis/files/NSIS%202/2.50/
 
 Prebuilt wxWidgets development headers, libraries, and DLLs
-can be downloaded for vc11 and vc12:
+can be downloaded for vc12:
 http://sourceforge.net/projects/wxwindows/files/3.0.2/
 For vc14, follow the instructions here to build from source:
 https://github.com/cjcliffe/CubicSDR/wiki/Build-Windows#build-wxwidgets
@@ -73,7 +72,7 @@ Building the environment with CMake:
 ```
 mkdir build
 cd build
-cmake ../ -G "Visual Studio 11 2012 Win64" ^
+cmake ../ -G "Visual Studio 14 2015 Win64" ^
     -DCMAKE_INSTALL_PREFIX=C:/PothosSDR ^
     -DCMAKE_BUILD_TYPE=RelWithDebInfo
 rebuild_all.bat
