@@ -18,7 +18,7 @@ set(GR_RUNTIME_BRANCH master)
 set(GR_POTHOS_BRANCH master)
 set(GROSMOSDR_BRANCH master)
 set(GRRDS_BRANCH master)
-set(GQRX_BRANCH b424dd92a0e1e747038d86e16b92d3ddf011afab)
+set(GQRX_BRANCH v2.5.3)
 
 ############################################################
 ## Build Volk
