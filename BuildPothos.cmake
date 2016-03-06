@@ -16,13 +16,13 @@
 ############################################################
 
 set(POTHOS_SERIALIZATION_BRANCH pothos-serialization-0.2.0)
-set(POTHOS_BRANCH pothos-0.3.1)
+set(POTHOS_BRANCH pothos-0.3.2)
 set(POTHOS_AUDIO_BRANCH pothos-audio-0.1.2)
-set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.3.0)
-set(POTHOS_COMMS_BRANCH pothos-comms-0.1.2)
-set(POTHOS_GUI_BRANCH 4ba2e3df4f5cd70a65778b5cd220f612458296cb) #windows path fix + pothos-gui-0.3.0
+set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.3.1)
+set(POTHOS_COMMS_BRANCH pothos-comms-0.1.3)
+set(POTHOS_GUI_BRANCH pothos-gui-0.3.1)
 set(POTHOS_PLOTTERS_BRANCH pothos-plotters-0.1.0)
-set(POTHOS_PYTHON_BRANCH master)
+set(POTHOS_PYTHON_BRANCH pothos-python-0.1.3)
 set(POTHOS_SDR_BRANCH pothos-sdr-0.3.0)
 set(POTHOS_WIDGETS_BRANCH pothos-widgets-0.3.0)
 
@@ -50,14 +50,10 @@ install(
 
 ############################################################
 ## Build Pothos framework
-##
-## Note: Although spuce is only a toolkit dependency,
-## add it here to avoid building the spuce submodule.
-## TODO remove this note and Spuce depends for 0.3.2
 ############################################################
 message(STATUS "Configuring PothosFramework - ${POTHOS_BRANCH}")
 ExternalProject_Add(Pothos
-    DEPENDS Poco PothosSerialization muparserx Spuce
+    DEPENDS Poco PothosSerialization muparserx
     GIT_REPOSITORY https://github.com/pothosware/pothos.git
     GIT_TAG ${POTHOS_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
