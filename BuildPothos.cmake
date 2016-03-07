@@ -19,7 +19,7 @@ set(POTHOS_SERIALIZATION_BRANCH pothos-serialization-0.2.0)
 set(POTHOS_BRANCH pothos-0.3.2)
 set(POTHOS_AUDIO_BRANCH pothos-audio-0.1.2)
 set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.3.1)
-set(POTHOS_COMMS_BRANCH pothos-comms-0.1.3)
+set(POTHOS_COMMS_BRANCH fedd5b8b9486da9efda1809f53ec1a066c36ab4c) #pothos-comms-0.1.3 + include fix
 set(POTHOS_GUI_BRANCH pothos-gui-0.3.1)
 set(POTHOS_PLOTTERS_BRANCH pothos-plotters-0.1.0)
 set(POTHOS_PYTHON_BRANCH pothos-python-0.1.3)
