@@ -33,6 +33,7 @@ ExternalProject_Add(CubicSDR
         -DwxWidgets_LIB_DIR=${wxWidgets_LIB_DIR}
         -DFFTW_INCLUDES=${FFTW3F_INCLUDE_DIRS}
         -DFFTW_LIBRARIES=${FFTW3F_LIBRARIES}
+        -DFFTW_DLL=${FFTW3F_LIBRARIES} #this gets installed to bin
         -DSoapySDR_DIR=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
