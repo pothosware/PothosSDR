@@ -16,7 +16,7 @@
 set(OSMO_BRANCH master)
 set(MIRISDR_BRANCH master)
 set(RTL_BRANCH master)
-set(BLADERF_BRANCH a459c212096e1a3a4f3f101b09d8acb49163d217) #2016.01-rc1+msvc2015fix
+set(BLADERF_BRANCH master)
 set(HACKRF_BRANCH master)
 set(UHD_BRANCH release_003_009_002)
 set(UMTRX_BRANCH 1.0.8)
