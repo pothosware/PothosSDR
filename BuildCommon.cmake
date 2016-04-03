@@ -14,7 +14,7 @@ set(ZEROMQ_BRANCH master)
 set(CPPZMQ_BRANCH master)
 set(POCO_BRANCH poco-1.7.2)
 set(SPUCE_BRANCH 0.4.3)
-set(MUPARSERX_BRANCH master)
+set(MUPARSERX_BRANCH v4.0.7)
 
 ############################################################
 ## Build ZeroMQ
