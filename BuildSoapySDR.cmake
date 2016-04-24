@@ -14,13 +14,13 @@
 ## * SoapyAudio
 ############################################################
 
-set(SOAPY_SDR_BRANCH soapy-sdr-0.4.2)
+set(SOAPY_SDR_BRANCH soapy-sdr-0.4.3)
 set(SOAPY_BLADERF_BRANCH soapy-bladerf-0.3.1)
 set(SOAPY_HACKRF_BRANCH soapy-hackrf-0.2.1)
 set(SOAPY_UHD_BRANCH soapy-uhd-0.3.0)
 set(SOAPY_OSMO_BRANCH soapy-osmo-0.2.2)
 set(SOAPY_RTLSDR_BRANCH soapy-rtlsdr-0.2.0)
-set(SOAPY_REMOTE_BRANCH soapy-remote-0.2.0)
+set(SOAPY_REMOTE_BRANCH soapy-remote-0.2.1)
 set(SOAPY_RED_PITAYA_BRANCH soapy-redpitaya-0.1.0)
 set(SOAPY_AUDIO_BRANCH master)
 
