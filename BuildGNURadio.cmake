@@ -14,7 +14,7 @@
 
 set(VOLK_BRANCH v1.2)
 set(GNURADIO_BRANCH v3.7.9)
-set(GR_RUNTIME_BRANCH master)
+set(GR_RUNTIME_BRANCH gr-runtime-v3.7.9)
 set(GR_POTHOS_BRANCH master)
 set(GROSMOSDR_BRANCH master)
 set(GRRDS_BRANCH master)
