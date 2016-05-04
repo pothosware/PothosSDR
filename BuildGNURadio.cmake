@@ -12,7 +12,7 @@
 ## * gqrx
 ############################################################
 
-set(VOLK_BRANCH v1.2)
+set(VOLK_BRANCH v1.2.2)
 set(GNURADIO_BRANCH v3.7.9)
 set(GR_RUNTIME_BRANCH gr-runtime-v3.7.9)
 set(GR_POTHOS_BRANCH master)
@@ -27,10 +27,6 @@ message(STATUS "Configuring volk - ${VOLK_BRANCH}")
 ExternalProject_Add(volk
     GIT_REPOSITORY https://github.com/gnuradio/volk.git
     GIT_TAG ${VOLK_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/volk_cpuid_count_for_msvc.diff
-        ${PROJECT_SOURCE_DIR}/patches/volk_fix_msvc14.diff
-        ${PROJECT_SOURCE_DIR}/patches/volk_qa_utils_config_h.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
