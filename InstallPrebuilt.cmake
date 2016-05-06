@@ -137,6 +137,20 @@ message(STATUS "LIBUSB_ROOT: ${LIBUSB_ROOT}")
 install(FILES "${LIBUSB_ROOT}/MS64/dll/libusb-1.0.dll" DESTINATION bin)
 
 ############################################################
+## Cypress API (prebuilt)
+############################################################
+set(FX3_SDK_PATH "C:/local/EZ-USB FX3 SDK/1.3")
+
+if (EXISTS ${FX3_SDK_PATH})
+    message(STATUS "FX3_SDK_PATH: ${FX3_SDK_PATH}")
+    set(FX3_SDK_FOUND TRUE)
+else()
+    set(FX3_SDK_FOUND FALSE)
+endif()
+
+#nothing to install, this is a static
+
+############################################################
 ## SWIG dependency (prebuilt)
 ############################################################
 set(SWIG_ROOT C:/local/swigwin-3.0.8)

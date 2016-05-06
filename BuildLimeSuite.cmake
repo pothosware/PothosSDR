@@ -3,22 +3,19 @@
 ##
 ## This script builds LimeSuite w/ SoapySDR bindings
 ##
-## * CubicSDR
+## * LimeSuite
 ############################################################
 
 set(LIME_SUITE_BRANCH master)
-
-set(FX3_SDK_PATH "C:/local/EZ-USB FX3 SDK/1.3")
-
-if (NOT EXISTS ${FX3_SDK_PATH})
-    return()
-endif()
 
 ############################################################
 ## Build LimeSuite
 ##
 ## -DWX_ROOT_DIR is a hack to prevent FindwxWidgets.cmake
 ## from clearing wxWidgets_LIB_DIR the first configuration.
+##
+## -DFX3_SDK_PATH specifies the USB support for LimeSuite
+## If the SDK is not present, USB support will be disabled.
 ############################################################
 message(STATUS "Configuring LimeSuite - ${LIME_SUITE_BRANCH}")
 ExternalProject_Add(LimeSuite

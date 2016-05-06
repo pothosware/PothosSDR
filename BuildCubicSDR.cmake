@@ -10,6 +10,7 @@ set(CUBIC_SDR_BRANCH master)
 
 #only support msvc 2015 build to match dlls in CubicSDR/external
 if (NOT MSVC14)
+    message(STATUS "!Skipping CubicSDR - only supported on VC14")
     return()
 endif()
 
