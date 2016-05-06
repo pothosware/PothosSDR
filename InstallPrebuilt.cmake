@@ -100,7 +100,7 @@ if (MSVC14)
 endif ()
 
 if (MSVC12)
-    set(QT5_DLL_ROOT C:/Qt/Qt5.5.1/5.5/msvc2013_64)
+    set(QT5_DLL_ROOT C:/Qt/Qt5.6.0/5.6/msvc2013_64)
 endif ()
 
 message(STATUS "QT5_DLL_ROOT: ${QT5_DLL_ROOT}")
@@ -169,7 +169,7 @@ install(FILES
 ############################################################
 ## wxWidgets (prebuilt)
 ############################################################
-set(wxWidgets_ROOT_DIR C:/local/wxWidgets-3.0.2)
+set(wxWidgets_ROOT_DIR C:/local/wxWidgets-3.1.0)
 
 if (MSVC14)
     set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc140_x64_lib)
@@ -183,7 +183,7 @@ message(STATUS "wxWidgets_ROOT_DIR: ${wxWidgets_ROOT_DIR}")
 message(STATUS "wxWidgets_LIB_DIR: ${wxWidgets_LIB_DIR}")
 
 if (WX_USES_DLL)
-    file(GLOB WX_MSW_DLLS "${wxWidgets_LIB_DIR}/wxmsw30u_*.dll")
-    file(GLOB WX_BASE_DLLS "${wxWidgets_LIB_DIR}/wxbase30u_*.dll")
+    file(GLOB WX_MSW_DLLS "${wxWidgets_LIB_DIR}/wxmsw310u_*.dll")
+    file(GLOB WX_BASE_DLLS "${wxWidgets_LIB_DIR}/wxbase310u_*.dll")
     install(FILES ${WX_MSW_DLLS} ${WX_BASE_DLLS} DESTINATION bin)
 endif()
