@@ -97,14 +97,6 @@ install(
 ############################################################
 ## Build BladeRF
 ############################################################
-if (MSVC11)
-    set(BLADE_RF_CONFIG_EXTRA
-        && ${CMAKE_COMMAND} -E copy
-        <SOURCE_DIR>/host/common/include/windows/c99/stdbool.h
-        <SOURCE_DIR>/host/libraries/libbladeRF/include/
-    )
-endif (MSVC11)
-
 message(STATUS "Configuring bladeRF - ${BLADERF_BRANCH}")
 ExternalProject_Add(bladeRF
     GIT_REPOSITORY https://github.com/Nuand/bladeRF.git
@@ -123,7 +115,6 @@ ExternalProject_Add(bladeRF
         -DLIBPTHREADSWIN32_HEADER_FILE=${THREADS_PTHREADS_INCLUDE_DIR}/pthread.h
         -DLIBPTHREADSWIN32_PATH=${THREADS_PTHREADS_ROOT}
         -DVERSION_INFO_OVERRIDE=${EXTRA_VERSION_INFO}
-        ${BLADE_RF_CONFIG_EXTRA}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
         #post install: move dll from lib into the runtime path directory
