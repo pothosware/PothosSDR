@@ -184,7 +184,7 @@ ExternalProject_Add(PothosGui
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-        -DCMAKE_PREFIX_PATH=${QT5_DLL_ROOT}
+        -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
@@ -231,7 +231,7 @@ ExternalProject_Add(PothosPlotters
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-        -DCMAKE_PREFIX_PATH=${QT5_DLL_ROOT}
+        -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
@@ -345,7 +345,7 @@ ExternalProject_Add(PothosWidgets
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-        -DCMAKE_PREFIX_PATH=${QT5_DLL_ROOT}
+        -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )

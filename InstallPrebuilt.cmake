@@ -64,6 +64,8 @@ install(FILES
     DESTINATION bin
 )
 
+install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
+
 ############################################################
 ## Pthreads (prebuilt)
 ############################################################
@@ -95,35 +97,40 @@ install(FILES "${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.dll" DESTINATION 
 ############################################################
 ## Qt5 (prebuilt)
 ############################################################
+set(QT5_ROOT C:/Qt/Qt5.6.0)
+
 if (MSVC14)
-    set(QT5_DLL_ROOT C:/Qt/Qt5.6.0/5.6/msvc2015_64)
+    set(QT5_LIB_PATH ${QT5_ROOT}/5.6/msvc2015_64)
 endif ()
 
 if (MSVC12)
-    set(QT5_DLL_ROOT C:/Qt/Qt5.6.0/5.6/msvc2013_64)
+    set(QT5_LIB_PATH ${QT5_ROOT}/5.6/msvc2013_64)
 endif ()
 
-message(STATUS "QT5_DLL_ROOT: ${QT5_DLL_ROOT}")
+message(STATUS "QT5_ROOT: ${QT5_ROOT}")
+message(STATUS "QT5_LIB_PATH: ${QT5_LIB_PATH}")
 
-file(GLOB QT5_ICU_DLLS "${QT5_DLL_ROOT}/bin/icu*.dll")
+file(GLOB QT5_ICU_DLLS "${QT5_LIB_PATH}/bin/icu*.dll")
 
 install(FILES
     ${QT5_ICU_DLLS}
-    "${QT5_DLL_ROOT}/bin/libGLESv2.dll"
-    "${QT5_DLL_ROOT}/bin/libEGL.dll"
-    "${QT5_DLL_ROOT}/bin/Qt5Core.dll"
-    "${QT5_DLL_ROOT}/bin/Qt5Gui.dll"
-    "${QT5_DLL_ROOT}/bin/Qt5Widgets.dll"
-    "${QT5_DLL_ROOT}/bin/Qt5Concurrent.dll"
-    "${QT5_DLL_ROOT}/bin/Qt5OpenGL.dll"
-    "${QT5_DLL_ROOT}/bin/Qt5Svg.dll"
-    "${QT5_DLL_ROOT}/bin/Qt5PrintSupport.dll"
-    "${QT5_DLL_ROOT}/bin/Qt5Network.dll"
+    "${QT5_LIB_PATH}/bin/libGLESv2.dll"
+    "${QT5_LIB_PATH}/bin/libEGL.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Core.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Gui.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Widgets.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Concurrent.dll"
+    "${QT5_LIB_PATH}/bin/Qt5OpenGL.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Svg.dll"
+    "${QT5_LIB_PATH}/bin/Qt5PrintSupport.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Network.dll"
     DESTINATION bin
 )
 
-install(FILES "${QT5_DLL_ROOT}/plugins/platforms/qwindows.dll" DESTINATION bin/platforms)
-install(FILES "${QT5_DLL_ROOT}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
+install(FILES "${QT5_LIB_PATH}/plugins/platforms/qwindows.dll" DESTINATION bin/platforms)
+install(FILES "${QT5_LIB_PATH}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
+
+install(DIRECTORY ${QT5_ROOT}/Licenses/ DESTINATION licenses/Qt)
 
 ############################################################
 ## LibUSB dependency (prebuilt)
