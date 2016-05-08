@@ -355,3 +355,22 @@ install(
     FILES ${SOURCE_DIR}/LICENSE_1_0.txt
     DESTINATION licenses/PothosWidgets
 )
+
+############################################################
+## Build BTLE demo
+############################################################
+set(BLTE_DEMO_BRANCH master)
+message(STATUS "Configuring BtleDemo - ${BLTE_DEMO_BRANCH}")
+ExternalProject_Add(BtleDemo
+    DEPENDS Pothos
+    GIT_REPOSITORY https://github.com/DesignSparkrs/sdr-ble-demo.git
+    GIT_TAG ${BLTE_DEMO_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
