@@ -100,49 +100,43 @@ install(
     DESTINATION licenses/GNURadio
 )
 
-install(FILES icons/grc-icon-256.ico DESTINATION share/gnuradio/icons)
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
+WriteRegStr HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GRC_BLOCKS_PATH\\\" \\\"$INSTDIR\\\\share\\\\gnuradio\\\\grc\\\\blocks\\\"
+")
+
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
+DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GRC_BLOCKS_PATH\\\"
+")
+
+########################################################################
+## gnuradio-companion.exe
+########################################################################
+set(GNURADIO_COMPANION_EXE_BRANCH master)
+message(STATUS "Configuring GnuradioCompanionExe - ${GNURADIO_COMPANION_EXE_BRANCH}")
+ExternalProject_Add(GnuradioCompanionExe
+    GIT_REPOSITORY https://github.com/pothosware/gnuradio-companion-exe.git
+    GIT_TAG ${GNURADIO_COMPANION_EXE_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
 
 list(APPEND CPACK_PACKAGE_EXECUTABLES "gnuradio-companion" "GNURadio Companion")
 list(APPEND CPACK_CREATE_DESKTOP_LINKS "gnuradio-companion")
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
-WriteRegStr HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GRC_BLOCKS_PATH\\\" \\\"$INSTDIR\\\\share\\\\gnuradio\\\\grc\\\\blocks\\\"
 WriteRegStr HKEY_CLASSES_ROOT \\\".grc\\\" \\\"\\\" \\\"GNURadio.Companion\\\"
 WriteRegStr HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\share\\\\gnuradio\\\\icons\\\\grc-icon-256.ico\\\"
 WriteRegStr HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${NEQ}$INSTDIR\\\\bin\\\\gnuradio-companion.exe${NEQ} ${NEQ}%1${NEQ} %*\\\"
 ")
 
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
-DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GRC_BLOCKS_PATH\\\"
 DeleteRegKey HKEY_CLASSES_ROOT \\\".grc\\\"
 DeleteRegKey HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\"
 ")
-
-########################################################################
-## gnuradio-companion.exe
-########################################################################
-get_filename_component(PYTHON2_INSTALL ${PYTHON2_EXECUTABLE} DIRECTORY)
-set(PYINSTALLER_EXECUTABLE ${PYTHON2_INSTALL}/Scripts/pyinstaller.exe)
-set(GNURADIO_COMPANION_EXE ${CMAKE_BINARY_DIR}/dist/gnuradio-companion.exe)
-
-if (EXISTS ${PYINSTALLER_EXECUTABLE})
-    add_custom_command(
-        OUTPUT ${GNURADIO_COMPANION_EXE}
-        DEPENDS
-            ${CMAKE_SOURCE_DIR}/icons/grc-icon-256.ico
-            ${CMAKE_SOURCE_DIR}/Scripts/gnuradio-companion.py
-        COMMAND ${PYINSTALLER_EXECUTABLE} --onefile
-            --icon=${CMAKE_SOURCE_DIR}/icons/grc-icon-256.ico
-            ${CMAKE_SOURCE_DIR}/Scripts/gnuradio-companion.py
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
-
-    add_custom_target(grc_exe ALL DEPENDS ${GNURADIO_COMPANION_EXE})
-
-    install(FILES ${GNURADIO_COMPANION_EXE} DESTINATION bin)
-else ()
-    message(WARNING "Skipping GRC executable -- missing ${PYINSTALLER_EXECUTABLE}")
-endif ()
 
 ############################################################
 ## GR runtime
