@@ -22,9 +22,8 @@ ExternalProject_Add(LimeSuite
     DEPENDS SoapySDR
     GIT_REPOSITORY https://github.com/myriadrf/LimeSuite.git
     GIT_TAG ${LIME_SUITE_BRANCH}
-    CONFIGURE_COMMAND
-        "${CMAKE_COMMAND}" <SOURCE_DIR>/src
-        -G ${CMAKE_GENERATOR}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DWX_ROOT_DIR=${wxWidgets_ROOT_DIR}
