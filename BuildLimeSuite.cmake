@@ -26,6 +26,7 @@ ExternalProject_Add(LimeSuite
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DLIME_SUITE_EXTVER=${EXTRA_VERSION_INFO}
         -DWX_ROOT_DIR=${wxWidgets_ROOT_DIR}
         -DwxWidgets_ROOT_DIR=${wxWidgets_ROOT_DIR}
         -DwxWidgets_LIB_DIR=${wxWidgets_LIB_DIR}
