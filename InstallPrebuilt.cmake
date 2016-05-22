@@ -18,7 +18,7 @@
 ############################################################
 ## Zadig for USB devices
 ############################################################
-set(ZADIG_NAME "zadig_2.1.2.exe")
+set(ZADIG_NAME "zadig_2.2.exe")
 
 if (NOT EXISTS "${CMAKE_BINARY_DIR}/${ZADIG_NAME}")
     message(STATUS "Downloading zadig...")
@@ -31,8 +31,8 @@ endif ()
 
 install(FILES "${CMAKE_BINARY_DIR}/${ZADIG_NAME}" DESTINATION bin)
 
-list(APPEND CPACK_PACKAGE_EXECUTABLES "zadig_2.1.2" "Zadig v2.1.2")
-list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig_2.1.2")
+list(APPEND CPACK_PACKAGE_EXECUTABLES "zadig_2.2" "Zadig v2.2")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig_2.2")
 
 ############################################################
 ## Boost dependency (prebuilt)
