@@ -65,6 +65,7 @@ include(SetupNSIS.cmake)
 ########################################################################
 # Generate script for complete rebuild
 ########################################################################
+message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 file(WRITE ${PROJECT_BINARY_DIR}/rebuild_all.bat
     "\"${CMAKE_COMMAND}\" -E remove_directory \"${CMAKE_INSTALL_PREFIX}\"\n"
     "\"${CMAKE_COMMAND}\" -E make_directory \"${CMAKE_INSTALL_PREFIX}\"\n"
