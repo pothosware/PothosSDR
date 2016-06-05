@@ -12,7 +12,7 @@
 ## * gqrx
 ############################################################
 
-set(VOLK_BRANCH v1.2.2)
+set(VOLK_BRANCH maint)
 set(GNURADIO_BRANCH v3.7.9.2)
 set(GR_RUNTIME_BRANCH master)
 set(GR_POTHOS_BRANCH master)
