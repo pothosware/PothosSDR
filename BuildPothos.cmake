@@ -374,3 +374,22 @@ ExternalProject_Add(BtleDemo
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
+
+############################################################
+## Build LoRa demo
+############################################################
+set(LORA_DEMO_BRANCH master)
+message(STATUS "Configuring LoRaDemo - ${LORA_DEMO_BRANCH}")
+ExternalProject_Add(LoRaDemo
+    DEPENDS Pothos
+    GIT_REPOSITORY https://github.com/myriadrf/LoRa-SDR.git
+    GIT_TAG ${LORA_DEMO_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
