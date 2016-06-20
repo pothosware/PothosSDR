@@ -15,6 +15,7 @@
 | GNURadio      | gnuradio_fec_dllr_factor.diff        | https://github.com/pothosware/gnuradio/issues/26      |
 | GNURadio      | gnuradio_dtv_use_gr_aligned.diff     | https://github.com/pothosware/gnuradio/issues/25      |
 | GNURadio      | gnuradio_fec_ldpc_config_h.diff      | https://github.com/pothosware/gnuradio/issues/24      |
+| GNURadio      | gr_dtv_dvb_bbheader_grc_fix.diff     | https://github.com/pothosware/gnuradio/issues/28      |
 | UHD           | uhd_fix_gain_group_floor_round.diff  | https://github.com/EttusResearch/uhd/issues/31        |
 | gr-rds        | gr_rds_msvc_fixes.diff               | Minor MSVC patches for encoder_impl.cc                |
 | zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |
