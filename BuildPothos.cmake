@@ -22,7 +22,7 @@ set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.3.1)
 set(POTHOS_COMMS_BRANCH fedd5b8b9486da9efda1809f53ec1a066c36ab4c) #pothos-comms-0.1.3 + include fix
 set(POTHOS_GUI_BRANCH pothos-gui-0.3.2)
 set(POTHOS_PLOTTERS_BRANCH pothos-plotters-0.1.1)
-set(POTHOS_PYTHON_BRANCH pothos-python-0.1.3)
+set(POTHOS_PYTHON_BRANCH pothos-python-0.1.4)
 set(POTHOS_SDR_BRANCH pothos-sdr-0.3.1)
 set(POTHOS_WIDGETS_BRANCH pothos-widgets-0.3.0)
 
