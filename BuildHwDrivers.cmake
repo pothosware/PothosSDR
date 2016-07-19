@@ -126,7 +126,7 @@ ExternalProject_Add(bladeRF
         #since we are not using the exact same file path
         && ${CMAKE_COMMAND} -E make_directory ${THREADS_PTHREADS_ROOT}/dll/x64
         && ${CMAKE_COMMAND} -E copy
-            ${CMAKE_INSTALL_PREFIX}/bin/pthreadVC${MSVC_VERSION}.dll
+            ${THREADS_PTHREADS_ROOT}/pthreadVC2.dll
             ${THREADS_PTHREADS_ROOT}/dll/x64/pthreadVC2.dll
         && ${CMAKE_COMMAND} -E make_directory ${LIBUSB_ROOT}/MS64/dll
         && ${CMAKE_COMMAND} -E copy

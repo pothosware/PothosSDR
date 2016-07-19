@@ -7,7 +7,7 @@ index d4b5899..cb1fdd0 100644
  #endif
  
 +#if _MSC_VER >= 1900
-+#   define HAVE_STRUCT_TIMESPEC 1
++#   define _TIMESPEC_DEFINED
 +#endif
 +
  /*

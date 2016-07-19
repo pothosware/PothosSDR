@@ -28,19 +28,10 @@ ExternalProject_Add(Pthreads
     GIT_REPOSITORY https://github.com/VFR-maniac/pthreads-win32.git
     GIT_TAG ${PTHREADS_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/pthreads_win32_vc14.diff &&
-        ${CMAKE_COMMAND} -E copy
-            ${PROJECT_SOURCE_DIR}/patches/pthreads_win32_CMakeLists.txt
-            <SOURCE_DIR>/CMakeLists.txt
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    CMAKE_ARGS
-        -Wno-dev
-        -DLIBNAME=pthreadVC${MSVC_VERSION_XX}
-        -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+        ${PROJECT_SOURCE_DIR}/patches/pthreads_win32_vc14.diff
+    CONFIGURE_COMMAND echo "Configure pthreads..."
+    BUILD_COMMAND cd <SOURCE_DIR> && nmake VC
+    INSTALL_COMMAND echo "..."
 )
 
 ExternalProject_Get_Property(Pthreads SOURCE_DIR)
@@ -51,10 +42,19 @@ install(
     DESTINATION licenses/Pthreads
 )
 
+#external install commands, variables use build paths
+install(FILES
+    ${SOURCE_DIR}/pthread.h
+    ${SOURCE_DIR}/sched.h
+    ${SOURCE_DIR}/semaphore.h
+    DESTINATION include)
+install(FILES ${SOURCE_DIR}/pthreadVC2.lib DESTINATION lib)
+install(FILES ${SOURCE_DIR}/pthreadVC2.dll DESTINATION bin)
+
 #use these variable to setup pthreads in dependent projects
 set(THREADS_PTHREADS_ROOT ${SOURCE_DIR})
-set(THREADS_PTHREADS_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-set(THREADS_PTHREADS_WIN32_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/pthreadVC${MSVC_VERSION_XX}.lib)
+set(THREADS_PTHREADS_INCLUDE_DIR ${THREADS_PTHREADS_ROOT})
+set(THREADS_PTHREADS_WIN32_LIBRARY ${THREADS_PTHREADS_ROOT}/pthreadVC2.lib)
 
 ############################################################
 ## Build libusb-1.0
