@@ -18,6 +18,7 @@ set(POCO_BRANCH poco-1.7.4)
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.7)
 set(PORTAUDIO_BRANCH master)
+set(WXWIDGETS_BRANCH v3.1.0)
 
 ############################################################
 ## Build Pthreads for win32
@@ -34,7 +35,7 @@ ExternalProject_Add(Pthreads
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
-        -DLIBNAME=pthreadVC${MSVC_VERSION}
+        -DLIBNAME=pthreadVC${MSVC_VERSION_XX}
         -DBUILD_SHARED_LIBS=ON
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -53,19 +54,11 @@ install(
 #use these variable to setup pthreads in dependent projects
 set(THREADS_PTHREADS_ROOT ${SOURCE_DIR})
 set(THREADS_PTHREADS_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-set(THREADS_PTHREADS_WIN32_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/pthreadVC${MSVC_VERSION}.lib)
+set(THREADS_PTHREADS_WIN32_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/pthreadVC${MSVC_VERSION_XX}.lib)
 
 ############################################################
 ## Build libusb-1.0
 ############################################################
-
-if (MSVC12)
-    set(LIBUSB_DLL_PROJ libusb_dll_2013.vcxproj)
-endif ()
-if (MSVC14)
-    set(LIBUSB_DLL_PROJ libusb_dll_2015.vcxproj)
-endif ()
-
 message(STATUS "Configuring libusb - ${LIBUSB_BRANCH}")
 ExternalProject_Add(libusb
     GIT_REPOSITORY https://github.com/libusb/libusb.git
@@ -73,7 +66,7 @@ ExternalProject_Add(libusb
     CONFIGURE_COMMAND echo "Configure libusb..."
     BUILD_COMMAND msbuild
         /p:Configuration=Release,Platform=x64
-        /m <SOURCE_DIR>/msvc/${LIBUSB_DLL_PROJ}
+        /m <SOURCE_DIR>/msvc/libusb_dll_${MSVC_VERSION_YEAR}.vcxproj
     INSTALL_COMMAND echo "..."
 )
 
@@ -245,3 +238,24 @@ install(FILES ${BINARY_DIR}/${CMAKE_BUILD_TYPE}/portaudio_x64.dll DESTINATION bi
 #use these variable to setup portaudio in dependent projects
 set(PORTAUDIO_INCLUDE_DIR ${SOURCE_DIR}/include)
 set(PORTAUDIO_LIBRARY ${BINARY_DIR}/${CMAKE_BUILD_TYPE}/portaudio_x64.lib)
+
+
+############################################################
+## Build wxWidgets
+############################################################
+message(STATUS "Configuring wxWidgets - ${WXWIDGETS_BRANCH}")
+ExternalProject_Add(wxWidgets
+    GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
+    GIT_TAG ${WXWIDGETS_BRANCH}
+    CONFIGURE_COMMAND echo "Configure wxwidgets..."
+    BUILD_COMMAND msbuild
+        /p:Configuration=Release,Platform=x64
+        /m <SOURCE_DIR>/build/msw/wx_vc${MSVC_VERSION_XX}.sln
+    INSTALL_COMMAND echo "..."
+)
+
+ExternalProject_Get_Property(wxWidgets SOURCE_DIR)
+
+#use these variable to setup wxWidgets in dependent projects
+set(wxWidgets_ROOT_DIR ${SOURCE_DIR})
+set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_x64_lib)

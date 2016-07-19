@@ -22,7 +22,7 @@ endif()
 ############################################################
 message(STATUS "Configuring CubicSDR - ${CUBIC_SDR_BRANCH}")
 ExternalProject_Add(CubicSDR
-    DEPENDS SoapySDR
+    DEPENDS SoapySDR wxWidgets
     GIT_REPOSITORY https://github.com/cjcliffe/CubicSDR.git
     GIT_TAG ${CUBIC_SDR_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}

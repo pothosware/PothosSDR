@@ -43,12 +43,6 @@ and can be to replicate the complete build environment.
 * FFTW: ftp://ftp.fftw.org/pub/fftw/fftw-3.3.4-dll64.zip
 * NSIS: http://sourceforge.net/projects/nsis/files/NSIS%202/2.50/
 
-Prebuilt wxWidgets development headers, libraries, and DLLs
-can be downloaded for vc12:
-http://sourceforge.net/projects/wxwindows/files/3.0.2/
-For vc14, follow the instructions here to build from source:
-https://github.com/cjcliffe/CubicSDR/wiki/Build-Windows#build-wxwidgets
-
 ##Building the environment
 
 This repository contains build scripts for creating
