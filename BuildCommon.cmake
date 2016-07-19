@@ -17,6 +17,7 @@ set(CPPZMQ_BRANCH master)
 set(POCO_BRANCH poco-1.7.4)
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.7)
+set(PORTAUDIO_BRANCH master)
 
 ############################################################
 ## Build Pthreads for win32
@@ -82,8 +83,7 @@ ExternalProject_Add(libusb
 
 ExternalProject_Get_Property(libusb SOURCE_DIR)
 install(
-    FILES
-        ${SOURCE_DIR}/COPYING
+    FILES ${SOURCE_DIR}/COPYING
     DESTINATION licenses/libusb
 )
 
@@ -210,3 +210,34 @@ install(
     FILES ${SOURCE_DIR}/License.txt
     DESTINATION licenses/muparserx
 )
+
+############################################################
+## Build PortAudio
+############################################################
+message(STATUS "Configuring PortAudio - ${PORTAUDIO_BRANCH}")
+ExternalProject_Add(PortAudio
+    GIT_REPOSITORY https://github.com/EddieRingle/portaudio.git #git mirror
+    GIT_TAG ${PORTAUDIO_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/portaudio_no_ksguid_lib.diff
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND
+        ${CMAKE_COMMAND} -E copy <BINARY_DIR>/${CMAKE_BUILD_TYPE}/portaudio_x64.lib ${CMAKE_INSTALL_PREFIX}/lib &&
+        ${CMAKE_COMMAND} -E copy <BINARY_DIR>/${CMAKE_BUILD_TYPE}/portaudio_x64.dll ${CMAKE_INSTALL_PREFIX}/bin &&
+        ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include ${CMAKE_INSTALL_PREFIX}/include/
+)
+
+ExternalProject_Get_Property(PortAudio SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE.txt
+    DESTINATION licenses/PortAudio
+)
+
+#use these variable to setup portaudio in dependent projects
+set(PORTAUDIO_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+set(PORTAUDIO_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/portaudio_x64.lib)

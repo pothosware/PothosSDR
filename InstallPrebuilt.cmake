@@ -67,17 +67,6 @@ install(FILES
 install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
 
 ############################################################
-## PortAudio dependency (prebuilt)
-############################################################
-set(PORTAUDIO_ROOT C:/local/portaudio-r1891-build)
-set(PORTAUDIO_INCLUDE_DIR ${PORTAUDIO_ROOT}/include)
-set(PORTAUDIO_LIBRARY ${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.lib)
-
-message(STATUS "PORTAUDIO_ROOT: ${PORTAUDIO_ROOT}")
-
-install(FILES "${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.dll" DESTINATION bin)
-
-############################################################
 ## Qt5 (prebuilt)
 ############################################################
 set(QT5_ROOT C:/Qt/Qt5.6.0)
