@@ -74,11 +74,7 @@ ExternalProject_Add(libusb
     BUILD_COMMAND msbuild
         /p:Configuration=Release,Platform=x64
         /m <SOURCE_DIR>/msvc/${LIBUSB_DLL_PROJ}
-    INSTALL_COMMAND
-        ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/x64/Release/dll/libusb-1.0.lib ${CMAKE_INSTALL_PREFIX}/lib &&
-        ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/x64/Release/dll/libusb-1.0.dll ${CMAKE_INSTALL_PREFIX}/bin &&
-        ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/include/libusb-1.0 &&
-        ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libusb/libusb.h ${CMAKE_INSTALL_PREFIX}/include/libusb-1.0/
+    INSTALL_COMMAND echo "..."
 )
 
 ExternalProject_Get_Property(libusb SOURCE_DIR)
@@ -87,10 +83,15 @@ install(
     DESTINATION licenses/libusb
 )
 
+#external install commands, variables use build paths
+install(FILES ${SOURCE_DIR}/libusb/libusb.h DESTINATION include/libusb-1.0)
+install(FILES ${SOURCE_DIR}/x64/Release/dll/libusb-1.0.lib DESTINATION lib)
+install(FILES ${SOURCE_DIR}/x64/Release/dll/libusb-1.0.dll DESTINATION bin)
+
 #use these variable to setup libusb in dependent projects
 set(LIBUSB_ROOT ${SOURCE_DIR})
-set(LIBUSB_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/libusb-1.0)
-set(LIBUSB_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/libusb-1.0.lib)
+set(LIBUSB_INCLUDE_DIR ${SOURCE_DIR}/libusb)
+set(LIBUSB_LIBRARIES ${SOURCE_DIR}/x64/Release/dll/libusb-1.0.lib)
 
 ############################################################
 ## Build ZeroMQ
@@ -226,18 +227,21 @@ ExternalProject_Add(PortAudio
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND
-        ${CMAKE_COMMAND} -E copy <BINARY_DIR>/${CMAKE_BUILD_TYPE}/portaudio_x64.lib ${CMAKE_INSTALL_PREFIX}/lib &&
-        ${CMAKE_COMMAND} -E copy <BINARY_DIR>/${CMAKE_BUILD_TYPE}/portaudio_x64.dll ${CMAKE_INSTALL_PREFIX}/bin &&
-        ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include ${CMAKE_INSTALL_PREFIX}/include/
+    INSTALL_COMMAND echo "..."
 )
 
 ExternalProject_Get_Property(PortAudio SOURCE_DIR)
+ExternalProject_Get_Property(PortAudio BINARY_DIR)
 install(
     FILES ${SOURCE_DIR}/LICENSE.txt
     DESTINATION licenses/PortAudio
 )
 
+#external install commands, variables use build paths
+install(DIRECTORY ${SOURCE_DIR}/include DESTINATION .)
+install(FILES ${BINARY_DIR}/${CMAKE_BUILD_TYPE}/portaudio_x64.lib DESTINATION lib)
+install(FILES ${BINARY_DIR}/${CMAKE_BUILD_TYPE}/portaudio_x64.dll DESTINATION bin)
+
 #use these variable to setup portaudio in dependent projects
-set(PORTAUDIO_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-set(PORTAUDIO_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/portaudio_x64.lib)
+set(PORTAUDIO_INCLUDE_DIR ${SOURCE_DIR}/include)
+set(PORTAUDIO_LIBRARY ${BINARY_DIR}/${CMAKE_BUILD_TYPE}/portaudio_x64.lib)
