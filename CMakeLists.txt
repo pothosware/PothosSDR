@@ -58,7 +58,7 @@ include(BuildHwDrivers.cmake)
 include(BuildSoapySDR.cmake)
 include(BuildLimeSuite.cmake)
 include(BuildPothos.cmake)
-#include(BuildGNURadio.cmake)
+include(BuildGNURadio.cmake)
 include(BuildCubicSDR.cmake)
 
 ########################################################################
