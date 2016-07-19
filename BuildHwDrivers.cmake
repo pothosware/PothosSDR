@@ -103,6 +103,14 @@ ExternalProject_Add(bladeRF
     DEPENDS Pthreads
     GIT_REPOSITORY https://github.com/Nuand/bladeRF.git
     GIT_TAG ${BLADERF_BRANCH}
+    #work around the bladerf install dll command
+    #since we are not using the exact same file path
+    PATCH_COMMAND
+        ${CMAKE_COMMAND} -E make_directory
+            ${THREADS_PTHREADS_ROOT}/dll/x64 &&
+        ${CMAKE_COMMAND} -E copy
+            ${THREADS_PTHREADS_WIN32_LIBRARY}
+            ${THREADS_PTHREADS_ROOT}/dll/x64/pthreadVC2.dll
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
