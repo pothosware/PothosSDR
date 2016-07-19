@@ -11,6 +11,7 @@
 ############################################################
 
 set(PTHREADS_BRANCH master)
+set(LIBUSB_BRANCH master) #> v1.0.20 for vc14 support
 set(ZEROMQ_BRANCH master)
 set(CPPZMQ_BRANCH master)
 set(POCO_BRANCH poco-1.7.4)
@@ -52,6 +53,44 @@ install(
 set(THREADS_PTHREADS_ROOT ${SOURCE_DIR})
 set(THREADS_PTHREADS_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
 set(THREADS_PTHREADS_WIN32_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/pthreadVC${MSVC_VERSION}.lib)
+
+############################################################
+## Build libusb-1.0
+############################################################
+
+if (MSVC12)
+    set(LIBUSB_DLL_PROJ libusb_dll_2013.vcxproj)
+endif ()
+if (MSVC14)
+    set(LIBUSB_DLL_PROJ libusb_dll_2015.vcxproj)
+endif ()
+
+message(STATUS "Configuring libusb - ${LIBUSB_BRANCH}")
+ExternalProject_Add(libusb
+    GIT_REPOSITORY https://github.com/libusb/libusb.git
+    GIT_TAG ${LIBUSB_BRANCH}
+    CONFIGURE_COMMAND echo "Configure libusb..."
+    BUILD_COMMAND msbuild
+        /p:Configuration=Release,Platform=x64
+        /m <SOURCE_DIR>/msvc/${LIBUSB_DLL_PROJ}
+    INSTALL_COMMAND
+        ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/x64/Release/dll/libusb-1.0.lib ${CMAKE_INSTALL_PREFIX}/lib &&
+        ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/x64/Release/dll/libusb-1.0.dll ${CMAKE_INSTALL_PREFIX}/bin &&
+        ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/include/libusb-1.0 &&
+        ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libusb/libusb.h ${CMAKE_INSTALL_PREFIX}/include/libusb-1.0/
+)
+
+ExternalProject_Get_Property(libusb SOURCE_DIR)
+install(
+    FILES
+        ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/libusb
+)
+
+#use these variable to setup libusb in dependent projects
+set(LIBUSB_ROOT ${SOURCE_DIR})
+set(LIBUSB_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/libusb-1.0)
+set(LIBUSB_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/libusb-1.0.lib)
 
 ############################################################
 ## Build ZeroMQ

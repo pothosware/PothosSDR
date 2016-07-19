@@ -116,17 +116,6 @@ install(FILES "${QT5_LIB_PATH}/plugins/iconengines/qsvgicon.dll" DESTINATION bin
 install(DIRECTORY ${QT5_ROOT}/Licenses/ DESTINATION licenses/Qt)
 
 ############################################################
-## LibUSB dependency (prebuilt)
-############################################################
-set(LIBUSB_ROOT C:/local/libusb-1.0.20)
-set(LIBUSB_INCLUDE_DIR ${LIBUSB_ROOT}/include/libusb-1.0)
-set(LIBUSB_LIBRARIES ${LIBUSB_ROOT}/MS64/dll/libusb-1.0.lib)
-
-message(STATUS "LIBUSB_ROOT: ${LIBUSB_ROOT}")
-
-install(FILES "${LIBUSB_ROOT}/MS64/dll/libusb-1.0.dll" DESTINATION bin)
-
-############################################################
 ## Cypress API (prebuilt)
 ############################################################
 set(FX3_SDK_PATH "C:/local/EZ-USB FX3 SDK/1.3")

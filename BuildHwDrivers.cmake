@@ -27,6 +27,7 @@ set(AIRSPY_BRANCH v1.0.8)
 ############################################################
 message(STATUS "Configuring osmo-sdr - ${OSMO_BRANCH}")
 ExternalProject_Add(osmo-sdr
+    DEPENDS libusb
     GIT_REPOSITORY git://git.osmocom.org/osmo-sdr.git
     GIT_TAG ${OSMO_BRANCH}
     CONFIGURE_COMMAND
@@ -51,6 +52,7 @@ install(
 ############################################################
 message(STATUS "Configuring miri-sdr - ${MIRISDR_BRANCH}")
 ExternalProject_Add(miri-sdr
+    DEPENDS libusb
     GIT_REPOSITORY git://git.osmocom.org/libmirisdr.git
     GIT_TAG ${MIRISDR_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -74,7 +76,7 @@ install(
 ############################################################
 message(STATUS "Configuring rtl-sdr - ${RTL_BRANCH}")
 ExternalProject_Add(rtl-sdr
-    DEPENDS Pthreads
+    DEPENDS Pthreads libusb
     GIT_REPOSITORY git://git.osmocom.org/rtl-sdr.git
     GIT_TAG ${RTL_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -100,17 +102,9 @@ install(
 ############################################################
 message(STATUS "Configuring bladeRF - ${BLADERF_BRANCH}")
 ExternalProject_Add(bladeRF
-    DEPENDS Pthreads
+    DEPENDS Pthreads libusb
     GIT_REPOSITORY https://github.com/Nuand/bladeRF.git
     GIT_TAG ${BLADERF_BRANCH}
-    #work around the bladerf install dll command
-    #since we are not using the exact same file path
-    PATCH_COMMAND
-        ${CMAKE_COMMAND} -E make_directory
-            ${THREADS_PTHREADS_ROOT}/dll/x64 &&
-        ${CMAKE_COMMAND} -E copy
-            ${THREADS_PTHREADS_WIN32_LIBRARY}
-            ${THREADS_PTHREADS_ROOT}/dll/x64/pthreadVC2.dll
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
@@ -121,12 +115,31 @@ ExternalProject_Add(bladeRF
         -DENABLE_BACKEND_CYAPI=${FX3_SDK_FOUND}
         -DFX3_SDK_PATH=${FX3_SDK_PATH}
         -DLIBUSB_HEADER_FILE=${LIBUSB_INCLUDE_DIR}/libusb.h
+        -Dusb_LIBRARY=${LIBUSB_ROOT}/x64/Release/dll/libusb-1.0.lib
         -DLIBUSB_PATH=${LIBUSB_ROOT}
+        -DLIBPTHREADSWIN32_HEADER_FILE=${THREADS_PTHREADS_INCLUDE_DIR}/pthread.h
         -DPTHREAD_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
         -DLIBPTHREADSWIN32_PATH=${THREADS_PTHREADS_ROOT}
         -DVERSION_INFO_OVERRIDE=${EXTRA_VERSION_INFO}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    BUILD_COMMAND echo "build bladerf..."
+        #work around the bladerf copy external dll commands
+        #since we are not using the exact same file path
+        && ${CMAKE_COMMAND} -E make_directory ${THREADS_PTHREADS_ROOT}/dll/x64
+        && ${CMAKE_COMMAND} -E copy
+            ${CMAKE_INSTALL_PREFIX}/bin/pthreadVC${MSVC_VERSION}.dll
+            ${THREADS_PTHREADS_ROOT}/dll/x64/pthreadVC2.dll
+        && ${CMAKE_COMMAND} -E make_directory ${LIBUSB_ROOT}/MS64/dll
+        && ${CMAKE_COMMAND} -E copy
+            ${LIBUSB_ROOT}/x64/Release/dll/libusb-1.0.dll
+            ${LIBUSB_ROOT}/MS64/dll/libusb-1.0.dll
+        #the actual cmake build target
+        && ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+        #cleanup from work around copies
+        && ${CMAKE_COMMAND} -E remove_directory ${THREADS_PTHREADS_ROOT}/dll
+        && ${CMAKE_COMMAND} -E remove_directory ${LIBUSB_ROOT}/MS64
+    INSTALL_COMMAND echo "install bladerf..."
+        #the actual cmake install target
+        && ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
         #post install: move dll from lib into the runtime path directory
         && ${CMAKE_COMMAND} -E rename ${CMAKE_INSTALL_PREFIX}/lib/bladeRF.dll ${CMAKE_INSTALL_PREFIX}/bin/bladeRF.dll
 )
@@ -142,7 +155,7 @@ install(
 ############################################################
 message(STATUS "Configuring hackRF - ${HACKRF_BRANCH}")
 ExternalProject_Add(hackRF
-    DEPENDS Pthreads
+    DEPENDS Pthreads libusb
     GIT_REPOSITORY https://github.com/mossmann/hackrf.git
     GIT_TAG ${HACKRF_BRANCH}
     CONFIGURE_COMMAND
@@ -172,6 +185,7 @@ install(
 ############################################################
 message(STATUS "Configuring uhd - ${UHD_BRANCH}")
 ExternalProject_Add(uhd
+    DEPENDS libusb
     GIT_REPOSITORY https://github.com/EttusResearch/uhd.git
     GIT_TAG ${UHD_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
@@ -232,7 +246,7 @@ ExternalProject_Add(umtrx
 ############################################################
 message(STATUS "Configuring airspy - ${AIRSPY_BRANCH}")
 ExternalProject_Add(airspy
-    DEPENDS Pthreads
+    DEPENDS Pthreads libusb
     GIT_REPOSITORY https://github.com/airspy/host.git
     GIT_TAG ${AIRSPY_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
