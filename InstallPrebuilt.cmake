@@ -67,34 +67,6 @@ install(FILES
 install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
 
 ############################################################
-## Pthreads (prebuilt)
-############################################################
-set(THREADS_PTHREADS_ROOT C:/local/pthreads-w32-2.9.1)
-set(THREADS_PTHREADS_INCLUDE_DIR ${THREADS_PTHREADS_ROOT}/include)
-set(THREADS_PTHREADS_WIN32_LIBRARY ${THREADS_PTHREADS_ROOT}/lib/x64/pthreadVC2.lib)
-
-message(STATUS "THREADS_PTHREADS_ROOT: ${THREADS_PTHREADS_ROOT}")
-
-install(FILES "${THREADS_PTHREADS_ROOT}/dll/x64/pthreadVC2.dll" DESTINATION bin)
-
-install(FILES
-    "${THREADS_PTHREADS_ROOT}/COPYING"
-    "${THREADS_PTHREADS_ROOT}/COPYING.lib"
-    DESTINATION licenses/pthreads
-)
-
-############################################################
-## PortAudio dependency (prebuilt)
-############################################################
-set(PORTAUDIO_ROOT C:/local/portaudio-r1891-build)
-set(PORTAUDIO_INCLUDE_DIR ${PORTAUDIO_ROOT}/include)
-set(PORTAUDIO_LIBRARY ${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.lib)
-
-message(STATUS "PORTAUDIO_ROOT: ${PORTAUDIO_ROOT}")
-
-install(FILES "${PORTAUDIO_ROOT}/lib/x64/Release/portaudio_x64.dll" DESTINATION bin)
-
-############################################################
 ## Qt5 (prebuilt)
 ############################################################
 set(QT5_ROOT C:/Qt/Qt5.6.0)
@@ -131,17 +103,6 @@ install(FILES "${QT5_LIB_PATH}/plugins/platforms/qwindows.dll" DESTINATION bin/p
 install(FILES "${QT5_LIB_PATH}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
 
 install(DIRECTORY ${QT5_ROOT}/Licenses/ DESTINATION licenses/Qt)
-
-############################################################
-## LibUSB dependency (prebuilt)
-############################################################
-set(LIBUSB_ROOT C:/local/libusb-1.0.20)
-set(LIBUSB_INCLUDE_DIR ${LIBUSB_ROOT}/include/libusb-1.0)
-set(LIBUSB_LIBRARIES ${LIBUSB_ROOT}/MS64/dll/libusb-1.0.lib)
-
-message(STATUS "LIBUSB_ROOT: ${LIBUSB_ROOT}")
-
-install(FILES "${LIBUSB_ROOT}/MS64/dll/libusb-1.0.dll" DESTINATION bin)
 
 ############################################################
 ## Cypress API (prebuilt)
@@ -186,25 +147,3 @@ install(FILES
     "${FFTW3F_ROOT}/COPYRIGHT"
     DESTINATION licenses/fftw
 )
-
-############################################################
-## wxWidgets (prebuilt)
-############################################################
-set(wxWidgets_ROOT_DIR C:/local/wxWidgets-3.1.0)
-
-if (MSVC14)
-    set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc140_x64_lib)
-endif ()
-
-if (MSVC12)
-    set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc120_x64_lib)
-endif ()
-
-message(STATUS "wxWidgets_ROOT_DIR: ${wxWidgets_ROOT_DIR}")
-message(STATUS "wxWidgets_LIB_DIR: ${wxWidgets_LIB_DIR}")
-
-if (WX_USES_DLL)
-    file(GLOB WX_MSW_DLLS "${wxWidgets_LIB_DIR}/wxmsw310u_*.dll")
-    file(GLOB WX_BASE_DLLS "${wxWidgets_LIB_DIR}/wxbase310u_*.dll")
-    install(FILES ${WX_MSW_DLLS} ${WX_BASE_DLLS} DESTINATION bin)
-endif()

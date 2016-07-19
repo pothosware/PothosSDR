@@ -20,7 +20,7 @@ set(LIME_SUITE_BRANCH master)
 ############################################################
 message(STATUS "Configuring LimeSuite - ${LIME_SUITE_BRANCH}")
 ExternalProject_Add(LimeSuite
-    DEPENDS SoapySDR
+    DEPENDS SoapySDR wxWidgets
     GIT_REPOSITORY https://github.com/myriadrf/LimeSuite.git
     GIT_TAG ${LIME_SUITE_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}

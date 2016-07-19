@@ -1,0 +1,15 @@
+diff --git a/pthread.h b/pthread.h
+index d4b5899..cb1fdd0 100644
+--- a/pthread.h
++++ b/pthread.h
+@@ -116,6 +116,10 @@
+ #   pragma comment(lib, "pthread")
+ #endif
+ 
++#if _MSC_VER >= 1900
++#   define _TIMESPEC_DEFINED
++#endif
++
+ /*
+  * -------------------------------------------------------------
+  *

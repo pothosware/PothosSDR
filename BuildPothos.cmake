@@ -91,7 +91,7 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"POTHOS_ROOT\\\"
 ############################################################
 message(STATUS "Configuring PothosAudio - ${POTHOS_AUDIO_BRANCH}")
 ExternalProject_Add(PothosAudio
-    DEPENDS Pothos
+    DEPENDS Pothos PortAudio
     GIT_REPOSITORY https://github.com/pothosware/pothos-audio.git
     GIT_TAG ${POTHOS_AUDIO_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}

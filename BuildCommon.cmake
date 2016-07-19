@@ -10,11 +10,81 @@
 ## * muparserx (pothos framework)
 ############################################################
 
+set(PTHREADS_BRANCH master)
+set(LIBUSB_BRANCH master) #> v1.0.20 for vc14 support
 set(ZEROMQ_BRANCH master)
 set(CPPZMQ_BRANCH master)
 set(POCO_BRANCH poco-1.7.4)
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.7)
+set(PORTAUDIO_BRANCH master)
+set(WXWIDGETS_BRANCH v3.1.0)
+
+############################################################
+## Build Pthreads for win32
+############################################################
+message(STATUS "Configuring Pthreads - ${PTHREADS_BRANCH}")
+ExternalProject_Add(Pthreads
+    GIT_REPOSITORY https://github.com/VFR-maniac/pthreads-win32.git
+    GIT_TAG ${PTHREADS_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/pthreads_win32_vc14.diff
+    CONFIGURE_COMMAND echo "Configure pthreads..."
+    BUILD_COMMAND cd <SOURCE_DIR> && nmake VC
+    INSTALL_COMMAND echo "..."
+)
+
+ExternalProject_Get_Property(Pthreads SOURCE_DIR)
+install(
+    FILES
+        ${SOURCE_DIR}/COPYING
+        ${SOURCE_DIR}/COPYING.LIB
+    DESTINATION licenses/Pthreads
+)
+
+#external install commands, variables use build paths
+install(FILES
+    ${SOURCE_DIR}/pthread.h
+    ${SOURCE_DIR}/sched.h
+    ${SOURCE_DIR}/semaphore.h
+    DESTINATION include)
+install(FILES ${SOURCE_DIR}/pthreadVC2.lib DESTINATION lib)
+install(FILES ${SOURCE_DIR}/pthreadVC2.dll DESTINATION bin)
+
+#use these variable to setup pthreads in dependent projects
+set(THREADS_PTHREADS_ROOT ${SOURCE_DIR})
+set(THREADS_PTHREADS_INCLUDE_DIR ${THREADS_PTHREADS_ROOT})
+set(THREADS_PTHREADS_WIN32_LIBRARY ${THREADS_PTHREADS_ROOT}/pthreadVC2.lib)
+
+############################################################
+## Build libusb-1.0
+############################################################
+message(STATUS "Configuring libusb - ${LIBUSB_BRANCH}")
+ExternalProject_Add(libusb
+    GIT_REPOSITORY https://github.com/libusb/libusb.git
+    GIT_TAG ${LIBUSB_BRANCH}
+    CONFIGURE_COMMAND echo "Configure libusb..."
+    BUILD_COMMAND msbuild
+        /p:Configuration=Release,Platform=x64
+        /m <SOURCE_DIR>/msvc/libusb_dll_${MSVC_VERSION_YEAR}.vcxproj
+    INSTALL_COMMAND echo "..."
+)
+
+ExternalProject_Get_Property(libusb SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/libusb
+)
+
+#external install commands, variables use build paths
+install(FILES ${SOURCE_DIR}/libusb/libusb.h DESTINATION include/libusb-1.0)
+install(FILES ${SOURCE_DIR}/x64/Release/dll/libusb-1.0.lib DESTINATION lib)
+install(FILES ${SOURCE_DIR}/x64/Release/dll/libusb-1.0.dll DESTINATION bin)
+
+#use these variable to setup libusb in dependent projects
+set(LIBUSB_ROOT ${SOURCE_DIR})
+set(LIBUSB_INCLUDE_DIR ${SOURCE_DIR}/libusb)
+set(LIBUSB_LIBRARIES ${SOURCE_DIR}/x64/Release/dll/libusb-1.0.lib)
 
 ############################################################
 ## Build ZeroMQ
@@ -134,3 +204,58 @@ install(
     FILES ${SOURCE_DIR}/License.txt
     DESTINATION licenses/muparserx
 )
+
+############################################################
+## Build PortAudio
+############################################################
+message(STATUS "Configuring PortAudio - ${PORTAUDIO_BRANCH}")
+ExternalProject_Add(PortAudio
+    GIT_REPOSITORY https://github.com/EddieRingle/portaudio.git #git mirror
+    GIT_TAG ${PORTAUDIO_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/portaudio_no_ksguid_lib.diff
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND echo "..."
+)
+
+ExternalProject_Get_Property(PortAudio SOURCE_DIR)
+ExternalProject_Get_Property(PortAudio BINARY_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE.txt
+    DESTINATION licenses/PortAudio
+)
+
+#external install commands, variables use build paths
+install(DIRECTORY ${SOURCE_DIR}/include DESTINATION .)
+install(FILES ${BINARY_DIR}/${CMAKE_BUILD_TYPE}/portaudio_x64.lib DESTINATION lib)
+install(FILES ${BINARY_DIR}/${CMAKE_BUILD_TYPE}/portaudio_x64.dll DESTINATION bin)
+
+#use these variable to setup portaudio in dependent projects
+set(PORTAUDIO_INCLUDE_DIR ${SOURCE_DIR}/include)
+set(PORTAUDIO_LIBRARY ${BINARY_DIR}/${CMAKE_BUILD_TYPE}/portaudio_x64.lib)
+
+
+############################################################
+## Build wxWidgets
+############################################################
+message(STATUS "Configuring wxWidgets - ${WXWIDGETS_BRANCH}")
+ExternalProject_Add(wxWidgets
+    GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
+    GIT_TAG ${WXWIDGETS_BRANCH}
+    CONFIGURE_COMMAND echo "Configure wxwidgets..."
+    BUILD_COMMAND msbuild
+        /p:Configuration=Release,Platform=x64
+        /m <SOURCE_DIR>/build/msw/wx_vc${MSVC_VERSION_XX}.sln
+    INSTALL_COMMAND echo "..."
+)
+
+ExternalProject_Get_Property(wxWidgets SOURCE_DIR)
+
+#use these variable to setup wxWidgets in dependent projects
+set(wxWidgets_ROOT_DIR ${SOURCE_DIR})
+set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_x64_lib)

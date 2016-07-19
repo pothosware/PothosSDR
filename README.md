@@ -39,18 +39,9 @@ and can be to replicate the complete build environment.
 * Boost 1.60: http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/
 * Qt MSVC2015: https://download.qt.io/development_releases/qt/5.6/5.6.0-beta/
 * Qt MSVC2013: https://download.qt.io/archive/qt/5.5/5.5.1/
-* Pthreads: http://sourceforge.net/projects/pthreads4w/files/latest/download
-* PortAudio: https://github.com/adfernandes/precompiled-portaudio-windows
-* LibUSB: http://sourceforge.net/projects/libusb/files/libusb-1.0/libusb-1.0.20/
 * SWIG: http://prdownloads.sourceforge.net/swig/swigwin-3.0.8.zip
 * FFTW: ftp://ftp.fftw.org/pub/fftw/fftw-3.3.4-dll64.zip
 * NSIS: http://sourceforge.net/projects/nsis/files/NSIS%202/2.50/
-
-Prebuilt wxWidgets development headers, libraries, and DLLs
-can be downloaded for vc12:
-http://sourceforge.net/projects/wxwindows/files/3.0.2/
-For vc14, follow the instructions here to build from source:
-https://github.com/cjcliffe/CubicSDR/wiki/Build-Windows#build-wxwidgets
 
 ##Building the environment
 

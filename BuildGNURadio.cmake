@@ -52,7 +52,7 @@ install(
 ############################################################
 message(STATUS "Configuring GNURadio - ${GNURADIO_BRANCH}")
 ExternalProject_Add(GNURadio
-    DEPENDS volk uhd CppZMQ
+    DEPENDS volk uhd CppZMQ PortAudio
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
