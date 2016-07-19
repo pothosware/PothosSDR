@@ -37,20 +37,13 @@ list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig_2.2")
 ############################################################
 ## Boost dependency (prebuilt)
 ############################################################
-set(BOOST_ROOT C:/local/boost_1_60_0)
-
-if (MSVC14)
-    set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-14.0)
-    set(BOOST_DLL_SUFFIX vc140-mt-1_60.dll)
-endif ()
-
-if (MSVC12)
-    set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-12.0)
-    set(BOOST_DLL_SUFFIX vc120-mt-1_60.dll)
-endif ()
+set(BOOST_ROOT C:/local/boost_1_61_0)
+set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-${MSVC_VERSION_XX}.0)
+set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_XX}0-mt-1_61.dll)
 
 message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")
 message(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
+message(STATUS "BOOST_DLL_SUFFIX: ${BOOST_DLL_SUFFIX}")
 
 install(FILES
     "${BOOST_LIBRARYDIR}/boost_thread-${BOOST_DLL_SUFFIX}"
@@ -69,15 +62,8 @@ install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
 ############################################################
 ## Qt5 (prebuilt)
 ############################################################
-set(QT5_ROOT C:/Qt/Qt5.6.0)
-
-if (MSVC14)
-    set(QT5_LIB_PATH ${QT5_ROOT}/5.6/msvc2015_64)
-endif ()
-
-if (MSVC12)
-    set(QT5_LIB_PATH ${QT5_ROOT}/5.6/msvc2013_64)
-endif ()
+set(QT5_ROOT C:/Qt/Qt5.7.0)
+set(QT5_LIB_PATH ${QT5_ROOT}/5.7/msvc${MSVC_VERSION_YEAR}_64)
 
 message(STATUS "QT5_ROOT: ${QT5_ROOT}")
 message(STATUS "QT5_LIB_PATH: ${QT5_LIB_PATH}")
