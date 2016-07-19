@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 2.8.0)
+project(pthreads-win32 C)
+
+#build defines
+add_definitions(-DPTW32_BUILD)
+if (NOT BUILD_SHARED_LIBS)
+    add_definitions(-DPTW32_STATIC_LIB)
+endif()
+
+#includes
+include_directories(${PROJECT_SOURCE_DIR})
+install(FILES pthread.h sched.h semaphore.h DESTINATION include)
+
+#library (-DBUILD_SHARED_LIBS=ON/OFF)
+set(LIBNAME pthread CACHE STRING "pthreads library target name")
+add_library(${LIBNAME} pthread.c)
+install(TARGETS ${LIBNAME}
+    LIBRARY DESTINATION lib${LIB_SUFFIX} # .so file
+    ARCHIVE DESTINATION lib${LIB_SUFFIX} # .lib file
+    RUNTIME DESTINATION bin              # .dll file
+)

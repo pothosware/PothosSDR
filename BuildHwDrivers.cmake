@@ -74,6 +74,7 @@ install(
 ############################################################
 message(STATUS "Configuring rtl-sdr - ${RTL_BRANCH}")
 ExternalProject_Add(rtl-sdr
+    DEPENDS Pthreads
     GIT_REPOSITORY git://git.osmocom.org/rtl-sdr.git
     GIT_TAG ${RTL_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -99,6 +100,7 @@ install(
 ############################################################
 message(STATUS "Configuring bladeRF - ${BLADERF_BRANCH}")
 ExternalProject_Add(bladeRF
+    DEPENDS Pthreads
     GIT_REPOSITORY https://github.com/Nuand/bladeRF.git
     GIT_TAG ${BLADERF_BRANCH}
     CONFIGURE_COMMAND
@@ -112,7 +114,7 @@ ExternalProject_Add(bladeRF
         -DFX3_SDK_PATH=${FX3_SDK_PATH}
         -DLIBUSB_HEADER_FILE=${LIBUSB_INCLUDE_DIR}/libusb.h
         -DLIBUSB_PATH=${LIBUSB_ROOT}
-        -DLIBPTHREADSWIN32_HEADER_FILE=${THREADS_PTHREADS_INCLUDE_DIR}/pthread.h
+        -DPTHREAD_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
         -DLIBPTHREADSWIN32_PATH=${THREADS_PTHREADS_ROOT}
         -DVERSION_INFO_OVERRIDE=${EXTRA_VERSION_INFO}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
@@ -132,6 +134,7 @@ install(
 ############################################################
 message(STATUS "Configuring hackRF - ${HACKRF_BRANCH}")
 ExternalProject_Add(hackRF
+    DEPENDS Pthreads
     GIT_REPOSITORY https://github.com/mossmann/hackrf.git
     GIT_TAG ${HACKRF_BRANCH}
     CONFIGURE_COMMAND
@@ -221,6 +224,7 @@ ExternalProject_Add(umtrx
 ############################################################
 message(STATUS "Configuring airspy - ${AIRSPY_BRANCH}")
 ExternalProject_Add(airspy
+    DEPENDS Pthreads
     GIT_REPOSITORY https://github.com/airspy/host.git
     GIT_TAG ${AIRSPY_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}

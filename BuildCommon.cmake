@@ -10,11 +10,48 @@
 ## * muparserx (pothos framework)
 ############################################################
 
+set(PTHREADS_BRANCH master)
 set(ZEROMQ_BRANCH master)
 set(CPPZMQ_BRANCH master)
 set(POCO_BRANCH poco-1.7.4)
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.7)
+
+############################################################
+## Build Pthreads for win32
+############################################################
+message(STATUS "Configuring Pthreads - ${PTHREADS_BRANCH}")
+ExternalProject_Add(Pthreads
+    GIT_REPOSITORY https://github.com/VFR-maniac/pthreads-win32.git
+    GIT_TAG ${PTHREADS_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/pthreads_win32_vc14.diff &&
+        ${CMAKE_COMMAND} -E copy
+            ${PROJECT_SOURCE_DIR}/patches/pthreads_win32_CMakeLists.txt
+            <SOURCE_DIR>/CMakeLists.txt
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DLIBNAME=pthreadVC${MSVC_VERSION}
+        -DBUILD_SHARED_LIBS=ON
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(Pthreads SOURCE_DIR)
+install(
+    FILES
+        ${SOURCE_DIR}/COPYING
+        ${SOURCE_DIR}/COPYING.LIB
+    DESTINATION licenses/Pthreads
+)
+
+#use these variable to setup pthreads in dependent projects
+set(THREADS_PTHREADS_ROOT ${SOURCE_DIR})
+set(THREADS_PTHREADS_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+set(THREADS_PTHREADS_WIN32_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/pthreadVC${MSVC_VERSION}.lib)
 
 ############################################################
 ## Build ZeroMQ

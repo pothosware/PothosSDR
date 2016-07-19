@@ -52,10 +52,10 @@ include(SetupPython.cmake)
 include(BuildCommon.cmake)
 include(BuildHwDrivers.cmake)
 include(BuildSoapySDR.cmake)
-include(BuildLimeSuite.cmake)
-include(BuildPothos.cmake)
-include(BuildGNURadio.cmake)
-include(BuildCubicSDR.cmake)
+#include(BuildLimeSuite.cmake)
+#include(BuildPothos.cmake)
+#include(BuildGNURadio.cmake)
+#include(BuildCubicSDR.cmake)
 
 ########################################################################
 # Package environment with NSIS

@@ -67,23 +67,6 @@ install(FILES
 install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
 
 ############################################################
-## Pthreads (prebuilt)
-############################################################
-set(THREADS_PTHREADS_ROOT C:/local/pthreads-w32-2.9.1)
-set(THREADS_PTHREADS_INCLUDE_DIR ${THREADS_PTHREADS_ROOT}/include)
-set(THREADS_PTHREADS_WIN32_LIBRARY ${THREADS_PTHREADS_ROOT}/lib/x64/pthreadVC2.lib)
-
-message(STATUS "THREADS_PTHREADS_ROOT: ${THREADS_PTHREADS_ROOT}")
-
-install(FILES "${THREADS_PTHREADS_ROOT}/dll/x64/pthreadVC2.dll" DESTINATION bin)
-
-install(FILES
-    "${THREADS_PTHREADS_ROOT}/COPYING"
-    "${THREADS_PTHREADS_ROOT}/COPYING.lib"
-    DESTINATION licenses/pthreads
-)
-
-############################################################
 ## PortAudio dependency (prebuilt)
 ############################################################
 set(PORTAUDIO_ROOT C:/local/portaudio-r1891-build)

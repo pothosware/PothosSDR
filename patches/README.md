@@ -2,6 +2,8 @@
 
 | Project       | Patch                                | Tracker/Comments                                      |
 | ------------- | ------------------------------------ | ----------------------------------------------------- |
+| Pthreads      | pthreads_win32_CMakeLists.txt        | CMakeLists.txt copied over to pthreads-win32          |
+| Pthreads      | pthreads_win32_vc14.diff             | VC14 struct timespec patches for pthreads-win32       |
 | GNURadio      | gnuradio_dtv_use_alloca.diff         | https://github.com/pothosware/gnuradio/issues/20      |
 | GNURadio      | gnuradio_config_msvc_math.diff       | https://github.com/pothosware/gnuradio/issues/19      |
 | GNURadio      | gnuradio_fix_codec2_fdmdv_round.diff | https://github.com/pothosware/gnuradio/issues/11      |

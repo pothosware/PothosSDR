@@ -39,7 +39,6 @@ and can be to replicate the complete build environment.
 * Boost 1.60: http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/
 * Qt MSVC2015: https://download.qt.io/development_releases/qt/5.6/5.6.0-beta/
 * Qt MSVC2013: https://download.qt.io/archive/qt/5.5/5.5.1/
-* Pthreads: http://sourceforge.net/projects/pthreads4w/files/latest/download
 * PortAudio: https://github.com/adfernandes/precompiled-portaudio-windows
 * LibUSB: http://sourceforge.net/projects/libusb/files/libusb-1.0/libusb-1.0.20/
 * SWIG: http://prdownloads.sourceforge.net/swig/swigwin-3.0.8.zip
