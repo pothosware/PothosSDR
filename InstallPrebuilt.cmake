@@ -6,13 +6,10 @@
 ##
 ## * zadig (prebuilt executable)
 ## * boost (prebuilt runtime dlls)
-## * pthreads (prebuilt runtime dlls)
-## * portaudio (prebuilt runtime dlls)
-## * libusb (prebuilt runtime dlls)
-## * swig (prebuilt generator)
 ## * qt5 (prebuilt runtime dlls)
+## * fx3 (prebuilt static libs)
+## * swig (prebuilt generator)
 ## * fftw (prebuilt runtime dlls)
-## * wxgui (prebuilt runtime dlls)
 ############################################################
 
 ############################################################
@@ -107,7 +104,7 @@ endif()
 ############################################################
 ## SWIG dependency (prebuilt)
 ############################################################
-set(SWIG_ROOT C:/local/swigwin-3.0.8)
+set(SWIG_ROOT C:/local/swigwin-3.0.10)
 set(SWIG_EXECUTABLE ${SWIG_ROOT}/swig.exe)
 set(SWIG_DIR ${SWIG_ROOT}/Lib)
 
