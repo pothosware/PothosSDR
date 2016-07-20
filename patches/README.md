@@ -4,6 +4,7 @@
 | ------------- | ------------------------------------ | ----------------------------------------------------- |
 | Pthreads      | pthreads_win32_vc14.diff             | VC14 struct timespec patches for pthreads-win32       |
 | PortAudio     | portaudio_no_ksguid_lib.diff         | Fix missing link to ksguid.lib when building PA       |
+| VOLK          | volk_disable_warnings.diff           | Disable many warnings to reduce heavy printing        |
 | VOLK          | volk_prefetch_compat_macro.diff      | Added __VOLK_PREFETCH() compatibility macro           |
 | GNURadio      | gnuradio_dtv_use_alloca.diff         | https://github.com/pothosware/gnuradio/issues/20      |
 | GNURadio      | gnuradio_config_msvc_math.diff       | https://github.com/pothosware/gnuradio/issues/19      |

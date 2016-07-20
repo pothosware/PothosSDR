@@ -1,0 +1,19 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5ecc9c2..3ba0299 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -48,6 +48,14 @@ set(VERSION_INFO_MINOR_VERSION 3)
+ set(VERSION_INFO_MAINT_VERSION 0)
+ include(VolkVersion) #setup version info
+ 
++#reduce warnings
++if(MSVC)
++    add_compile_options(/W1)
++    add_compile_options(/wo4309)
++    add_compile_options(/wd4752)
++    add_compile_options(/wo4273)
++    add_compile_options(/wo4838)
++endif(MSVC)
+ 
+ ########################################################################
+ # Environment setup
