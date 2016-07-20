@@ -3,11 +3,15 @@
 ##
 ## This script builds various common depedencies.
 ##
+## * pthreads (sdr hw libs)
+## * libusb (sdr hw libs)
 ## * zeromq (gr-zeromq)
 ## * cppzmq (gr-zeromq)
 ## * poco (pothos framework + toolkits)
 ## * spuce (pothos-comms + plotters)
 ## * muparserx (pothos framework)
+## * portaudio (gr-audio, pothos-audio)
+## * wxwidgets (cubicsdr, limesuite)
 ############################################################
 
 set(PTHREADS_BRANCH master)
