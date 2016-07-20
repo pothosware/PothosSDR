@@ -12,6 +12,8 @@
 ## * SoapyRemote
 ## * SoapyRedPitaya
 ## * SoapyAudio
+## * SoapyS9CExtIO
+## * SoapyRxTools
 ############################################################
 
 set(SOAPY_SDR_BRANCH soapy-sdr-0.5.0)
@@ -23,6 +25,8 @@ set(SOAPY_RTLSDR_BRANCH soapy-rtlsdr-0.2.1)
 set(SOAPY_REMOTE_BRANCH soapy-remote-0.3.0)
 set(SOAPY_RED_PITAYA_BRANCH soapy-redpitaya-0.1.0)
 set(SOAPY_AUDIO_BRANCH master)
+set(SOAPY_S9C_EXTIO_BRANCH master)
+set(SOAPY_RX_TOOLS_BRANCH master)
 
 ############################################################
 ## Build SoapySDR
@@ -263,7 +267,6 @@ install(
 ############################################################
 ## Build SoapyS9C-ExtIO
 ############################################################
-set(SOAPY_S9C_EXTIO_BRANCH master)
 message(STATUS "Configuring SoapyS9CExtIO - ${SOAPY_S9C_EXTIO_BRANCH}")
 ExternalProject_Add(SoapyS9CExtIO
     DEPENDS SoapySDR
@@ -275,4 +278,28 @@ ExternalProject_Add(SoapyS9CExtIO
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+############################################################
+## Build SoapyRxTools
+############################################################
+message(STATUS "Configuring SoapyRxTools - ${SOAPY_RX_TOOLS_BRANCH}")
+ExternalProject_Add(SoapyRxTools
+    DEPENDS SoapySDR Pthreads
+    GIT_REPOSITORY https://github.com/rxseger/rx_tools.git
+    GIT_TAG ${SOAPY_RX_TOOLS_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DTHREADS_PTHREADS_INCLUDE_DIR=${THREADS_PTHREADS_INCLUDE_DIR}
+        -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapyRxTools SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/SoapyRxTools
 )
