@@ -16,15 +16,15 @@
 ############################################################
 
 set(POTHOS_SERIALIZATION_BRANCH pothos-serialization-0.2.0)
-set(POTHOS_BRANCH pothos-0.3.3)
-set(POTHOS_AUDIO_BRANCH pothos-audio-0.1.3)
-set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.3.1)
-set(POTHOS_COMMS_BRANCH fedd5b8b9486da9efda1809f53ec1a066c36ab4c) #pothos-comms-0.1.3 + include fix
-set(POTHOS_GUI_BRANCH pothos-gui-0.3.2)
-set(POTHOS_PLOTTERS_BRANCH pothos-plotters-0.1.1)
-set(POTHOS_PYTHON_BRANCH pothos-python-0.1.4)
-set(POTHOS_SDR_BRANCH pothos-sdr-0.3.1)
-set(POTHOS_WIDGETS_BRANCH pothos-widgets-0.3.0)
+set(POTHOS_BRANCH pothos-0.4.0)
+set(POTHOS_AUDIO_BRANCH pothos-audio-0.2.0)
+set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.4.0)
+set(POTHOS_COMMS_BRANCH pothos-comms-0.2.0)
+set(POTHOS_GUI_BRANCH pothos-gui-0.4.0)
+set(POTHOS_PLOTTERS_BRANCH pothos-plotters-0.2.0)
+set(POTHOS_PYTHON_BRANCH pothos-python-0.2.0)
+set(POTHOS_SDR_BRANCH pothos-sdr-0.4.0)
+set(POTHOS_WIDGETS_BRANCH pothos-widgets-0.4.0)
 
 ############################################################
 ## Build Pothos Serialization
@@ -207,12 +207,14 @@ list(APPEND CPACK_PACKAGE_EXECUTABLES "PothosGui" "Pothos GUI")
 list(APPEND CPACK_CREATE_DESKTOP_LINKS "PothosGui")
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
+WriteRegStr HKEY_CLASSES_ROOT \\\".pothos\\\" \\\"\\\" \\\"PothosSDR\\\"
 WriteRegStr HKEY_CLASSES_ROOT \\\".pth\\\" \\\"\\\" \\\"PothosSDR\\\"
 WriteRegStr HKEY_CLASSES_ROOT \\\"PothosSDR\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\share\\\\Pothos\\\\icons\\\\PothosGui.ico\\\"
 WriteRegStr HKEY_CLASSES_ROOT \\\"PothosSDR\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${NEQ}$INSTDIR\\\\bin\\\\PothosGui.exe${NEQ} ${NEQ}%1${NEQ} %*\\\"
 ")
 
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
+DeleteRegKey HKEY_CLASSES_ROOT \\\".pothos\\\"
 DeleteRegKey HKEY_CLASSES_ROOT \\\".pth\\\"
 DeleteRegKey HKEY_CLASSES_ROOT \\\"PothosSDR\\\"
 ")
