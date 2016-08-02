@@ -26,7 +26,7 @@ set(SOAPY_REMOTE_BRANCH soapy-remote-0.3.0)
 set(SOAPY_RED_PITAYA_BRANCH soapy-redpitaya-0.1.0)
 set(SOAPY_AUDIO_BRANCH master)
 set(SOAPY_S9C_EXTIO_BRANCH master)
-set(SOAPY_RX_TOOLS_BRANCH f44093dac1a88b7250380f8d4fe9177ae0e70029)
+set(SOAPY_RX_TOOLS_BRANCH master)
 
 ############################################################
 ## Build SoapySDR
