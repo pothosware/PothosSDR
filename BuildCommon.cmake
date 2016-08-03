@@ -12,6 +12,9 @@
 ## * muparserx (pothos framework)
 ## * portaudio (gr-audio, pothos-audio)
 ## * wxwidgets (cubicsdr, limesuite)
+## * faac (gr-drm)
+## * faad2 (gr-drm)
+## * cppunit (gnuradio)
 ############################################################
 
 set(PTHREADS_BRANCH master)
@@ -23,6 +26,9 @@ set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.7)
 set(PORTAUDIO_BRANCH master)
 set(WXWIDGETS_BRANCH v3.1.0)
+set(FAAC_BRANCH master)
+set(FAAD2_BRANCH master)
+set(CPPUNIT_BRANCH master)
 
 ############################################################
 ## Build Pthreads for win32
@@ -263,3 +269,96 @@ ExternalProject_Get_Property(wxWidgets SOURCE_DIR)
 #use these variable to setup wxWidgets in dependent projects
 set(wxWidgets_ROOT_DIR ${SOURCE_DIR})
 set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_x64_lib)
+
+############################################################
+## Build FAAC
+############################################################
+message(STATUS "Configuring FAAC - ${FAAC_BRANCH}")
+ExternalProject_Add(faac
+    GIT_REPOSITORY https://github.com/Arcen/faac.git
+    GIT_TAG ${FAAC_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/faac_dll_project_files.diff
+    CONFIGURE_COMMAND echo "Configure faac..."
+    BUILD_COMMAND msbuild
+        /p:Configuration=Release,Platform=x64
+        /m <SOURCE_DIR>/libfaac/libfaac_dll.sln
+    INSTALL_COMMAND echo "..."
+)
+
+ExternalProject_Get_Property(faac SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/faac
+)
+
+#external install commands, variables use build paths
+install(FILES ${SOURCE_DIR}/include/faac.h DESTINATION include)
+install(FILES ${SOURCE_DIR}/include/faaccfg.h DESTINATION include)
+install(FILES ${SOURCE_DIR}/libfaac/ReleaseDLL/libfaac.lib DESTINATION lib)
+install(FILES ${SOURCE_DIR}/libfaac/ReleaseDLL/libfaac.dll DESTINATION bin)
+
+#use these variable to setup faac in dependent projects
+set(Faac_INCLUDE_DIR ${SOURCE_DIR}/include)
+set(Faac_LIBRARY ${SOURCE_DIR}/libfaac/ReleaseDLL/libfaac.lib)
+
+############################################################
+## Build FAAD2
+############################################################
+message(STATUS "Configuring FAAD2 - ${FAAD2_BRANCH}")
+ExternalProject_Add(faad2
+    GIT_REPOSITORY https://github.com/dsvensson/faad2.git
+    GIT_TAG ${FAAD2_BRANCH}
+    PATCH_COMMAND
+        ${GIT_EXECUTABLE} reset --hard HEAD &&
+        ${GIT_EXECUTABLE} clean -dfx &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/faad2_dll_project_files.diff
+    CONFIGURE_COMMAND echo "Configure faad2..."
+    BUILD_COMMAND msbuild
+        /p:Configuration=Release,Platform=x64
+        /m <SOURCE_DIR>/libfaad/libfaad2_dll.sln
+    INSTALL_COMMAND echo "..."
+)
+
+ExternalProject_Get_Property(faad2 SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/faad2
+)
+
+#external install commands, variables use build paths
+install(FILES ${SOURCE_DIR}/include/faad.h DESTINATION include)
+install(FILES ${SOURCE_DIR}/include/neaacdec.h DESTINATION include)
+install(FILES ${SOURCE_DIR}/libfaad/ReleaseDLL/libfaad2.lib DESTINATION lib)
+install(FILES ${SOURCE_DIR}/libfaad/ReleaseDLL/libfaad2.dll DESTINATION bin)
+
+############################################################
+## Build CPPUNIT
+############################################################
+message(STATUS "Configuring CppUnit - ${CPPUNIT_BRANCH}")
+ExternalProject_Add(CppUnit
+    GIT_REPOSITORY git://anongit.freedesktop.org/git/libreoffice/cppunit/
+    GIT_TAG ${CPPUNIT_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/cppunit_dll_project_files.diff
+    CONFIGURE_COMMAND echo "Configure CppUnit..."
+    BUILD_COMMAND msbuild
+        /p:Configuration=Release,Platform=x64
+        /m <SOURCE_DIR>/src/cppunit/cppunit_dll.vcxproj
+    INSTALL_COMMAND echo "..."
+)
+
+ExternalProject_Get_Property(CppUnit SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/CppUnit
+)
+
+#external install commands, variables use build paths
+install(DIRECTORY ${SOURCE_DIR}/include/cppunit DESTINATION include)
+install(FILES ${SOURCE_DIR}/src/cppunit/ReleaseDll/cppunit_dll.lib DESTINATION lib)
+install(FILES ${SOURCE_DIR}/src/cppunit/ReleaseDll/cppunit_dll.dll DESTINATION bin)
+
+#use these variable to setup cppunit in dependent projects
+set(CPPUNIT_INCLUDE_DIRS ${SOURCE_DIR}/include)
+set(CPPUNIT_LIBRARIES ${SOURCE_DIR}/src/cppunit/ReleaseDll/cppunit_dll.lib)
