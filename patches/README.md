@@ -25,4 +25,5 @@
 | GNURadio      | gr_dtv_dvb_bbheader_grc_fix.diff     | https://github.com/pothosware/gnuradio/issues/28      |
 | UHD           | uhd_fix_gain_group_floor_round.diff  | https://github.com/EttusResearch/uhd/issues/31        |
 | gr-rds        | gr_rds_msvc_fixes.diff               | Minor MSVC patches for encoder_impl.cc                |
+| gr-drm        | gr_drm_msvc_fixes.diff               | Minor MSVC patches for dynamic arrays and M_PI        |
 | zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |
