@@ -19,12 +19,13 @@ set(POTHOS_SERIALIZATION_BRANCH pothos-serialization-0.2.0)
 set(POTHOS_BRANCH pothos-0.4.0)
 set(POTHOS_AUDIO_BRANCH pothos-audio-0.2.0)
 set(POTHOS_BLOCKS_BRANCH pothos-blocks-0.4.0)
-set(POTHOS_COMMS_BRANCH pothos-comms-0.2.0)
+set(POTHOS_COMMS_BRANCH maint) #pothos-comms-0.2.0 + math defines fix
 set(POTHOS_GUI_BRANCH pothos-gui-0.4.0)
 set(POTHOS_PLOTTERS_BRANCH pothos-plotters-0.2.0)
 set(POTHOS_PYTHON_BRANCH pothos-python-0.2.0)
 set(POTHOS_SDR_BRANCH pothos-sdr-0.4.0)
 set(POTHOS_WIDGETS_BRANCH pothos-widgets-0.4.0)
+set(POTHOS_MODULES_DIR "modules0.4-3")
 
 ############################################################
 ## Build Pothos Serialization
@@ -277,8 +278,8 @@ ExternalProject_Add(PothosPython2
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
         && ${CMAKE_COMMAND} -E copy
-            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/modules/proxy/environment/PythonSupport.dll
-            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/modules/proxy/environment/PythonSupport.dll.2
+            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport.dll
+            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport.dll.2
 )
 
 ExternalProject_Add(PothosPython3
@@ -298,8 +299,8 @@ ExternalProject_Add(PothosPython3
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
         && ${CMAKE_COMMAND} -E copy
-            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/modules/proxy/environment/PythonSupport.dll
-            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/modules/proxy/environment/PythonSupport.dll.3
+            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport.dll
+            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport.dll.3
 )
 
 ExternalProject_Get_Property(PothosPython3 SOURCE_DIR)
