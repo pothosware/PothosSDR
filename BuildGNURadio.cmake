@@ -294,7 +294,7 @@ list(APPEND CPACK_PACKAGE_EXECUTABLES "gqrx" "GQRX SDR")
 list(APPEND CPACK_CREATE_DESKTOP_LINKS "gqrx")
 
 ############################################################
-## Build gr-rds
+## Build gr-drm
 ############################################################
 message(STATUS "Configuring GrDRM - ${GRDRM_BRANCH}")
 ExternalProject_Add(GrDRM

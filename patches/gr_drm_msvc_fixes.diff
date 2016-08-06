@@ -1,3 +1,25 @@
+diff --git a/gr-drm/CMakeLists.txt b/gr-drm/CMakeLists.txt
+index 08c60c8..6239fd0 100644
+--- a/gr-drm/CMakeLists.txt
++++ b/gr-drm/CMakeLists.txt
+@@ -100,7 +100,7 @@ find_package(CppUnit)
+ # components required to the list of GR_REQUIRED_COMPONENTS (in all
+ # caps such as FILTER or FFT) and change the version to the minimum
+ # API compatible version required.
+-set(GR_REQUIRED_COMPONENTS RUNTIME)
++set(GR_REQUIRED_COMPONENTS RUNTIME PMT)
+ find_package(Gnuradio "3.7.2" REQUIRED)
+ 
+ if(NOT CPPUNIT_FOUND)
+@@ -118,7 +118,7 @@ include_directories(
+     ${Boost_INCLUDE_DIRS}
+     ${CPPUNIT_INCLUDE_DIRS}
+     ${GNURADIO_ALL_INCLUDE_DIRS}
+-    ${Faac_INCLUDE_DIRS}
++    ${Faac_INCLUDE_DIR}
+ )
+ 
+ link_directories(
 diff --git a/gr-drm/lib/add_tailbits_vbvb_impl.cc b/gr-drm/lib/add_tailbits_vbvb_impl.cc
 index 04a6340..606ab12 100644
 --- a/gr-drm/lib/add_tailbits_vbvb_impl.cc
@@ -103,6 +125,119 @@ index 477b819..7bc0f93 100644
  		int unused_carriers_A[3] = {-1, 0, 1};
  
  		switch(d_RM)
+diff --git a/gr-drm/lib/drm_config.h b/gr-drm/lib/drm_config.h
+index 9f4c046..c97a4bb 100644
+--- a/gr-drm/lib/drm_config.h
++++ b/gr-drm/lib/drm_config.h
+@@ -22,12 +22,13 @@
+ #ifndef DRM_CONFIG_H_
+ #define DRM_CONFIG_H_
+ 
++#include <drm/api.h>
+ #include "drm_tables.h"
+ #include "drm_global_constants.h"
+ #include <iostream>
+ 
+ /* class holding the initial (user defined) parameters from which the others are derived */
+-class config
++class DRM_API config
+ {
+ 	unsigned short d_RM; // robustness mode (0-4 correspond to A-E)
+ 	unsigned short d_SO; // spectrum occupancy (0-5)
+diff --git a/gr-drm/lib/drm_params.h b/gr-drm/lib/drm_params.h
+index 13a0e05..afdd419 100644
+--- a/gr-drm/lib/drm_params.h
++++ b/gr-drm/lib/drm_params.h
+@@ -22,6 +22,7 @@
+ #ifndef _DRM_PARAMS_H_
+ #define _DRM_PARAMS_H_
+ 
++#include <drm/api.h>
+ #include "drm_global_constants.h"
+ #include "drm_tables.h"
+ #include "drm_config.h"
+@@ -30,7 +31,7 @@
+ #include <cmath>
+ 
+ /* classes holding the derived parameters and init routines (where parameters are calculated)*/
+-class global_params
++class DRM_API global_params
+ {
+ public:
+ 	virtual void init(config* cfg) = 0;
+@@ -39,7 +40,7 @@ public:
+ 	virtual ~global_params(){};
+ };
+ 
+-class ofdm_params : public global_params
++class DRM_API ofdm_params : public global_params
+ {
+ 	unsigned int d_nfft; // FFT length
+ 	unsigned int d_n_cp; // length of guard interval (samples)
+@@ -71,7 +72,7 @@ public:
+ 	void init(config* cfg);
+ };
+ 
+-class channel_params : public global_params
++class DRM_API channel_params : public global_params
+ {
+ protected:
+ 	std::vector< int > d_r_p; // index for tailbit puncturing pattern
+@@ -94,7 +95,7 @@ public:
+ 	virtual ~channel_params(){};
+ };
+ 
+-class control_chan_params : public channel_params
++class DRM_API control_chan_params : public channel_params
+ {
+ protected:
+ 	unsigned int d_L; // length in bits
+@@ -123,7 +124,7 @@ public:
+ 	virtual ~control_chan_params(){};
+ };
+ 
+-class sdc_params : public control_chan_params
++class DRM_API sdc_params : public control_chan_params
+ {
+ 	float d_R_1; // coderate R_1
+ 	unsigned short d_R_1_enum; // enumerator of R_1
+@@ -158,7 +159,7 @@ public:
+ 	void init(config* cfg);
+ };
+ 
+-class fac_params : public control_chan_params
++class DRM_API fac_params : public control_chan_params
+ {
+ public:
+ 	fac_params(){};
+@@ -167,7 +168,7 @@ public:
+ 	void init(config* cfg);
+ };
+ 
+-class msc_params : public channel_params
++class DRM_API msc_params : public channel_params
+ {
+ 	/* NOTE: so far, only SM is implemented! TODO: implement hierarchical mapping */
+ 	unsigned int d_L_MUX; // number of bits per multiplex frame
+diff --git a/gr-drm/lib/drm_tables.h b/gr-drm/lib/drm_tables.h
+index 807ee03..2be85d8 100644
+--- a/gr-drm/lib/drm_tables.h
++++ b/gr-drm/lib/drm_tables.h
+@@ -22,12 +22,13 @@
+ #ifndef DRM_TABLES_H_
+ #define DRM_TABLES_H_
+ 
++#include <drm/api.h>
+ #include "drm_global_constants.h"
+ #include <vector>
+ #include <cmath>
+ #include <complex>
+ 
+-class tables
++class DRM_API tables
+ {
+ 	public:
+ 
 diff --git a/gr-drm/lib/drm_tables_mapping.cc b/gr-drm/lib/drm_tables_mapping.cc
 index 4960767..dc1788f 100644
 --- a/gr-drm/lib/drm_tables_mapping.cc
@@ -115,6 +250,23 @@ index 4960767..dc1788f 100644
  #include "drm_tables.h"
  
  /* frequency reference cells [carrier index][phase_index(0,k)]
+diff --git a/gr-drm/lib/drm_transm_params.h b/gr-drm/lib/drm_transm_params.h
+index c3d9be1..33bfae4 100644
+--- a/gr-drm/lib/drm_transm_params.h
++++ b/gr-drm/lib/drm_transm_params.h
+@@ -22,10 +22,11 @@
+ #ifndef DRM_TRANSM_PARAMS_H_
+ #define DRM_TRANSM_PARAMS_H_
+ 
++#include <drm/api.h>
+ #include "drm_config.h"
+ #include "drm_params.h"
+ 
+-class transm_params
++class DRM_API transm_params
+ {
+ 	config* d_cfg;
+ 	ofdm_params* d_ofdm;
 diff --git a/gr-drm/lib/drm_util.cc b/gr-drm/lib/drm_util.cc
 index cccbde7..d4b2f46 100644
 --- a/gr-drm/lib/drm_util.cc
@@ -137,6 +289,46 @@ index cccbde7..d4b2f46 100644
  	memset(shift_reg, 1, ord); // set all stages to one (see DRM standard, annex D)
  	memset(shift_reg_prev, 0, ord); // just for debugging purposes
  	switch(ord)
+diff --git a/gr-drm/lib/drm_util.h b/gr-drm/lib/drm_util.h
+index c2686c6..ca3d77f 100644
+--- a/gr-drm/lib/drm_util.h
++++ b/gr-drm/lib/drm_util.h
+@@ -22,6 +22,7 @@
+ #ifndef _DRM_UTIL_H
+ #define _DRM_UTIL_H
+ 
++#include <drm/api.h>
+ #include <cstring>
+ #include <cmath>
+ #include <vector>
+@@ -29,21 +30,21 @@
+ 
+ 
+ // enqueue bit array arr of lenght len at address ptr
+-void enqueue_bits(unsigned char* &ptr, unsigned int len, unsigned char arr[]);
++DRM_API void enqueue_bits(unsigned char* &ptr, unsigned int len, unsigned char arr[]);
+ 
+ // enqueue bit array of length len with decimal representation val (max->unsigned int) at address ptr
+-void enqueue_bits_dec(unsigned char* &ptr, unsigned int len, unsigned int val);
++DRM_API void enqueue_bits_dec(unsigned char* &ptr, unsigned int len, unsigned int val);
+ 
+ // enqueue crc word of order ord after bit sequence of length len at address ptr
+-void enqueue_crc(unsigned char* ptr, transm_params* tp, int len, unsigned short ord);
++DRM_API void enqueue_crc(unsigned char* ptr, transm_params* tp, int len, unsigned short ord);
+ 
+ // enqueue array arr of lenght len to vector vec
+-void enqueue_array_to_vector(std::vector< unsigned char >* vec, const unsigned char* arr, int len);
++DRM_API void enqueue_array_to_vector(std::vector< unsigned char >* vec, const unsigned char* arr, int len);
+ 
+ // dequeue 8 bits from array ptr and interpret them as unsigned char
+-unsigned char dequeue_char(unsigned char* &ptr);
++DRM_API unsigned char dequeue_char(unsigned char* &ptr);
+ 
+ // dequeue array of length len from array ptr (unsigned char) and interpret as unsigned int
+-unsigned int dequeue_dec(unsigned char* &ptr, unsigned int len);
++DRM_API unsigned int dequeue_dec(unsigned char* &ptr, unsigned int len);
+ 
+ #endif
 diff --git a/gr-drm/lib/generate_sdc_vb_impl.cc b/gr-drm/lib/generate_sdc_vb_impl.cc
 index 6076992..068f700 100644
 --- a/gr-drm/lib/generate_sdc_vb_impl.cc
