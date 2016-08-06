@@ -10,6 +10,7 @@
 ## * gr-osmosdr
 ## * gr-rds
 ## * gqrx
+## * gr-drm
 ############################################################
 
 set(VOLK_BRANCH maint)
@@ -19,6 +20,7 @@ set(GR_POTHOS_BRANCH master)
 set(GROSMOSDR_BRANCH master)
 set(GRRDS_BRANCH master)
 set(GQRX_BRANCH master)
+set(GRDRM_BRANCH master)
 
 ############################################################
 ## Build Volk
@@ -55,7 +57,7 @@ install(
 ############################################################
 message(STATUS "Configuring GNURadio - ${GNURADIO_BRANCH}")
 ExternalProject_Add(GNURadio
-    DEPENDS volk uhd CppZMQ PortAudio
+    DEPENDS volk uhd CppZMQ PortAudio CppUnit
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
@@ -92,7 +94,9 @@ ExternalProject_Add(GNURadio
         -DFFTW3F_LIBRARIES=${FFTW3F_LIBRARIES}
         -DUHD_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include
         -DUHD_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/uhd.lib
-        -DENABLE_TESTING=OFF
+        -DENABLE_TESTING=ON
+        -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
+        -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
         -DENABLE_PYTHON=ON
         -DPORTAUDIO_INCLUDE_DIRS=${PORTAUDIO_INCLUDE_DIR}
         -DPORTAUDIO_LIBRARIES=${PORTAUDIO_LIBRARY}
@@ -289,3 +293,40 @@ install(
 
 list(APPEND CPACK_PACKAGE_EXECUTABLES "gqrx" "GQRX SDR")
 list(APPEND CPACK_CREATE_DESKTOP_LINKS "gqrx")
+
+############################################################
+## Build gr-drm
+############################################################
+message(STATUS "Configuring GrDRM - ${GRDRM_BRANCH}")
+ExternalProject_Add(GrDRM
+    DEPENDS GNURadio faac faad2
+    GIT_REPOSITORY https://github.com/kit-cel/gr-drm.git
+    GIT_TAG ${GRDRM_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/gr_drm_msvc_fixes.diff
+    CONFIGURE_COMMAND
+        "${CMAKE_COMMAND}" <SOURCE_DIR>/gr-drm
+        -G ${CMAKE_GENERATOR}
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        -DBOOST_ALL_DYN_LINK=TRUE
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
+        -DSWIG_DIR=${SWIG_DIR}
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DFaac_INCLUDE_DIR=${Faac_INCLUDE_DIR}
+        -DFaac_LIBRARY=${Faac_LIBRARY}
+        -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
+        -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(GrDRM SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING.txt
+    DESTINATION licenses/GrDRM
+)

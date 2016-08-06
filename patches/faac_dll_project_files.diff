@@ -1,0 +1,212 @@
+diff --git a/libfaac/libfaac_dll.sln b/libfaac/libfaac_dll.sln
+index 9c210e8..6e70f76 100644
+--- a/libfaac/libfaac_dll.sln
++++ b/libfaac/libfaac_dll.sln
+@@ -1,17 +1,25 @@
+-Microsoft Visual Studio Solution File, Format Version 11.00
+-# Visual Studio 2010
++Microsoft Visual Studio Solution File, Format Version 12.00
++# Visual Studio 2013
++VisualStudioVersion = 12.0.40629.0
++MinimumVisualStudioVersion = 10.0.40219.1
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libfaac_dll", "libfaac_dll.vcxproj", "{856BB8CF-B944-4D7A-9D59-4945316229AA}"
+ EndProject
+ Global
+ 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+ 		Debug|Win32 = Debug|Win32
++		Debug|x64 = Debug|x64
+ 		Release|Win32 = Release|Win32
++		Release|x64 = Release|x64
+ 	EndGlobalSection
+ 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+ 		{856BB8CF-B944-4D7A-9D59-4945316229AA}.Debug|Win32.ActiveCfg = Debug|Win32
+ 		{856BB8CF-B944-4D7A-9D59-4945316229AA}.Debug|Win32.Build.0 = Debug|Win32
++		{856BB8CF-B944-4D7A-9D59-4945316229AA}.Debug|x64.ActiveCfg = Debug|x64
++		{856BB8CF-B944-4D7A-9D59-4945316229AA}.Debug|x64.Build.0 = Debug|x64
+ 		{856BB8CF-B944-4D7A-9D59-4945316229AA}.Release|Win32.ActiveCfg = Release|Win32
+ 		{856BB8CF-B944-4D7A-9D59-4945316229AA}.Release|Win32.Build.0 = Release|Win32
++		{856BB8CF-B944-4D7A-9D59-4945316229AA}.Release|x64.ActiveCfg = Release|x64
++		{856BB8CF-B944-4D7A-9D59-4945316229AA}.Release|x64.Build.0 = Release|x64
+ 	EndGlobalSection
+ 	GlobalSection(SolutionProperties) = preSolution
+ 		HideSolutionNode = FALSE
+diff --git a/libfaac/libfaac_dll.vcxproj b/libfaac/libfaac_dll.vcxproj
+index 5b40cee..4e4ad54 100644
+--- a/libfaac/libfaac_dll.vcxproj
++++ b/libfaac/libfaac_dll.vcxproj
+@@ -1,14 +1,22 @@
+ ﻿<?xml version="1.0" encoding="utf-8"?>
+-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|Win32">
+       <Configuration>Debug</Configuration>
+       <Platform>Win32</Platform>
+     </ProjectConfiguration>
++    <ProjectConfiguration Include="Debug|x64">
++      <Configuration>Debug</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
+     <ProjectConfiguration Include="Release|Win32">
+       <Configuration>Release</Configuration>
+       <Platform>Win32</Platform>
+     </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|x64">
++      <Configuration>Release</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
+   </ItemGroup>
+   <PropertyGroup Label="Globals">
+     <ProjectGuid>{856BB8CF-B944-4D7A-9D59-4945316229AA}</ProjectGuid>
+@@ -18,11 +26,25 @@
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseOfMfc>false</UseOfMfc>
+     <CharacterSet>MultiByte</CharacterSet>
++    <PlatformToolset>v120</PlatformToolset>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <UseOfMfc>false</UseOfMfc>
++    <CharacterSet>MultiByte</CharacterSet>
++    <PlatformToolset>v120</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseOfMfc>false</UseOfMfc>
+     <CharacterSet>MultiByte</CharacterSet>
++    <PlatformToolset>v120</PlatformToolset>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <UseOfMfc>false</UseOfMfc>
++    <CharacterSet>MultiByte</CharacterSet>
++    <PlatformToolset>v120</PlatformToolset>
+   </PropertyGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+   <ImportGroup Label="ExtensionSettings">
+@@ -31,19 +53,29 @@
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
+   </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
++  </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
+   </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
++  </ImportGroup>
+   <PropertyGroup Label="UserMacros" />
+   <PropertyGroup>
+     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\ReleaseDLL\</OutDir>
+     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
+     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
++    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\DebugDLL\</OutDir>
+     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
+     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
++    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+   </PropertyGroup>
+   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+     <Midl>
+@@ -83,6 +115,43 @@
+       <ImportLibrary>.\ReleaseDLL/libfaac.lib</ImportLibrary>
+     </Link>
+   </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
++    <Midl>
++      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MkTypLibCompatible>true</MkTypLibCompatible>
++      <SuppressStartupBanner>true</SuppressStartupBanner>
++      <TypeLibraryName>.\ReleaseDLL/libfaac_dll.tlb</TypeLibraryName>
++    </Midl>
++    <ClCompile>
++      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
++      <AdditionalIncludeDirectories>../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBFAAC_DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <FunctionLevelLinking>true</FunctionLevelLinking>
++      <PrecompiledHeader>
++      </PrecompiledHeader>
++      <PrecompiledHeaderOutputFile>.\Release/libfaac_dll.pch</PrecompiledHeaderOutputFile>
++      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
++      <ObjectFileName>.\Release/</ObjectFileName>
++      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
++      <WarningLevel>Level3</WarningLevel>
++      <SuppressStartupBanner>true</SuppressStartupBanner>
++    </ClCompile>
++    <ResourceCompile>
++      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <Culture>0x0407</Culture>
++    </ResourceCompile>
++    <Link>
++      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
++      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <OutputFile>ReleaseDLL/libfaac.dll</OutputFile>
++      <SuppressStartupBanner>true</SuppressStartupBanner>
++      <ModuleDefinitionFile>.\libfaac.def</ModuleDefinitionFile>
++      <ProgramDatabaseFile>.\ReleaseDLL/libfaac.pdb</ProgramDatabaseFile>
++      <ImportLibrary>.\ReleaseDLL/libfaac.lib</ImportLibrary>
++    </Link>
++  </ItemDefinitionGroup>
+   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+     <Midl>
+       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+@@ -122,6 +191,44 @@
+       <ImportLibrary>.\DebugDLL/libfaac.lib</ImportLibrary>
+     </Link>
+   </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
++    <Midl>
++      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MkTypLibCompatible>true</MkTypLibCompatible>
++      <SuppressStartupBanner>true</SuppressStartupBanner>
++      <TypeLibraryName>.\DebugDLL/libfaac_dll.tlb</TypeLibraryName>
++    </Midl>
++    <ClCompile>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBFAAC_DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <PrecompiledHeader>
++      </PrecompiledHeader>
++      <PrecompiledHeaderOutputFile>.\Debug/libfaac_dll.pch</PrecompiledHeaderOutputFile>
++      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
++      <ObjectFileName>.\Debug/</ObjectFileName>
++      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
++      <WarningLevel>Level3</WarningLevel>
++      <SuppressStartupBanner>true</SuppressStartupBanner>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++    </ClCompile>
++    <ResourceCompile>
++      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <Culture>0x0407</Culture>
++    </ResourceCompile>
++    <Link>
++      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
++      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <OutputFile>DebugDLL/libfaac.dll</OutputFile>
++      <SuppressStartupBanner>true</SuppressStartupBanner>
++      <ModuleDefinitionFile>.\libfaac.def</ModuleDefinitionFile>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <ProgramDatabaseFile>.\DebugDLL/libfaac.pdb</ProgramDatabaseFile>
++      <ImportLibrary>.\DebugDLL/libfaac.lib</ImportLibrary>
++    </Link>
++  </ItemDefinitionGroup>
+   <ItemGroup>
+     <ClCompile Include="aacquant.c" />
+     <ClCompile Include="backpred.c" />
+@@ -160,4 +267,4 @@
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+   <ImportGroup Label="ExtensionTargets">
+   </ImportGroup>
+-</Project>
+\ No newline at end of file
++</Project>

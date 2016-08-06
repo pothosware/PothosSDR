@@ -6,6 +6,9 @@
 | PortAudio     | portaudio_no_ksguid_lib.diff         | Fix missing link to ksguid.lib when building PA       |
 | VOLK          | volk_disable_warnings.diff           | Disable many warnings to reduce heavy printing        |
 | VOLK          | volk_prefetch_compat_macro.diff      | Added __VOLK_PREFETCH() compatibility macro           |
+| FAAC          | faac_dll_project_files.diff          | updated the project files for faac                    |
+| FAAD2         | faad2_dll_project_files.diff         | updated the project files for faad2                   |
+| CppUnit       | cppunit_dll_project_files.diff       | updated the project files for cppunit                 |
 | GNURadio      | gnuradio_dtv_use_alloca.diff         | https://github.com/pothosware/gnuradio/issues/20      |
 | GNURadio      | gnuradio_config_msvc_math.diff       | https://github.com/pothosware/gnuradio/issues/19      |
 | GNURadio      | gnuradio_fix_codec2_fdmdv_round.diff | https://github.com/pothosware/gnuradio/issues/11      |
@@ -23,4 +26,5 @@
 | GNURadio      | gnuradio_ifdef_unistd_h.diff         | ifdef unistd.h in public unit test header             |
 | UHD           | uhd_fix_gain_group_floor_round.diff  | https://github.com/EttusResearch/uhd/issues/31        |
 | gr-rds        | gr_rds_msvc_fixes.diff               | Minor MSVC patches for encoder_impl.cc                |
+| gr-drm        | gr_drm_msvc_fixes.diff               | Minor MSVC patches for dynamic arrays and M_PI        |
 | zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |
