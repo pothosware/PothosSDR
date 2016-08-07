@@ -21,82 +21,66 @@ index 08c60c8..6239fd0 100644
  
  link_directories(
 diff --git a/gr-drm/lib/add_tailbits_vbvb_impl.cc b/gr-drm/lib/add_tailbits_vbvb_impl.cc
-index 04a6340..606ab12 100644
+index 04a6340..fcb6066 100644
 --- a/gr-drm/lib/add_tailbits_vbvb_impl.cc
 +++ b/gr-drm/lib/add_tailbits_vbvb_impl.cc
-@@ -63,7 +63,11 @@ namespace gr {
+@@ -63,7 +63,7 @@ namespace gr {
  		unsigned char *out = (unsigned char *) output_items[0];
  
  		// set tailbits to zero TODO: make tailbits configurable
-+        #ifdef _MSC_VER
-+        unsigned char *tailbits = (unsigned char *)alloca((const int) d_n_tail);
-+        #else
- 		unsigned char tailbits[(const int) d_n_tail];
-+        #endif
+-		unsigned char tailbits[(const int) d_n_tail];
++		__GR_VLA(unsigned char, tailbits, (const int) d_n_tail);
  		memset(tailbits, 0, d_n_tail);
  
  		for( int i = 0; i < noutput_items; i++)
 diff --git a/gr-drm/lib/audio_encoder_svb_impl.cc b/gr-drm/lib/audio_encoder_svb_impl.cc
-index d4dbcf0..70d8292 100644
+index d4dbcf0..09c51fd 100644
 --- a/gr-drm/lib/audio_encoder_svb_impl.cc
 +++ b/gr-drm/lib/audio_encoder_svb_impl.cc
-@@ -166,7 +166,11 @@ namespace gr {
+@@ -166,7 +166,7 @@ namespace gr {
  		/* encode PCM stream and make it DRM compliant. write to output buffer (in make_drm_compliant()) */
  		// init AAC buffer
  		//std::cout << "aac_encode()" << std::endl;
-+        #ifdef _MSC_VER
-+        unsigned char *aac_buffer = (unsigned char *)alloca((const unsigned long) d_n_max_bytes_out * (const unsigned long) d_n_aac_frames);
-+        #else
- 		unsigned char aac_buffer[(const unsigned long) d_n_max_bytes_out * (const unsigned long) d_n_aac_frames];
-+        #endif
+-		unsigned char aac_buffer[(const unsigned long) d_n_max_bytes_out * (const unsigned long) d_n_aac_frames];
++		__GR_VLA(unsigned char, aac_buffer, (const unsigned long) d_n_max_bytes_out * (const unsigned long) d_n_aac_frames);
  		aac_encode(aac_buffer); // encodes pcm data for 1 super transmission frame
  		//std::cout << "d_out: " << (long) d_out << ", bits written: " << d_out - d_out_prev << std::endl;
  		d_out_prev = d_out;
-@@ -196,8 +200,13 @@ namespace gr {
+@@ -196,8 +196,8 @@ namespace gr {
  		d_n_bytes_encoded.clear();
  
  		// allocate tmp input buffers for PCM and AAC samples
-+        #ifdef _MSC_VER
-+		float *tmp_pcm_buffer = (float *)alloca(sizeof(float)*((const unsigned long) d_transform_length)); // if multiple super audio frames are processed, move this outside this function to avoid multiple allocation
-+		unsigned char *tmp_aac_buffer = (unsigned char *)alloca((const unsigned long) d_n_max_bytes_out);
-+        #else
- 		float tmp_pcm_buffer[(const unsigned long) d_transform_length]; // if multiple super audio frames are processed, move this outside this function to avoid multiple allocation
- 		unsigned char tmp_aac_buffer[(const unsigned long) d_n_max_bytes_out];
-+        #endif
+-		float tmp_pcm_buffer[(const unsigned long) d_transform_length]; // if multiple super audio frames are processed, move this outside this function to avoid multiple allocation
+-		unsigned char tmp_aac_buffer[(const unsigned long) d_n_max_bytes_out];
++		__GR_VLA(float, tmp_pcm_buffer, (const unsigned long) d_transform_length); // if multiple super audio frames are processed, move this outside this function to avoid multiple allocation
++		__GR_VLA(unsigned char, tmp_aac_buffer, (const unsigned long) d_n_max_bytes_out);
  
  		for (int j = 0; j < d_n_aac_frames; j++)
  		{
-@@ -217,9 +226,15 @@ namespace gr {
+@@ -217,9 +217,9 @@ namespace gr {
  	audio_encoder_svb_impl::make_drm_compliant(unsigned char* aac_buffer)
  	{
  		/* init buffers for CRC, payload and frame lengths */
-+        #ifdef _MSC_VER
-+		unsigned char *crc_bits = (unsigned char *)alloca((const int) d_n_aac_frames);
-+		int *frame_length = (int *)alloca(sizeof(int)*((const int) d_n_aac_frames));
-+		unsigned char **frame_pos = (unsigned char **)alloca(sizeof(unsigned char *)*((const int) d_n_aac_frames));
-+        #else
- 		unsigned char crc_bits[(const int) d_n_aac_frames];
- 		int frame_length[(const int) d_n_aac_frames];
- 		unsigned char* frame_pos[(const int) d_n_aac_frames];
-+        #endif
+-		unsigned char crc_bits[(const int) d_n_aac_frames];
+-		int frame_length[(const int) d_n_aac_frames];
+-		unsigned char* frame_pos[(const int) d_n_aac_frames];
++		__GR_VLA(unsigned char, crc_bits, (const int) d_n_aac_frames);
++		__GR_VLA(int, frame_length, (const int) d_n_aac_frames);
++		__GR_VLA(unsigned char*, frame_pos, (const int) d_n_aac_frames);
  		frame_pos[0] = aac_buffer;
  
  		/* create header ( accumulated frame lengths | padding | CRC | audio ) */
-@@ -321,7 +336,11 @@ namespace gr {
+@@ -321,7 +321,7 @@ namespace gr {
  		//std::cout << "len_msg_bit: " << len_msg_bit << std::endl;
  		d_n_text_frames = len_msg_bit/(4*8);
  		//std::cout << "d_n_text_frames: " << d_n_text_frames << ", n_segments: " << n_segments << std::endl;
 -		unsigned char msg[len_msg_bit];
-+		#ifdef _MSC_VER
-+        unsigned char *msg = (unsigned char *)alloca(len_msg_bit);
-+        #else
-+        unsigned char msg[len_msg_bit];
-+        #endif
++		__GR_VLA(unsigned char, msg, len_msg_bit);
  		memset(msg, 9, len_msg_bit); // set to 9 for debugging purposes
  
  		//std::cout << "msg address: " << (long) &msg[0] << std::endl;
 diff --git a/gr-drm/lib/cell_mapping_vcvc_impl.cc b/gr-drm/lib/cell_mapping_vcvc_impl.cc
-index 477b819..7bc0f93 100644
+index 477b819..b31c442 100644
 --- a/gr-drm/lib/cell_mapping_vcvc_impl.cc
 +++ b/gr-drm/lib/cell_mapping_vcvc_impl.cc
 @@ -18,6 +18,7 @@
@@ -107,21 +91,15 @@ index 477b819..7bc0f93 100644
  #ifdef HAVE_CONFIG_H
  #include "config.h"
  #endif
-@@ -150,9 +151,17 @@ namespace gr {
+@@ -150,9 +151,9 @@ namespace gr {
  		int freq_pil[3][2];
  		const int time_rows = d_time_rows; // this way we can instance an array with this variable
  		int afs_pil[NUM_AFS_PILOTS][3]; // only used for RM E
-+        #ifdef _MSC_VER
-+		int **time_pil = (int **)alloca(sizeof(int *)*time_rows);
-+        for (size_t i = 0; i < time_rows; i++) time_pil[i] = (int *)alloca(sizeof(int)*2);
-+		const int fac_rows = d_fac_rows;
-+        int **fac_pos = (int **)alloca(sizeof(int *)*fac_rows);
-+        for (size_t i = 0; i < fac_rows; i++) fac_pos[i] = (int *)alloca(sizeof(int)*2);
-+        #else
- 		int time_pil[time_rows][2];
+-		int time_pil[time_rows][2];
++		__GR_VLA2D(int, time_pil, time_rows, 2);
  		const int fac_rows = d_fac_rows;
- 		int fac_pos[fac_rows][2];
-+        #endif
+-		int fac_pos[fac_rows][2];
++		__GR_VLA2D(int, fac_pos, fac_rows, 2);
  		int unused_carriers_A[3] = {-1, 0, 1};
  
  		switch(d_RM)
@@ -268,24 +246,20 @@ index c3d9be1..33bfae4 100644
  	config* d_cfg;
  	ofdm_params* d_ofdm;
 diff --git a/gr-drm/lib/drm_util.cc b/gr-drm/lib/drm_util.cc
-index cccbde7..d4b2f46 100644
+index cccbde7..7a392f6 100644
 --- a/gr-drm/lib/drm_util.cc
 +++ b/gr-drm/lib/drm_util.cc
-@@ -80,10 +80,17 @@ void
+@@ -80,10 +80,10 @@ void
  enqueue_crc(unsigned char* ptr, transm_params* tp, int len, const unsigned short ord) //  see DRM standard, annex D
  {
  	unsigned short rob_mode = tp->cfg().RM();
-+    #ifdef _MSC_VER
-+	unsigned char *shift_reg = (unsigned char *)alloca(ord); // shift register of length ord
-+	unsigned char *shift_reg_prev = (unsigned char *)alloca(ord); // state of register before last shift
-+	unsigned char next_lsb; // the bit that results out of XORing the MSb with the input
-+	unsigned char *crc_word = (unsigned char *)alloca(ord); // CRC word
-+    #else
- 	unsigned char shift_reg[ord]; // shift register of length ord
- 	unsigned char shift_reg_prev[ord]; // state of register before last shift
+-	unsigned char shift_reg[ord]; // shift register of length ord
+-	unsigned char shift_reg_prev[ord]; // state of register before last shift
++	__GR_VLA(unsigned char, shift_reg, ord); // shift register of length ord
++	__GR_VLA(unsigned char, shift_reg_prev, ord); // state of register before last shift
  	unsigned char next_lsb; // the bit that results out of XORing the MSb with the input
- 	unsigned char crc_word[ord]; // CRC word
-+    #endif
+-	unsigned char crc_word[ord]; // CRC word
++	__GR_VLA(unsigned char, crc_word, ord); // CRC word
  	memset(shift_reg, 1, ord); // set all stages to one (see DRM standard, annex D)
  	memset(shift_reg_prev, 0, ord); // just for debugging purposes
  	switch(ord)
@@ -330,82 +304,67 @@ index c2686c6..ca3d77f 100644
  
  #endif
 diff --git a/gr-drm/lib/generate_sdc_vb_impl.cc b/gr-drm/lib/generate_sdc_vb_impl.cc
-index 6076992..068f700 100644
+index 6076992..33df10d 100644
 --- a/gr-drm/lib/generate_sdc_vb_impl.cc
 +++ b/gr-drm/lib/generate_sdc_vb_impl.cc
-@@ -188,7 +188,11 @@ namespace gr {
+@@ -188,7 +188,7 @@ namespace gr {
  				gr_vector_void_star &output_items)
  	{
  		const unsigned int sdc_length = d_tp->sdc().L();
-+        #ifdef _MSC_VER
-+        unsigned char *data = (unsigned char *)alloca(sdc_length);
-+        #else
- 		unsigned char data[sdc_length];
-+        #endif
+-		unsigned char data[sdc_length];
++		__GR_VLA(unsigned char, data, sdc_length);
  		memset(data, 0, sdc_length);
  
  		init_data(data);
 diff --git a/gr-drm/lib/m3ufile_source_f_impl.cc b/gr-drm/lib/m3ufile_source_f_impl.cc
-index 737b0d3..4214c88 100644
+index 737b0d3..f306942 100644
 --- a/gr-drm/lib/m3ufile_source_f_impl.cc
 +++ b/gr-drm/lib/m3ufile_source_f_impl.cc
-@@ -118,7 +118,11 @@ namespace gr {
+@@ -118,7 +118,7 @@ namespace gr {
      {
          char ext_header[] = "#EXTM3U";
          const int len_ext_header = strlen(ext_header);
-+        #ifdef _MSC_VER
-+        char *linebuf = (char *)alloca(len_ext_header);
-+        #else
-         char linebuf[len_ext_header];
-+        #endif
+-        char linebuf[len_ext_header];
++        __GR_VLA(char, linebuf, len_ext_header);
          d_m3u_file.getline(linebuf, len_ext_header+1); // +1 to get the newline character
          if(strcmp(linebuf, ext_header) == 0) // return 0 if equal
          {
 diff --git a/gr-drm/lib/partitioning_vbvb_impl.cc b/gr-drm/lib/partitioning_vbvb_impl.cc
-index b801252..bf0638d 100644
+index b801252..3ed81ec 100644
 --- a/gr-drm/lib/partitioning_vbvb_impl.cc
 +++ b/gr-drm/lib/partitioning_vbvb_impl.cc
-@@ -60,7 +60,11 @@ namespace gr {
+@@ -60,7 +60,7 @@ namespace gr {
  			  gr_vector_void_star &output_items)
      {
  		unsigned char *in = (unsigned char *) input_items[0];
-+        #ifdef _MSC_VER
-+		unsigned char **out = (unsigned char **)alloca(sizeof(unsigned char *)*(d_n_out));
-+        #else
- 		unsigned char *out[d_n_out];
-+        #endif
+-		unsigned char *out[d_n_out];
++		__GR_VLA(unsigned char *, out, d_n_out);
  		for(int i = 0; i < d_n_out; i++)
  		{
  			out[i] = (unsigned char*) output_items[i];
 diff --git a/gr-drm/lib/qam_map_vbvc_impl.cc b/gr-drm/lib/qam_map_vbvc_impl.cc
-index 9abc2d1..6f949af 100644
+index 9abc2d1..d9140e8 100644
 --- a/gr-drm/lib/qam_map_vbvc_impl.cc
 +++ b/gr-drm/lib/qam_map_vbvc_impl.cc
-@@ -73,7 +73,11 @@ namespace gr {
+@@ -73,7 +73,7 @@ namespace gr {
  			  gr_vector_const_void_star &input_items,
  			  gr_vector_void_star &output_items)
  	{
-+        #ifdef _MSC_VER
-+		unsigned char **in = (unsigned char **)alloca(sizeof(unsigned char *)*(d_n_inputs));
-+        #else
- 		unsigned char *in[d_n_inputs];
-+        #endif
+-		unsigned char *in[d_n_inputs];
++		__GR_VLA(unsigned char *, in, d_n_inputs);
  		gr_complex *out = (gr_complex *) output_items[0];
  
  		// define input pointers
 diff --git a/gr-drm/lib/scrambler_vbvb_impl.cc b/gr-drm/lib/scrambler_vbvb_impl.cc
-index 3dc20a3..a3bd41c 100644
+index 3dc20a3..f2ce643 100644
 --- a/gr-drm/lib/scrambler_vbvb_impl.cc
 +++ b/gr-drm/lib/scrambler_vbvb_impl.cc
-@@ -66,7 +66,11 @@ namespace gr {
+@@ -66,7 +66,7 @@ namespace gr {
  				for(int j = 0; j < noutput_items; j++)
  				{
  					// Generate PRBS of length block_len (G(x) = x^9 + x^5 + 1)
-+                    #ifdef _MSC_VER
-+					unsigned char *prbs = (unsigned char *)alloca(n_reset); // Pseudo random bit sequence array
-+                    #else
- 					unsigned char prbs[n_reset]; // Pseudo random bit sequence array
-+                    #endif
+-					unsigned char prbs[n_reset]; // Pseudo random bit sequence array
++					__GR_VLA(unsigned char, prbs, n_reset); // Pseudo random bit sequence array
  					unsigned char lfsr[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1}; // inital state: all ones
  					unsigned char lfsr_prev[9]; // holds previous shift register state while shifting
  					unsigned char next_bit;
