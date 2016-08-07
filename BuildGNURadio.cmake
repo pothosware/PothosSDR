@@ -69,15 +69,6 @@ ExternalProject_Add(GNURadio
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_ifdef_unistd_h.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_paths_return_fix.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_msvc_rand48.diff
-        #---OLD----
-        #${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_alloca.diff
-        #${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_fdmdv_round.diff
-        #${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_filter_truncation.diff
-        #${PROJECT_SOURCE_DIR}/patches/gnuradio_udp_source_linger.diff
-        #${PROJECT_SOURCE_DIR}/patches/gnuradio_config_msvc_math.diff
-        #${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_msvc14.diff
-        #${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_gr_aligned.diff
-        #${PROJECT_SOURCE_DIR}/patches/gr_dtv_dvb_bbheader_grc_fix.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
