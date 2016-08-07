@@ -14,7 +14,7 @@
 ############################################################
 
 set(VOLK_BRANCH maint)
-set(GNURADIO_BRANCH v3.7.9.2)
+set(GNURADIO_BRANCH v3.7.10)
 set(GR_RUNTIME_BRANCH master)
 set(GR_POTHOS_BRANCH master)
 set(GROSMOSDR_BRANCH master)
@@ -61,20 +61,23 @@ ExternalProject_Add(GNURadio
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_alloca.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_fdmdv_round.diff
+       ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_pfb_clock_sync_fff.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_filter_truncation.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_portaudio_add_io_h.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_udp_source_linger.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_msvc_math.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_msvc14.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_dllr_factor.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_gr_aligned.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_ldpc_config_h.diff
-        ${PROJECT_SOURCE_DIR}/patches/gr_dtv_dvb_bbheader_grc_fix.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_ifdef_unistd_h.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_paths_return_fix.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_msvc_rand48.diff
+        #---OLD----
+        #${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_alloca.diff
+        #${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_fdmdv_round.diff
+        #${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_filter_truncation.diff
+        #${PROJECT_SOURCE_DIR}/patches/gnuradio_udp_source_linger.diff
+        #${PROJECT_SOURCE_DIR}/patches/gnuradio_config_msvc_math.diff
+        #${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_msvc14.diff
+        #${PROJECT_SOURCE_DIR}/patches/gnuradio_dtv_use_gr_aligned.diff
+        #${PROJECT_SOURCE_DIR}/patches/gr_dtv_dvb_bbheader_grc_fix.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
