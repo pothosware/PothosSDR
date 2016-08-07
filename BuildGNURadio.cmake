@@ -65,7 +65,6 @@ ExternalProject_Add(GNURadio
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_pfb_clock_sync_fff.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_portaudio_add_io_h.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_dllr_factor.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_ldpc_config_h.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_ifdef_unistd_h.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_paths_return_fix.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_msvc_rand48.diff

@@ -13,7 +13,6 @@
 | GNURadio      | gnuradio_fix_pfb_clock_sync_fff.diff | https://github.com/pothosware/gnuradio/issues/8       |
 | GNURadio      | gnuradio_portaudio_add_io_h.diff     | https://github.com/pothosware/gnuradio/issues/21      |
 | GNURadio      | gnuradio_fec_dllr_factor.diff        | https://github.com/pothosware/gnuradio/issues/26      |
-| GNURadio      | gnuradio_fec_ldpc_config_h.diff      | https://github.com/pothosware/gnuradio/issues/24      |
 | GNURadio      | gnuradio_ifdef_unistd_h.diff         | ifdef unistd.h in public unit test header             |
 | GNURadio      | gnuradio_paths_return_fix.diff       | fix bug returning a temporary variable                |
 | GNURadio      | gnuradio_config_msvc_rand48.diff     | added missing rand48() functions to config.h          |
