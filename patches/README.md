@@ -9,7 +9,6 @@
 | FAAC          | faac_dll_project_files.diff          | updated the project files for faac                    |
 | FAAD2         | faad2_dll_project_files.diff         | updated the project files for faad2                   |
 | CppUnit       | cppunit_dll_project_files.diff       | updated the project files for cppunit                 |
-| GNURadio      | gnuradio_config_msvc_math.diff       | https://github.com/pothosware/gnuradio/issues/19      |
 | GNURadio      | gnuradio_fix_codec2_public_defs.diff | https://github.com/pothosware/gnuradio/issues/10      |
 | GNURadio      | gnuradio_fix_pfb_clock_sync_fff.diff | https://github.com/pothosware/gnuradio/issues/8       |
 | GNURadio      | gnuradio_portaudio_add_io_h.diff     | https://github.com/pothosware/gnuradio/issues/21      |
