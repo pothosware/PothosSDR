@@ -1,22 +1,22 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8f1a185..ddc709c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -49,6 +49,9 @@ include(GrVersion) #setup version info
+ if(NOT WIN32)
+     #http://gcc.gnu.org/wiki/Visibility
+     add_definitions(-fvisibility=hidden)
++else()
++    #enables std::min and std::max
++    add_definitions(-DNOMINMAX)
+ endif()
+ 
+ ########################################################################
 diff --git a/lib/encoder_impl.cc b/lib/encoder_impl.cc
-index cc387bc..0f5b8e1 100644
+index cc387bc..c8aa054 100644
 --- a/lib/encoder_impl.cc
 +++ b/lib/encoder_impl.cc
-@@ -18,6 +18,13 @@
- #include "config.h"
- #endif
- 
-+#if defined(_MSC_VER) && !defined(NOMINMAX)
-+#  define NOMINMAX //allow std::min/max()
-+#  if _MSC_VER < 1800 //nearbyint for vc11
-+#    define nearbyint(x) ((int) ((x)+0.5))
-+#  endif
-+#endif
-+
- #include "encoder_impl.h"
- #include "constants.h"
- #include <gnuradio/io_signature.h>
-@@ -402,7 +409,7 @@ void encoder_impl::prepare_group2(const bool AB) {
+@@ -402,7 +402,7 @@ void encoder_impl::prepare_group2(const bool AB) {
  void encoder_impl::prepare_group1a(void) {
  	std::cout << "preparing group 1" << std::endl;
  	//infoword[1] = infoword[1] | (1 << 4); // TMC in 8A
