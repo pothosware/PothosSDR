@@ -234,8 +234,6 @@ ExternalProject_Add(GrRDS
     DEPENDS GNURadio
     GIT_REPOSITORY https://github.com/bastibl/gr-rds.git
     GIT_TAG ${GRRDS_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/gr_rds_msvc_fixes.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
