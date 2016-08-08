@@ -1,43 +1,21 @@
-diff --git a/gr-drm/CMakeLists.txt b/gr-drm/CMakeLists.txt
-index 08c60c8..6239fd0 100644
---- a/gr-drm/CMakeLists.txt
-+++ b/gr-drm/CMakeLists.txt
-@@ -100,7 +100,7 @@ find_package(CppUnit)
- # components required to the list of GR_REQUIRED_COMPONENTS (in all
- # caps such as FILTER or FFT) and change the version to the minimum
- # API compatible version required.
--set(GR_REQUIRED_COMPONENTS RUNTIME)
-+set(GR_REQUIRED_COMPONENTS RUNTIME PMT)
- find_package(Gnuradio "3.7.2" REQUIRED)
- 
- if(NOT CPPUNIT_FOUND)
-@@ -118,7 +118,7 @@ include_directories(
-     ${Boost_INCLUDE_DIRS}
-     ${CPPUNIT_INCLUDE_DIRS}
-     ${GNURADIO_ALL_INCLUDE_DIRS}
--    ${Faac_INCLUDE_DIRS}
-+    ${Faac_INCLUDE_DIR}
- )
- 
- link_directories(
-diff --git a/gr-drm/lib/add_tailbits_vbvb_impl.cc b/gr-drm/lib/add_tailbits_vbvb_impl.cc
-index 04a6340..fcb6066 100644
---- a/gr-drm/lib/add_tailbits_vbvb_impl.cc
-+++ b/gr-drm/lib/add_tailbits_vbvb_impl.cc
-@@ -63,7 +63,7 @@ namespace gr {
+diff --git a/lib/add_tailbits_bb_impl.cc b/lib/add_tailbits_bb_impl.cc
+index 12304a3..38deba3 100644
+--- a/lib/add_tailbits_bb_impl.cc
++++ b/lib/add_tailbits_bb_impl.cc
+@@ -66,7 +66,7 @@ namespace gr {
  		unsigned char *out = (unsigned char *) output_items[0];
- 
- 		// set tailbits to zero TODO: make tailbits configurable
+         const int n_vectors = noutput_items/(d_vlen+d_n_tail);
+         // set tailbits to zero TODO: make tailbits configurable
 -		unsigned char tailbits[(const int) d_n_tail];
 +		__GR_VLA(unsigned char, tailbits, (const int) d_n_tail);
  		memset(tailbits, 0, d_n_tail);
  
- 		for( int i = 0; i < noutput_items; i++)
-diff --git a/gr-drm/lib/audio_encoder_svb_impl.cc b/gr-drm/lib/audio_encoder_svb_impl.cc
-index d4dbcf0..09c51fd 100644
---- a/gr-drm/lib/audio_encoder_svb_impl.cc
-+++ b/gr-drm/lib/audio_encoder_svb_impl.cc
-@@ -166,7 +166,7 @@ namespace gr {
+ 		for( int i = 0; i < n_vectors; i++)
+diff --git a/lib/audio_encoder_sb_impl.cc b/lib/audio_encoder_sb_impl.cc
+index 179e396..1f6cabf 100644
+--- a/lib/audio_encoder_sb_impl.cc
++++ b/lib/audio_encoder_sb_impl.cc
+@@ -167,7 +167,7 @@ namespace gr {
  		/* encode PCM stream and make it DRM compliant. write to output buffer (in make_drm_compliant()) */
  		// init AAC buffer
  		//std::cout << "aac_encode()" << std::endl;
@@ -46,7 +24,7 @@ index d4dbcf0..09c51fd 100644
  		aac_encode(aac_buffer); // encodes pcm data for 1 super transmission frame
  		//std::cout << "d_out: " << (long) d_out << ", bits written: " << d_out - d_out_prev << std::endl;
  		d_out_prev = d_out;
-@@ -196,8 +196,8 @@ namespace gr {
+@@ -197,8 +197,8 @@ namespace gr {
  		d_n_bytes_encoded.clear();
  
  		// allocate tmp input buffers for PCM and AAC samples
@@ -57,8 +35,8 @@ index d4dbcf0..09c51fd 100644
  
  		for (int j = 0; j < d_n_aac_frames; j++)
  		{
-@@ -217,9 +217,9 @@ namespace gr {
- 	audio_encoder_svb_impl::make_drm_compliant(unsigned char* aac_buffer)
+@@ -218,9 +218,9 @@ namespace gr {
+ 	audio_encoder_sb_impl::make_drm_compliant(unsigned char* aac_buffer)
  	{
  		/* init buffers for CRC, payload and frame lengths */
 -		unsigned char crc_bits[(const int) d_n_aac_frames];
@@ -70,7 +48,7 @@ index d4dbcf0..09c51fd 100644
  		frame_pos[0] = aac_buffer;
  
  		/* create header ( accumulated frame lengths | padding | CRC | audio ) */
-@@ -321,7 +321,7 @@ namespace gr {
+@@ -322,7 +322,7 @@ namespace gr {
  		//std::cout << "len_msg_bit: " << len_msg_bit << std::endl;
  		d_n_text_frames = len_msg_bit/(4*8);
  		//std::cout << "d_n_text_frames: " << d_n_text_frames << ", n_segments: " << n_segments << std::endl;
@@ -79,23 +57,39 @@ index d4dbcf0..09c51fd 100644
  		memset(msg, 9, len_msg_bit); // set to 9 for debugging purposes
  
  		//std::cout << "msg address: " << (long) &msg[0] << std::endl;
-diff --git a/gr-drm/lib/cell_mapping_vcvc_impl.cc b/gr-drm/lib/cell_mapping_vcvc_impl.cc
-index 477b819..b31c442 100644
---- a/gr-drm/lib/cell_mapping_vcvc_impl.cc
-+++ b/gr-drm/lib/cell_mapping_vcvc_impl.cc
+diff --git a/lib/cell_mapping_cc_impl.cc b/lib/cell_mapping_cc_impl.cc
+index 0041eb5..c01ba45 100644
+--- a/lib/cell_mapping_cc_impl.cc
++++ b/lib/cell_mapping_cc_impl.cc
 @@ -18,6 +18,7 @@
   * Boston, MA 02110-1301, USA.
   */
  
-+#define _USE_MATH_DEFINES
++#define _USE_MATH_DEFINES //define before including math header
  #ifdef HAVE_CONFIG_H
  #include "config.h"
  #endif
-@@ -150,9 +151,9 @@ namespace gr {
+@@ -25,6 +26,13 @@
+ #include <gnuradio/io_signature.h>
+ #include "cell_mapping_cc_impl.h"
+ 
++//workaround __GR_VLA2D issue
++#ifdef _MSC_VER
++#  undef __GR_VLA2D
++#  define __GR_VLA2D(TYPE, buf, size, size2) TYPE ** buf = (TYPE **) alloca(sizeof(TYPE*) * (size)); \
++    {for (int i__ = 0; i__ < (size); i__++) buf[i__] = (TYPE *) alloca(sizeof(TYPE) * (size2));}
++#endif
++
+ namespace gr {
+   namespace drm {
+ 
+@@ -162,10 +170,10 @@ namespace gr {
+ 		// copy mapping tables to access them flexibly
  		int freq_pil[3][2];
  		const int time_rows = d_time_rows; // this way we can instance an array with this variable
- 		int afs_pil[NUM_AFS_PILOTS][3]; // only used for RM E
+-		int afs_pil[NUM_AFS_PILOTS][3]; // only used for RM E
 -		int time_pil[time_rows][2];
++		__GR_VLA2D(int, afs_pil, NUM_AFS_PILOTS, 3); // only used for RM E
 +		__GR_VLA2D(int, time_pil, time_rows, 2);
  		const int fac_rows = d_fac_rows;
 -		int fac_pos[fac_rows][2];
@@ -103,10 +97,10 @@ index 477b819..b31c442 100644
  		int unused_carriers_A[3] = {-1, 0, 1};
  
  		switch(d_RM)
-diff --git a/gr-drm/lib/drm_config.h b/gr-drm/lib/drm_config.h
-index 9f4c046..c97a4bb 100644
---- a/gr-drm/lib/drm_config.h
-+++ b/gr-drm/lib/drm_config.h
+diff --git a/lib/drm_config.h b/lib/drm_config.h
+index 1758e9f..572648f 100644
+--- a/lib/drm_config.h
++++ b/lib/drm_config.h
 @@ -22,12 +22,13 @@
  #ifndef DRM_CONFIG_H_
  #define DRM_CONFIG_H_
@@ -122,10 +116,10 @@ index 9f4c046..c97a4bb 100644
  {
  	unsigned short d_RM; // robustness mode (0-4 correspond to A-E)
  	unsigned short d_SO; // spectrum occupancy (0-5)
-diff --git a/gr-drm/lib/drm_params.h b/gr-drm/lib/drm_params.h
+diff --git a/lib/drm_params.h b/lib/drm_params.h
 index 13a0e05..afdd419 100644
---- a/gr-drm/lib/drm_params.h
-+++ b/gr-drm/lib/drm_params.h
+--- a/lib/drm_params.h
++++ b/lib/drm_params.h
 @@ -22,6 +22,7 @@
  #ifndef _DRM_PARAMS_H_
  #define _DRM_PARAMS_H_
@@ -197,10 +191,10 @@ index 13a0e05..afdd419 100644
  {
  	/* NOTE: so far, only SM is implemented! TODO: implement hierarchical mapping */
  	unsigned int d_L_MUX; // number of bits per multiplex frame
-diff --git a/gr-drm/lib/drm_tables.h b/gr-drm/lib/drm_tables.h
+diff --git a/lib/drm_tables.h b/lib/drm_tables.h
 index 807ee03..2be85d8 100644
---- a/gr-drm/lib/drm_tables.h
-+++ b/gr-drm/lib/drm_tables.h
+--- a/lib/drm_tables.h
++++ b/lib/drm_tables.h
 @@ -22,12 +22,13 @@
  #ifndef DRM_TABLES_H_
  #define DRM_TABLES_H_
@@ -216,39 +210,24 @@ index 807ee03..2be85d8 100644
  {
  	public:
  
-diff --git a/gr-drm/lib/drm_tables_mapping.cc b/gr-drm/lib/drm_tables_mapping.cc
-index 4960767..dc1788f 100644
---- a/gr-drm/lib/drm_tables_mapping.cc
-+++ b/gr-drm/lib/drm_tables_mapping.cc
-@@ -21,6 +21,7 @@
+diff --git a/lib/drm_tables_mapping.cc b/lib/drm_tables_mapping.cc
+index 2ddbc79..4a1d704 100644
+--- a/lib/drm_tables_mapping.cc
++++ b/lib/drm_tables_mapping.cc
+@@ -21,8 +21,8 @@
   * Boston, MA 02110-1301, USA.
   */
  
-+#define _USE_MATH_DEFINES
++#define _USE_MATH_DEFINES //define before including math header
  #include "drm_tables.h"
+-#define _USE_MATH_DEFINES
  
  /* frequency reference cells [carrier index][phase_index(0,k)]
-diff --git a/gr-drm/lib/drm_transm_params.h b/gr-drm/lib/drm_transm_params.h
-index c3d9be1..33bfae4 100644
---- a/gr-drm/lib/drm_transm_params.h
-+++ b/gr-drm/lib/drm_transm_params.h
-@@ -22,10 +22,11 @@
- #ifndef DRM_TRANSM_PARAMS_H_
- #define DRM_TRANSM_PARAMS_H_
- 
-+#include <drm/api.h>
- #include "drm_config.h"
- #include "drm_params.h"
- 
--class transm_params
-+class DRM_API transm_params
- {
- 	config* d_cfg;
- 	ofdm_params* d_ofdm;
-diff --git a/gr-drm/lib/drm_util.cc b/gr-drm/lib/drm_util.cc
+  * corresponds to 750 Hz, 2250 Hz and 3000 Hz */
+diff --git a/lib/drm_util.cc b/lib/drm_util.cc
 index cccbde7..7a392f6 100644
---- a/gr-drm/lib/drm_util.cc
-+++ b/gr-drm/lib/drm_util.cc
+--- a/lib/drm_util.cc
++++ b/lib/drm_util.cc
 @@ -80,10 +80,10 @@ void
  enqueue_crc(unsigned char* ptr, transm_params* tp, int len, const unsigned short ord) //  see DRM standard, annex D
  {
@@ -263,63 +242,23 @@ index cccbde7..7a392f6 100644
  	memset(shift_reg, 1, ord); // set all stages to one (see DRM standard, annex D)
  	memset(shift_reg_prev, 0, ord); // just for debugging purposes
  	switch(ord)
-diff --git a/gr-drm/lib/drm_util.h b/gr-drm/lib/drm_util.h
-index c2686c6..ca3d77f 100644
---- a/gr-drm/lib/drm_util.h
-+++ b/gr-drm/lib/drm_util.h
-@@ -22,6 +22,7 @@
- #ifndef _DRM_UTIL_H
- #define _DRM_UTIL_H
- 
-+#include <drm/api.h>
- #include <cstring>
- #include <cmath>
- #include <vector>
-@@ -29,21 +30,21 @@
- 
- 
- // enqueue bit array arr of lenght len at address ptr
--void enqueue_bits(unsigned char* &ptr, unsigned int len, unsigned char arr[]);
-+DRM_API void enqueue_bits(unsigned char* &ptr, unsigned int len, unsigned char arr[]);
- 
- // enqueue bit array of length len with decimal representation val (max->unsigned int) at address ptr
--void enqueue_bits_dec(unsigned char* &ptr, unsigned int len, unsigned int val);
-+DRM_API void enqueue_bits_dec(unsigned char* &ptr, unsigned int len, unsigned int val);
- 
- // enqueue crc word of order ord after bit sequence of length len at address ptr
--void enqueue_crc(unsigned char* ptr, transm_params* tp, int len, unsigned short ord);
-+DRM_API void enqueue_crc(unsigned char* ptr, transm_params* tp, int len, unsigned short ord);
- 
- // enqueue array arr of lenght len to vector vec
--void enqueue_array_to_vector(std::vector< unsigned char >* vec, const unsigned char* arr, int len);
-+DRM_API void enqueue_array_to_vector(std::vector< unsigned char >* vec, const unsigned char* arr, int len);
- 
- // dequeue 8 bits from array ptr and interpret them as unsigned char
--unsigned char dequeue_char(unsigned char* &ptr);
-+DRM_API unsigned char dequeue_char(unsigned char* &ptr);
- 
- // dequeue array of length len from array ptr (unsigned char) and interpret as unsigned int
--unsigned int dequeue_dec(unsigned char* &ptr, unsigned int len);
-+DRM_API unsigned int dequeue_dec(unsigned char* &ptr, unsigned int len);
- 
- #endif
-diff --git a/gr-drm/lib/generate_sdc_vb_impl.cc b/gr-drm/lib/generate_sdc_vb_impl.cc
-index 6076992..33df10d 100644
---- a/gr-drm/lib/generate_sdc_vb_impl.cc
-+++ b/gr-drm/lib/generate_sdc_vb_impl.cc
-@@ -188,7 +188,7 @@ namespace gr {
+diff --git a/lib/generate_sdc_b_impl.cc b/lib/generate_sdc_b_impl.cc
+index 1d9b7c7..922d0ac 100644
+--- a/lib/generate_sdc_b_impl.cc
++++ b/lib/generate_sdc_b_impl.cc
+@@ -189,7 +189,7 @@ namespace gr {
  				gr_vector_void_star &output_items)
  	{
  		const unsigned int sdc_length = d_tp->sdc().L();
 -		unsigned char data[sdc_length];
 +		__GR_VLA(unsigned char, data, sdc_length);
+ 		unsigned char *out = (unsigned char *) output_items[0];
  		memset(data, 0, sdc_length);
  
- 		init_data(data);
-diff --git a/gr-drm/lib/m3ufile_source_f_impl.cc b/gr-drm/lib/m3ufile_source_f_impl.cc
+diff --git a/lib/m3ufile_source_f_impl.cc b/lib/m3ufile_source_f_impl.cc
 index 737b0d3..f306942 100644
---- a/gr-drm/lib/m3ufile_source_f_impl.cc
-+++ b/gr-drm/lib/m3ufile_source_f_impl.cc
+--- a/lib/m3ufile_source_f_impl.cc
++++ b/lib/m3ufile_source_f_impl.cc
 @@ -118,7 +118,7 @@ namespace gr {
      {
          char ext_header[] = "#EXTM3U";
@@ -329,38 +268,25 @@ index 737b0d3..f306942 100644
          d_m3u_file.getline(linebuf, len_ext_header+1); // +1 to get the newline character
          if(strcmp(linebuf, ext_header) == 0) // return 0 if equal
          {
-diff --git a/gr-drm/lib/partitioning_vbvb_impl.cc b/gr-drm/lib/partitioning_vbvb_impl.cc
-index b801252..3ed81ec 100644
---- a/gr-drm/lib/partitioning_vbvb_impl.cc
-+++ b/gr-drm/lib/partitioning_vbvb_impl.cc
-@@ -60,7 +60,7 @@ namespace gr {
- 			  gr_vector_void_star &output_items)
-     {
- 		unsigned char *in = (unsigned char *) input_items[0];
--		unsigned char *out[d_n_out];
-+		__GR_VLA(unsigned char *, out, d_n_out);
- 		for(int i = 0; i < d_n_out; i++)
- 		{
- 			out[i] = (unsigned char*) output_items[i];
-diff --git a/gr-drm/lib/qam_map_vbvc_impl.cc b/gr-drm/lib/qam_map_vbvc_impl.cc
-index 9abc2d1..d9140e8 100644
---- a/gr-drm/lib/qam_map_vbvc_impl.cc
-+++ b/gr-drm/lib/qam_map_vbvc_impl.cc
-@@ -73,7 +73,7 @@ namespace gr {
+diff --git a/lib/qam_map_bc_impl.cc b/lib/qam_map_bc_impl.cc
+index 50c25f3..24b26f3 100644
+--- a/lib/qam_map_bc_impl.cc
++++ b/lib/qam_map_bc_impl.cc
+@@ -75,7 +75,7 @@ namespace gr {
  			  gr_vector_const_void_star &input_items,
  			  gr_vector_void_star &output_items)
  	{
 -		unsigned char *in[d_n_inputs];
 +		__GR_VLA(unsigned char *, in, d_n_inputs);
  		gr_complex *out = (gr_complex *) output_items[0];
- 
+ 		int n_vectors = noutput_items/d_vlen_out;
  		// define input pointers
-diff --git a/gr-drm/lib/scrambler_vbvb_impl.cc b/gr-drm/lib/scrambler_vbvb_impl.cc
-index 3dc20a3..f2ce643 100644
---- a/gr-drm/lib/scrambler_vbvb_impl.cc
-+++ b/gr-drm/lib/scrambler_vbvb_impl.cc
-@@ -66,7 +66,7 @@ namespace gr {
- 				for(int j = 0; j < noutput_items; j++)
+diff --git a/lib/scrambler_bb_impl.cc b/lib/scrambler_bb_impl.cc
+index 19bef29..ec4bbcb 100644
+--- a/lib/scrambler_bb_impl.cc
++++ b/lib/scrambler_bb_impl.cc
+@@ -67,7 +67,7 @@ namespace gr {
+ 				for(int j = 0; j < n_vectors; j++)
  				{
  					// Generate PRBS of length block_len (G(x) = x^9 + x^5 + 1)
 -					unsigned char prbs[n_reset]; // Pseudo random bit sequence array
