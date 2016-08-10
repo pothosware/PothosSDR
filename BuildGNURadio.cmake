@@ -68,6 +68,7 @@ ExternalProject_Add(GNURadio
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_ifdef_unistd_h.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_paths_return_fix.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_msvc_rand48.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_catv_bin_hex.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev

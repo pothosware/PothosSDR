@@ -16,5 +16,6 @@
 | GNURadio      | gnuradio_ifdef_unistd_h.diff         | ifdef unistd.h in public unit test header             |
 | GNURadio      | gnuradio_paths_return_fix.diff       | fix bug returning a temporary variable                |
 | GNURadio      | gnuradio_config_msvc_rand48.diff     | added missing rand48() functions to config.h          |
+| GNURadio      | gnuradio_catv_bin_hex.diff           | switch from 0b binary to 0x hex format                |
 | UHD           | uhd_fix_gain_group_floor_round.diff  | https://github.com/EttusResearch/uhd/issues/31        |
 | zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |
