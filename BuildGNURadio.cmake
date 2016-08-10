@@ -293,8 +293,6 @@ ExternalProject_Add(GrDRM
     DEPENDS GNURadio faac faad2
     GIT_REPOSITORY https://github.com/kit-cel/gr-drm.git
     GIT_TAG ${GRDRM_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/gr_drm_msvc_fixes.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev

@@ -17,5 +17,4 @@
 | GNURadio      | gnuradio_paths_return_fix.diff       | fix bug returning a temporary variable                |
 | GNURadio      | gnuradio_config_msvc_rand48.diff     | added missing rand48() functions to config.h          |
 | UHD           | uhd_fix_gain_group_floor_round.diff  | https://github.com/EttusResearch/uhd/issues/31        |
-| gr-drm        | gr_drm_msvc_fixes.diff               | Minor MSVC patches for dynamic arrays and M_PI        |
 | zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |
