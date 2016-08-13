@@ -246,7 +246,7 @@ install(
 )
 
 install(
-    FILES ${SOURCE_DIR}/qwt-6.1.2/COPYING
+    FILES ${SOURCE_DIR}/qwt6/COPYING
     DESTINATION licenses/qwt
 )
 
