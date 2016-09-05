@@ -16,16 +16,18 @@
 ## * SoapyRxTools
 ############################################################
 
-set(SOAPY_SDR_BRANCH soapy-sdr-0.5.1)
+set(SOAPY_SDR_BRANCH soapy-sdr-0.5.3)
+set(SOAPY_AIRSPY_BRANCH soapy-airspy-0.1.0)
 set(SOAPY_BLADERF_BRANCH soapy-bladerf-0.3.2)
 set(SOAPY_HACKRF_BRANCH soapy-hackrf-0.2.1)
 set(SOAPY_UHD_BRANCH soapy-uhd-0.3.1)
-set(SOAPY_OSMO_BRANCH soapy-osmo-0.2.3)
-set(SOAPY_RTLSDR_BRANCH soapy-rtlsdr-0.2.1)
-set(SOAPY_REMOTE_BRANCH soapy-remote-0.3.0)
+set(SOAPY_OSMO_BRANCH soapy-osmo-0.2.4)
+set(SOAPY_RTLSDR_BRANCH soapy-rtlsdr-0.2.2)
+set(SOAPY_REMOTE_BRANCH soapy-remote-0.3.1)
 set(SOAPY_RED_PITAYA_BRANCH soapy-redpitaya-0.1.0)
 set(SOAPY_AUDIO_BRANCH master)
 set(SOAPY_S9C_EXTIO_BRANCH master)
+set(SOAPY_SDRPLAY_BRANCH master)
 set(SOAPY_RX_TOOLS_BRANCH master)
 
 ############################################################
@@ -67,6 +69,28 @@ WriteRegStr HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"SOAPY_SDR_ROOT\\\" \\\"$I
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
 DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"SOAPY_SDR_ROOT\\\"
 ")
+
+############################################################
+## Build SoapyAirspy
+############################################################
+message(STATUS "Configuring SoapyAirspy - ${SOAPY_AIRSPY_BRANCH}")
+ExternalProject_Add(SoapyAirspy
+    DEPENDS SoapySDR airspy
+    GIT_REPOSITORY https://github.com/pothosware/SoapyAirspy.git
+    GIT_TAG ${SOAPY_AIRSPY_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapyAirspy SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE.txt
+    DESTINATION licenses/SoapyAirspy
+)
 
 ############################################################
 ## Build SoapyBladeRF
@@ -121,10 +145,11 @@ install(
 ## * ENABLE_BLADERF=OFF see Soapy BladeRF
 ## * ENABLE_HACKRF=OFF see Soapy HackRF
 ## * ENABLE_RTL=OFF see Soapy RTL-SDR
+## * ENABLE_AIRSPY=OFF see Soapy Airspy
 ############################################################
 message(STATUS "Configuring SoapyOsmo - ${SOAPY_OSMO_BRANCH}")
 ExternalProject_Add(SoapyOsmo
-    DEPENDS SoapySDR osmo-sdr miri-sdr airspy #bladeRF hackRF rtl-sdr
+    DEPENDS SoapySDR osmo-sdr miri-sdr #airspy bladeRF hackRF rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
     GIT_TAG ${SOAPY_OSMO_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -137,9 +162,9 @@ ExternalProject_Add(SoapyOsmo
         -DENABLE_BLADERF=OFF
         -DENABLE_HACKRF=OFF
         -DENABLE_RTL=OFF
+        -DENABLE_AIRSPY=OFF
         -DENABLE_OSMOSDR=ON
         -DENABLE_MIRI=ON
-        -DENABLE_AIRSPY=ON
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
@@ -278,6 +303,30 @@ ExternalProject_Add(SoapyS9CExtIO
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+############################################################
+## Build SoapySDRPlay
+##
+## Requires: MiricsSDRAPIInstaller_1.95.exe
+############################################################
+message(STATUS "Configuring SoapySDRPlay - ${SOAPY_SDRPLAY_BRANCH}")
+ExternalProject_Add(SoapySDRPlay
+    DEPENDS SoapySDR
+    GIT_REPOSITORY https://github.com/pothosware/SoapySDRPlay.git
+    GIT_TAG ${SOAPY_SDRPLAY_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(SoapySDRPlay SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/LICENSE.txt
+    DESTINATION licenses/SoapySDRPlay
 )
 
 ############################################################
