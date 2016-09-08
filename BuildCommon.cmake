@@ -21,7 +21,7 @@ set(PTHREADS_BRANCH master)
 set(LIBUSB_BRANCH master) #> v1.0.20 for vc14 support
 set(ZEROMQ_BRANCH master)
 set(CPPZMQ_BRANCH master)
-set(POCO_BRANCH poco-1.7.4)
+set(POCO_BRANCH poco-1.7.5)
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.7)
 set(PORTAUDIO_BRANCH master)
