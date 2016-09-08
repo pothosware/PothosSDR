@@ -11,6 +11,7 @@
 ## * gr-rds
 ## * gqrx
 ## * gr-drm
+## * gr-rftap
 ############################################################
 
 set(VOLK_BRANCH maint)
@@ -21,6 +22,7 @@ set(GROSMOSDR_BRANCH master)
 set(GRRDS_BRANCH master)
 set(GQRX_BRANCH master)
 set(GRDRM_BRANCH master)
+set(GRRFTAP_BRANCH master)
 
 ############################################################
 ## Build Volk
@@ -318,4 +320,36 @@ ExternalProject_Get_Property(GrDRM SOURCE_DIR)
 install(
     FILES ${SOURCE_DIR}/COPYING.txt
     DESTINATION licenses/GrDRM
+)
+
+############################################################
+## Build gr-RFtap
+############################################################
+message(STATUS "Configuring GrRFtap - ${GRRFTAP_BRANCH}")
+ExternalProject_Add(GrRFtap
+    DEPENDS GNURadio
+    GIT_REPOSITORY https://github.com/rftap/gr-rftap.git
+    GIT_TAG ${GRRFTAP_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        -DBOOST_ALL_DYN_LINK=TRUE
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
+        -DSWIG_DIR=${SWIG_DIR}
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
+        -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(GrRFtap SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/MANIFEST.md
+    DESTINATION licenses/GrRFtap
 )
