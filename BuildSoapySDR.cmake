@@ -310,6 +310,9 @@ ExternalProject_Add(SoapyS9CExtIO
 ##
 ## Requires: MiricsSDRAPIInstaller_1.95.exe
 ############################################################
+get_filename_component(MIRICS_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\MiricsSDR\\API;Install_Dir]" ABSOLUTE)
+if (EXISTS "${MIRICS_API_DIR}")
+
 message(STATUS "Configuring SoapySDRPlay - ${SOAPY_SDRPLAY_BRANCH}")
 ExternalProject_Add(SoapySDRPlay
     DEPENDS SoapySDR
@@ -328,6 +331,16 @@ install(
     FILES ${SOURCE_DIR}/LICENSE.txt
     DESTINATION licenses/SoapySDRPlay
 )
+
+message(STATUS "MIRICS_API_DIR: ${MIRICS_API_DIR}")
+install(
+    FILES ${MIRICS_API_DIR}/x64/mir_sdr_api.dll
+    DESTINATION bin
+)
+
+else ()
+    message(STATUS "!Skipping SoapySDRPlay - MiricsSDRAPI not found")
+endif ()
 
 ############################################################
 ## Build SoapyRxTools
