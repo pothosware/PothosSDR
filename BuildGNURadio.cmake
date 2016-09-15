@@ -15,7 +15,7 @@
 ############################################################
 
 set(VOLK_BRANCH maint)
-set(GNURADIO_BRANCH v3.7.10)
+set(GNURADIO_BRANCH maint)
 set(GR_RUNTIME_BRANCH master)
 set(GR_POTHOS_BRANCH master)
 set(GROSMOSDR_BRANCH master)
@@ -63,13 +63,8 @@ ExternalProject_Add(GNURadio
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-       ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_pfb_clock_sync_fff.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_portaudio_add_io_h.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fec_dllr_factor.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_ifdef_unistd_h.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_paths_return_fix.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_msvc_rand48.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_catv_bin_hex.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
