@@ -308,7 +308,7 @@ ExternalProject_Add(SoapyS9CExtIO
 ############################################################
 ## Build SoapySDRPlay
 ##
-## Requires: MiricsSDRAPIInstaller_1.95.exe
+## Requires: MiricsSDRAPIInstaller_1.97.exe
 ############################################################
 get_filename_component(MIRICS_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\MiricsSDR\\API;Install_Dir]" ABSOLUTE)
 if (EXISTS "${MIRICS_API_DIR}")
