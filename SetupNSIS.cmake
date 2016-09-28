@@ -44,4 +44,20 @@ set(CPACK_NSIS_HELP_LINK "https://github.com/pothosware/PothosSDR/wiki/Tutorial"
 message(STATUS "CPACK_NSIS_DISPLAY_NAME: ${CPACK_NSIS_DISPLAY_NAME}")
 message(STATUS "CPACK_PACKAGE_FILE_NAME: ${CPACK_PACKAGE_FILE_NAME}")
 
+#######################################################################
+## SetOutPath to the bin directory with template customization:
+##
+## Setting the start-in to be the bin directory avoids PATH issues,
+## at least when using the shortcuts. This is a messy work around
+## and CMake should probably provide a variable for SetOutPath.
+#######################################################################
+file(READ "${CMAKE_ROOT}/Modules/NSIS.template.in" NSIS_template)
+set(CREATE_ICONS_REPLACE "
+  SetOutPath \"$INSTDIR\\bin\"
+@CPACK_NSIS_CREATE_ICONS@
+  SetOutPath \"$INSTDIR\"")
+string(REPLACE "@CPACK_NSIS_CREATE_ICONS@" "${CREATE_ICONS_REPLACE}" NSIS_template "${NSIS_template}")
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/NSIS.template.in" "${NSIS_template}")
+set(CPACK_MODULE_PATH "${CMAKE_CURRENT_BINARY_DIR}")
+
 include(CPack)
