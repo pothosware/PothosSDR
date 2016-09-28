@@ -19,7 +19,7 @@
 set(SOAPY_SDR_BRANCH maint) #soapy-sdr-0.5.*
 set(SOAPY_AIRSPY_BRANCH soapy-airspy-0.1.0)
 set(SOAPY_BLADERF_BRANCH soapy-bladerf-0.3.2)
-set(SOAPY_HACKRF_BRANCH soapy-hackrf-0.2.1)
+set(SOAPY_HACKRF_BRANCH master)
 set(SOAPY_UHD_BRANCH soapy-uhd-0.3.1)
 set(SOAPY_OSMO_BRANCH soapy-osmo-0.2.4)
 set(SOAPY_RTLSDR_BRANCH soapy-rtlsdr-0.2.2)
