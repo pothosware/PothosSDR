@@ -23,7 +23,7 @@ set(SOAPY_HACKRF_BRANCH soapy-hackrf-0.2.2)
 set(SOAPY_UHD_BRANCH soapy-uhd-0.3.1)
 set(SOAPY_OSMO_BRANCH soapy-osmo-0.2.4)
 set(SOAPY_RTLSDR_BRANCH soapy-rtlsdr-0.2.2)
-set(SOAPY_REMOTE_BRANCH soapy-remote-0.3.1)
+set(SOAPY_REMOTE_BRANCH maint) #soapy-remote-0.3.*
 set(SOAPY_RED_PITAYA_BRANCH soapy-redpitaya-0.1.0)
 set(SOAPY_AUDIO_BRANCH master)
 set(SOAPY_S9C_EXTIO_BRANCH master)
