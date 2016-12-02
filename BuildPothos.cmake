@@ -16,7 +16,7 @@
 ############################################################
 
 set(POTHOS_SERIALIZATION_BRANCH pothos-serialization-0.2.0)
-set(POTHOS_BRANCH pothos-0.4.0)
+set(POTHOS_BRANCH maint) #pothos-0.4.*
 set(POTHOS_AUDIO_BRANCH pothos-audio-0.2.0)
 set(POTHOS_BLOCKS_BRANCH maint) #pothos-blocks-0.4.*
 set(POTHOS_COMMS_BRANCH maint) #pothos-comms-0.2.*
@@ -24,7 +24,7 @@ set(POTHOS_GUI_BRANCH maint) #pothos-gui-0.4.*
 set(POTHOS_PLOTTERS_BRANCH maint) #pothos-plotters-0.2.*
 set(POTHOS_PYTHON_BRANCH maint) #pothos-python-0.2.*
 set(POTHOS_SDR_BRANCH maint) #pothos-sdr-0.4.*
-set(POTHOS_WIDGETS_BRANCH pothos-widgets-0.4.0)
+set(POTHOS_WIDGETS_BRANCH maint) #pothos-widgets-0.4.*
 set(POTHOS_MODULES_DIR "modules0.4-3")
 
 ############################################################
