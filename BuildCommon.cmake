@@ -101,7 +101,7 @@ set(LIBUSB_LIBRARIES ${SOURCE_DIR}/x64/Release/dll/libusb-1.0.lib)
 ############################################################
 message(STATUS "Configuring ZeroMQ - ${ZEROMQ_BRANCH}")
 ExternalProject_Add(ZeroMQ
-    GIT_REPOSITORY https://github.com/zeromq/zeromq4-x.git
+    GIT_REPOSITORY https://github.com/zeromq/zeromq4-1.git
     GIT_TAG ${ZEROMQ_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/zeromq_readme_docs_path.diff
