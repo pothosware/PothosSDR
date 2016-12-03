@@ -118,12 +118,16 @@ ExternalProject_Add(ZeroMQ
 )
 
 ExternalProject_Get_Property(ZeroMQ SOURCE_DIR)
+ExternalProject_Get_Property(ZeroMQ BINARY_DIR)
 install(
     FILES
         ${SOURCE_DIR}/COPYING
         ${SOURCE_DIR}/COPYING.LESSER
     DESTINATION licenses/ZeroMQ
 )
+
+set(ZEROMQ_INCLUDE_DIRS ${SOURCE_DIR}/include)
+set(ZEROMQ_LIBRARIES ${BINARY_DIR}/lib/${CMAKE_INSTALL_PREFIX}/libzmq.lib)
 
 ############################################################
 ## Build CppZMQ
