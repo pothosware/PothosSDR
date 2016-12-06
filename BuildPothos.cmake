@@ -208,16 +208,16 @@ list(APPEND CPACK_PACKAGE_EXECUTABLES "PothosGui" "Pothos GUI")
 list(APPEND CPACK_CREATE_DESKTOP_LINKS "PothosGui")
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
-WriteRegStr HKEY_CLASSES_ROOT \\\".pothos\\\" \\\"\\\" \\\"PothosSDR\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\".pth\\\" \\\"\\\" \\\"PothosSDR\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\"PothosSDR\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\bin\\\\PothosGui.exe\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\"PothosSDR\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${NEQ}$INSTDIR\\\\bin\\\\PothosGui.exe${NEQ} ${NEQ}%1${NEQ} %*\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\".pothos\\\" \\\"\\\" \\\"Pothos.GUI\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\".pth\\\" \\\"\\\" \\\"Pothos.GUI\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\bin\\\\PothosGui.exe\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${NEQ}$INSTDIR\\\\bin\\\\PothosGui.exe${NEQ} ${NEQ}%1${NEQ} %*\\\"
 ")
 
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
 DeleteRegKey HKEY_CLASSES_ROOT \\\".pothos\\\"
 DeleteRegKey HKEY_CLASSES_ROOT \\\".pth\\\"
-DeleteRegKey HKEY_CLASSES_ROOT \\\"PothosSDR\\\"
+DeleteRegKey HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\"
 ")
 
 ############################################################
