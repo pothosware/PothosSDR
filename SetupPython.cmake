@@ -19,14 +19,14 @@ set(PYTHON3_INSTALL_DIR lib/python3.5/site-packages)
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
 SetRegView 64
-WriteRegStr HKEY_LOCAL_MACHINE \\\"SOFTWARE\\\\Python\\\\PythonCore\\\\2.7\\\\PythonPath\\\\PothosSDR\\\" \\\"\\\" \\\"$INSTDIR\\\\lib\\\\python2.7\\\\site-packages\\\"
-WriteRegStr HKEY_LOCAL_MACHINE \\\"SOFTWARE\\\\Python\\\\PythonCore\\\\3.5\\\\PythonPath\\\\PothosSDR\\\" \\\"\\\" \\\"$INSTDIR\\\\lib\\\\python3.5\\\\site-packages\\\"
+WriteRegStr HKEY_LOCAL_MACHINE \\\"SOFTWARE\\\\Python\\\\PythonCore\\\\2.7\\\\PythonPath\\\\${PROJECT_NAME}\\\" \\\"\\\" \\\"$INSTDIR\\\\lib\\\\python2.7\\\\site-packages\\\"
+WriteRegStr HKEY_LOCAL_MACHINE \\\"SOFTWARE\\\\Python\\\\PythonCore\\\\3.5\\\\PythonPath\\\\${PROJECT_NAME}\\\" \\\"\\\" \\\"$INSTDIR\\\\lib\\\\python3.5\\\\site-packages\\\"
 ")
 
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
 SetRegView 64
-DeleteRegKey HKEY_LOCAL_MACHINE \\\"SOFTWARE\\\\Python\\\\PythonCore\\\\2.7\\\\PythonPath\\\\PothosSDR\\\"
-DeleteRegKey HKEY_LOCAL_MACHINE \\\"SOFTWARE\\\\Python\\\\PythonCore\\\\3.5\\\\PythonPath\\\\PothosSDR\\\"
+DeleteRegKey HKEY_LOCAL_MACHINE \\\"SOFTWARE\\\\Python\\\\PythonCore\\\\2.7\\\\PythonPath\\\\${PROJECT_NAME}\\\"
+DeleteRegKey HKEY_LOCAL_MACHINE \\\"SOFTWARE\\\\Python\\\\PythonCore\\\\3.5\\\\PythonPath\\\\${PROJECT_NAME}\\\"
 ")
 
 set(GIT_PATCH_HELPER ${PYTHON3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/Scripts/GitPatchHelper.py)
