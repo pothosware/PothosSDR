@@ -77,7 +77,7 @@ install(
 message(STATUS "Configuring rtl-sdr - ${RTL_BRANCH}")
 ExternalProject_Add(rtl-sdr
     DEPENDS Pthreads libusb
-    GIT_REPOSITORY git://git.osmocom.org/rtl-sdr.git
+    GIT_REPOSITORY https://github.com/librtlsdr/librtlsdr.git
     GIT_TAG ${RTL_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
