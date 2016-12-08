@@ -34,6 +34,7 @@ endforeach(license_file)
 set(CPACK_GENERATOR "NSIS")
 set(CPACK_NSIS_INSTALL_ROOT "C:\\\\Program Files")
 set(CPACK_NSIS_MUI_ICON ${CMAKE_SOURCE_DIR}/icons/PothosSDR.ico)
+set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/icons\\\\wide_logo_pothosware.bmp")
 set(CPACK_NSIS_MODIFY_PATH ON)
 set(CPACK_NSIS_DISPLAY_NAME "Pothos SDR environment (${PACKAGE_SUFFIX})") #add/remove control panel
 set(CPACK_NSIS_PACKAGE_NAME "Pothos SDR environment (${PACKAGE_SUFFIX})") #installer package title
