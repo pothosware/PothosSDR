@@ -73,7 +73,6 @@ ExternalProject_Add(GNURadio
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_ifdef_unistd_h.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_boost_atomic.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_catv_bin_hex.diff &&
         #remove standard integer and bool headers
         #msvc provides these and the gr ones cause issues
