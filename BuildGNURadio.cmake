@@ -74,12 +74,14 @@ ExternalProject_Add(GNURadio
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_ifdef_unistd_h.diff
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_catv_bin_hex.diff &&
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_h.diff &&
         #remove standard integer and bool headers
         #msvc provides these and the gr ones cause issues
         ${GIT_EXECUTABLE} checkout HEAD cmake/msvc &&
         ${GIT_EXECUTABLE} rm cmake/msvc/inttypes.h &&
         ${GIT_EXECUTABLE} rm cmake/msvc/stdbool.h &&
-        ${GIT_EXECUTABLE} rm cmake/msvc/stdint.h
+        ${GIT_EXECUTABLE} rm cmake/msvc/stdint.h &&
+        ${GIT_EXECUTABLE} rm cmake/msvc/sys/time.h
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
