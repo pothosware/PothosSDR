@@ -4,7 +4,7 @@
 | ------------- | ------------------------------------ | ----------------------------------------------------- |
 | Pthreads      | pthreads_win32_vc14.diff             | VC14 struct timespec patches for pthreads-win32       |
 | PortAudio     | portaudio_no_ksguid_lib.diff         | Fix missing link to ksguid.lib when building PA       |
-| VOLK          | volk_disable_warnings.diff           | Disable many warnings to reduce heavy printing        |
+| VOLK          | volk_config_h.diff                   | Disable many warnings, ifdefs to simplify config.h    |
 | VOLK          | volk_prefetch_compat_macro.diff      | Added __VOLK_PREFETCH() compatibility macro           |
 | FAAC          | faac_dll_project_files.diff          | updated the project files for faac                    |
 | FAAD2         | faad2_dll_project_files.diff         | updated the project files for faad2                   |
