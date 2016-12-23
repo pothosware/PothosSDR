@@ -84,7 +84,6 @@ ExternalProject_Add(GNURadio
         ${GIT_EXECUTABLE} rm cmake/msvc/inttypes.h &&
         ${GIT_EXECUTABLE} rm cmake/msvc/stdbool.h &&
         ${GIT_EXECUTABLE} rm cmake/msvc/stdint.h &&
-        ${GIT_EXECUTABLE} rm cmake/msvc/sys/time.h &&
         ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
             ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff
             ${PROJECT_SOURCE_DIR}/patches/gnuradio_ifdef_unistd_h.diff
