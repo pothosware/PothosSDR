@@ -27,7 +27,7 @@ set(SOAPY_REMOTE_BRANCH maint) #soapy-remote-0.3.*
 set(SOAPY_RED_PITAYA_BRANCH soapy-redpitaya-0.1.0)
 set(SOAPY_AUDIO_BRANCH master)
 set(SOAPY_S9C_EXTIO_BRANCH master)
-set(SOAPY_SDRPLAY_BRANCH master)
+set(SOAPY_SDRPLAY_BRANCH soapy-sdrplay-0.1.0)
 set(SOAPY_RX_TOOLS_BRANCH master)
 
 ############################################################
