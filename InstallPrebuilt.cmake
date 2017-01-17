@@ -34,9 +34,9 @@ list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig_2.2")
 ############################################################
 ## Boost dependency (prebuilt)
 ############################################################
-set(BOOST_ROOT C:/local/boost_1_62_0)
+set(BOOST_ROOT C:/local/boost_1_63_0)
 set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-${MSVC_VERSION_XX}.0)
-set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_XX}0-mt-1_62.dll)
+set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_XX}0-mt-1_63.dll)
 
 message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")
 message(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
@@ -59,7 +59,7 @@ install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
 ############################################################
 ## Qt5 (prebuilt)
 ############################################################
-set(QT5_ROOT C:/Qt/Qt5.7.0)
+set(QT5_ROOT C:/Qt/Qt5.7.1-vc${MSVC_VERSION_XX})
 set(QT5_LIB_PATH ${QT5_ROOT}/5.7/msvc${MSVC_VERSION_YEAR}_64)
 
 message(STATUS "QT5_ROOT: ${QT5_ROOT}")
@@ -104,7 +104,7 @@ endif()
 ############################################################
 ## SWIG dependency (prebuilt)
 ############################################################
-set(SWIG_ROOT C:/local/swigwin-3.0.10)
+set(SWIG_ROOT C:/local/swigwin-3.0.11)
 set(SWIG_EXECUTABLE ${SWIG_ROOT}/swig.exe)
 set(SWIG_DIR ${SWIG_ROOT}/Lib)
 

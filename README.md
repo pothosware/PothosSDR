@@ -38,7 +38,7 @@ and can be to replicate the complete build environment.
 
 * Boost: http://sourceforge.net/projects/boost/files/boost-binaries/1.61.0/
 * Qt: https://download.qt.io/archive/qt/5.7/5.7.0/
-* SWIG: http://prdownloads.sourceforge.net/swig/swigwin-3.0.10.zip
+* SWIG: http://prdownloads.sourceforge.net/swig/swigwin-3.0.11.zip
 * FFTW: ftp://ftp.fftw.org/pub/fftw/fftw-3.3.4-dll64.zip
 * NSIS: http://sourceforge.net/projects/nsis/files/NSIS%202/2.50/
 
