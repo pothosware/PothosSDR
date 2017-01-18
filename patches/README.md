@@ -13,4 +13,5 @@
 | GNURadio      | gnuradio_ifdef_unistd_h.diff         | ifdef unistd.h in public unit test header             |
 | GNURadio      | gnuradio_catv_bin_hex.diff           | switch from 0b binary to 0x hex format                |
 | GNURadio      | gnuradio_config_h.diff               | ifdefs to simplify config.h and related               |
+| GNURadio      | gr_block_export_ostream.diff         | missing API export for block ostream operator         |
 | zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |

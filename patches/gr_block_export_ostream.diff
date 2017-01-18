@@ -1,0 +1,13 @@
+diff --git a/gnuradio-runtime/include/gnuradio/block.h b/gnuradio-runtime/include/gnuradio/block.h
+index 3e85f22..10742e0 100644
+--- a/gnuradio-runtime/include/gnuradio/block.h
++++ b/gnuradio-runtime/include/gnuradio/block.h
+@@ -857,7 +857,7 @@ namespace gr {
+     return boost::dynamic_pointer_cast<block, basic_block>(p);
+   }
+ 
+-  std::ostream&
++  GR_RUNTIME_API std::ostream&
+   operator << (std::ostream& os, const block *m);
+ 
+ } /* namespace gr */
