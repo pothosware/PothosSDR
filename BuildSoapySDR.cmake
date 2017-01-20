@@ -27,7 +27,7 @@ set(SOAPY_REMOTE_BRANCH maint) #soapy-remote-0.3.*
 set(SOAPY_RED_PITAYA_BRANCH soapy-redpitaya-0.1.0)
 set(SOAPY_AUDIO_BRANCH master)
 set(SOAPY_S9C_EXTIO_BRANCH master)
-set(SOAPY_SDRPLAY_BRANCH soapy-sdrplay-0.1.0)
+set(SOAPY_SDRPLAY_BRANCH master)
 set(SOAPY_RX_TOOLS_BRANCH master)
 
 ############################################################
@@ -308,10 +308,10 @@ ExternalProject_Add(SoapyS9CExtIO
 ############################################################
 ## Build SoapySDRPlay
 ##
-## Requires: MiricsSDRAPIInstaller_1.97.exe
+## Requires: SDRplay_RSP_API-Windows-2.09.1.exe
 ############################################################
-get_filename_component(MIRICS_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\MiricsSDR\\API;Install_Dir]" ABSOLUTE)
-if (EXISTS "${MIRICS_API_DIR}")
+get_filename_component(SDRPLAY_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\API;Install_Dir]" ABSOLUTE)
+if (EXISTS "${SDRPLAY_API_DIR}")
 
 message(STATUS "Configuring SoapySDRPlay - ${SOAPY_SDRPLAY_BRANCH}")
 ExternalProject_Add(SoapySDRPlay
@@ -332,9 +332,9 @@ install(
     DESTINATION licenses/SoapySDRPlay
 )
 
-message(STATUS "MIRICS_API_DIR: ${MIRICS_API_DIR}")
+message(STATUS "SDRPLAY_API_DIR: ${SDRPLAY_API_DIR}")
 install(
-    FILES ${MIRICS_API_DIR}/x64/mir_sdr_api.dll
+    FILES ${SDRPLAY_API_DIR}/x64/mir_sdr_api.dll
     DESTINATION bin
 )
 

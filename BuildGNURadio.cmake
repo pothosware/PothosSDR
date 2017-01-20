@@ -16,7 +16,6 @@
 
 set(VOLK_BRANCH maint)
 set(GNURADIO_BRANCH maint)
-set(GR_RUNTIME_BRANCH track_gr_maint)
 set(GR_POTHOS_BRANCH master)
 set(GROSMOSDR_BRANCH master)
 set(GRRDS_BRANCH master)
@@ -89,6 +88,7 @@ ExternalProject_Add(GNURadio
             ${PROJECT_SOURCE_DIR}/patches/gnuradio_ifdef_unistd_h.diff
             ${PROJECT_SOURCE_DIR}/patches/gnuradio_catv_bin_hex.diff
             ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_h.diff
+            ${PROJECT_SOURCE_DIR}/patches/gr_block_export_ostream.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
@@ -165,30 +165,6 @@ set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
 DeleteRegKey HKEY_CLASSES_ROOT \\\".grc\\\"
 DeleteRegKey HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\"
 ")
-
-############################################################
-## GR runtime
-############################################################
-message(STATUS "Configuring gr-runtime - ${GR_RUNTIME_BRANCH}")
-ExternalProject_Add(GrRuntime
-    DEPENDS GNURadio Pothos
-    GIT_REPOSITORY https://github.com/pothosware/gr-runtime.git
-    GIT_TAG ${GR_RUNTIME_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(GrRuntime SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/GrRuntime
-)
 
 ############################################################
 ## GR Pothos bindings

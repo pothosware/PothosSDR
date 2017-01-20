@@ -18,7 +18,7 @@ set(MIRISDR_BRANCH master)
 set(RTL_BRANCH master)
 set(BLADERF_BRANCH master)
 set(HACKRF_BRANCH master)
-set(UHD_BRANCH release_003_010_001_000)
+set(UHD_BRANCH 003_010_001_001_rc1)
 set(UMTRX_BRANCH master)
 set(AIRSPY_BRANCH v1.0.9)
 
@@ -188,8 +188,6 @@ ExternalProject_Add(uhd
     DEPENDS libusb
     GIT_REPOSITORY https://github.com/EttusResearch/uhd.git
     GIT_TAG ${UHD_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/uhd_fix_gain_group_floor_round.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
