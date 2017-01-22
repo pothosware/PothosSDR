@@ -57,6 +57,7 @@ ExternalProject_Add(Pothos
     DEPENDS Poco PothosSerialization muparserx
     GIT_REPOSITORY https://github.com/pothosware/pothos.git
     GIT_TAG ${POTHOS_BRANCH}
+    GIT_SUBMODULES muparserx #cant turn them all off, so turn only one on
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
