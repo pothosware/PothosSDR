@@ -51,5 +51,5 @@ install(
     DESTINATION licenses/LimeSuite
 )
 
-list(APPEND CPACK_PACKAGE_EXECUTABLES "lms7suite" "LMS7 Suite")
-list(APPEND CPACK_CREATE_DESKTOP_LINKS "lms7suite")
+list(APPEND CPACK_PACKAGE_EXECUTABLES "LimeSuiteGUI" "Lime Suite")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "LimeSuiteGUI")
