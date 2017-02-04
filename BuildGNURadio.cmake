@@ -30,16 +30,6 @@ message(STATUS "Configuring volk - ${VOLK_BRANCH}")
 ExternalProject_Add(volk
     GIT_REPOSITORY https://github.com/gnuradio/volk.git
     GIT_TAG ${VOLK_BRANCH}
-    PATCH_COMMAND
-        #remove standard integer and bool headers
-        #msvc provides these and the gr ones cause issues
-        ${GIT_EXECUTABLE} checkout HEAD cmake/msvc &&
-        ${GIT_EXECUTABLE} rm cmake/msvc/inttypes.h &&
-        ${GIT_EXECUTABLE} rm cmake/msvc/stdbool.h &&
-        ${GIT_EXECUTABLE} rm cmake/msvc/stdint.h &&
-        ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-            ${PROJECT_SOURCE_DIR}/patches/volk_config_h.diff
-            ${PROJECT_SOURCE_DIR}/patches/volk_prefetch_compat_macro.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
