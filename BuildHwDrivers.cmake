@@ -18,7 +18,7 @@ set(MIRISDR_BRANCH master)
 set(RTL_BRANCH master)
 set(BLADERF_BRANCH master)
 set(HACKRF_BRANCH master)
-set(UHD_BRANCH 003_010_001_001_rc1)
+set(UHD_BRANCH release_003_010_001_001)
 set(UMTRX_BRANCH master)
 set(AIRSPY_BRANCH v1.0.9)
 
