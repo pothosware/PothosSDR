@@ -26,7 +26,6 @@ set(SOAPY_RTLSDR_BRANCH soapy-rtlsdr-0.2.2)
 set(SOAPY_REMOTE_BRANCH maint) #soapy-remote-0.3.*
 set(SOAPY_RED_PITAYA_BRANCH soapy-redpitaya-0.1.0)
 set(SOAPY_AUDIO_BRANCH master)
-set(SOAPY_S9C_EXTIO_BRANCH master)
 set(SOAPY_SDRPLAY_BRANCH master)
 set(SOAPY_RX_TOOLS_BRANCH master)
 
@@ -287,22 +286,6 @@ ExternalProject_Get_Property(SoapyAudio SOURCE_DIR)
 install(
     FILES ${SOURCE_DIR}/LICENSE.txt
     DESTINATION licenses/SoapyAudio
-)
-
-############################################################
-## Build SoapyS9C-ExtIO
-############################################################
-message(STATUS "Configuring SoapyS9CExtIO - ${SOAPY_S9C_EXTIO_BRANCH}")
-ExternalProject_Add(SoapyS9CExtIO
-    DEPENDS SoapySDR
-    GIT_REPOSITORY https://github.com/jocover/SoapyS9C-ExtIO.git
-    GIT_TAG ${SOAPY_S9C_EXTIO_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )
 
 ############################################################
