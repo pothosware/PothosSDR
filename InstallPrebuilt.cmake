@@ -104,7 +104,7 @@ endif()
 ############################################################
 ## SWIG dependency (prebuilt)
 ############################################################
-set(SWIG_ROOT C:/local/swigwin-3.0.11)
+set(SWIG_ROOT C:/local/swigwin-3.0.12)
 set(SWIG_EXECUTABLE ${SWIG_ROOT}/swig.exe)
 set(SWIG_DIR ${SWIG_ROOT}/Lib)
 
@@ -113,7 +113,7 @@ message(STATUS "SWIG_ROOT: ${SWIG_ROOT}")
 ############################################################
 ## FFTW (prebuilt)
 ############################################################
-set(FFTW3F_ROOT C:/local/fftw-3.3.4-dll64)
+set(FFTW3F_ROOT C:/local/fftw-3.3.5-dll64)
 set(FFTW3F_INCLUDE_DIRS ${FFTW3F_ROOT})
 set(FFTW3F_LIBRARIES ${FFTW3F_ROOT}/libfftw3f-3.lib)
 
@@ -121,9 +121,29 @@ message(STATUS "FFTW3F_ROOT: ${FFTW3F_ROOT}")
 
 install(FILES "${FFTW3F_ROOT}/libfftw3f-3.dll" DESTINATION bin)
 
-#TODO
-#cd "${FFTW3F_ROOT}"
-#lib /machine:x64 /def:libfftw3f-3.def
+if (NOT EXISTS ${FFTW3F_LIBRARIES})
+    message(STATUS "Generating ${FFTW3F_LIBRARIES}...")
+    get_filename_component(VC_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+    find_program(VCVARS_BAT "vcvarsx86_amd64.bat" HINTS "${VC_BIN_DIR}")
+    if (NOT VCVARS_BAT)
+        message(FATAL_ERROR "Cant find vcvars script")
+    endif()
+    message(STATUS "VCVARS_BAT: ${VCVARS_BAT}")
+    set(GEN_FFTW3F_LIB_BAT "${CMAKE_BINARY_DIR}/gen_fftw3f_lib.bat")
+    file(WRITE "${GEN_FFTW3F_LIB_BAT}" "call \"${VCVARS_BAT}\"\n")
+    file(APPEND "${GEN_FFTW3F_LIB_BAT}" "lib /machine:x64 /def:libfftw3f-3.def\n")
+    file(APPEND "${GEN_FFTW3F_LIB_BAT}" "exit /b %ERRORLEVEL%\n")
+    message(STATUS "Executing ${GEN_FFTW3F_LIB_BAT}")
+    execute_process(COMMAND "${GEN_FFTW3F_LIB_BAT}"
+        WORKING_DIRECTORY ${FFTW3F_ROOT}
+        RESULT_VARIABLE GEN_FFTW3F_LIB_RESULT
+        OUTPUT_VARIABLE GEN_FFTW3F_LIB_OUTPUT
+        ERROR_VARIABLE GEN_FFTW3F_LIB_OUTPUT)
+    if (NOT "${GEN_FFTW3F_LIB_RESULT}" STREQUAL "0")
+        message(FATAL_ERROR "${GEN_FFTW3F_LIB_RESULT}: ${GEN_FFTW3F_LIB_OUTPUT}")
+    endif()
+    message(STATUS "Done")
+endif ()
 
 install(FILES
     "${FFTW3F_ROOT}/COPYING"
