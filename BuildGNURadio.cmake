@@ -63,7 +63,7 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"VOLK_PREFIX\\\"
 ############################################################
 message(STATUS "Configuring GNURadio - ${GNURADIO_BRANCH}")
 ExternalProject_Add(GNURadio
-    DEPENDS volk uhd CppZMQ PortAudio CppUnit
+    DEPENDS volk uhd CppZMQ PortAudio CppUnit gsl
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -93,6 +93,9 @@ ExternalProject_Add(GNURadio
         -DPORTAUDIO_LIBRARIES=${PORTAUDIO_LIBRARY}
         -DZEROMQ_INCLUDE_DIRS=${ZEROMQ_INCLUDE_DIRS}
         -DZEROMQ_LIBRARIES=${ZEROMQ_LIBRARIES}
+        -DGSL_INCLUDE_DIRS=${GSL_INCLUDE_DIRS}
+        -DGSL_LIBRARY=${GSL_LIBRARY}
+        -DGSL_CBLAS_LIBRARY=${GSL_CBLAS_LIBRARY}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
 )

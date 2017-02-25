@@ -15,6 +15,7 @@
 ## * faac (gr-drm)
 ## * faad2 (gr-drm)
 ## * cppunit (gnuradio)
+## * gsl (gnuradio)
 ############################################################
 
 set(PTHREADS_BRANCH master)
@@ -29,6 +30,7 @@ set(WXWIDGETS_BRANCH v3.1.0)
 set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
+set(GSL_BRANCH master)
 
 ############################################################
 ## Build Pthreads for win32
@@ -365,3 +367,29 @@ install(FILES ${SOURCE_DIR}/src/cppunit/ReleaseDll/cppunit_dll.dll DESTINATION b
 #use these variable to setup cppunit in dependent projects
 set(CPPUNIT_INCLUDE_DIRS ${SOURCE_DIR}/include)
 set(CPPUNIT_LIBRARIES ${SOURCE_DIR}/src/cppunit/ReleaseDll/cppunit_dll.lib)
+
+############################################################
+## Build GSL
+############################################################
+message(STATUS "Configuring GSL - ${GSL_BRANCH}")
+ExternalProject_Add(gsl
+    GIT_REPOSITORY https://github.com/ampl/gsl.git
+    GIT_TAG ${GSL_BRANCH}
+    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+)
+
+ExternalProject_Get_Property(gsl SOURCE_DIR)
+install(
+    FILES ${SOURCE_DIR}/COPYING
+    DESTINATION licenses/gsl
+)
+
+set(GSL_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
+set(GSL_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/gsl.lib)
+set(GSL_CBLAS_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/gslcblas.lib)
