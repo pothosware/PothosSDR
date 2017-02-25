@@ -66,19 +66,6 @@ ExternalProject_Add(GNURadio
     DEPENDS volk uhd CppZMQ PortAudio CppUnit
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
-    PATCH_COMMAND
-        #remove standard integer and bool headers
-        #msvc provides these and the gr ones cause issues
-        ${GIT_EXECUTABLE} checkout HEAD cmake/msvc &&
-        ${GIT_EXECUTABLE} rm cmake/msvc/inttypes.h &&
-        ${GIT_EXECUTABLE} rm cmake/msvc/stdbool.h &&
-        ${GIT_EXECUTABLE} rm cmake/msvc/stdint.h &&
-        ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-            ${PROJECT_SOURCE_DIR}/patches/gnuradio_fix_codec2_public_defs.diff
-            ${PROJECT_SOURCE_DIR}/patches/gnuradio_ifdef_unistd_h.diff
-            ${PROJECT_SOURCE_DIR}/patches/gnuradio_catv_bin_hex.diff
-            ${PROJECT_SOURCE_DIR}/patches/gnuradio_config_h.diff
-            ${PROJECT_SOURCE_DIR}/patches/gr_block_export_ostream.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev

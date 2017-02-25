@@ -7,9 +7,4 @@
 | FAAC          | faac_dll_project_files.diff          | updated the project files for faac                    |
 | FAAD2         | faad2_dll_project_files.diff         | updated the project files for faad2                   |
 | CppUnit       | cppunit_dll_project_files.diff       | updated the project files for cppunit                 |
-| GNURadio      | gnuradio_fix_codec2_public_defs.diff | https://github.com/pothosware/gnuradio/issues/10      |
-| GNURadio      | gnuradio_ifdef_unistd_h.diff         | ifdef unistd.h in public unit test header             |
-| GNURadio      | gnuradio_catv_bin_hex.diff           | switch from 0b binary to 0x hex format                |
-| GNURadio      | gnuradio_config_h.diff               | ifdefs to simplify config.h and related               |
-| GNURadio      | gr_block_export_ostream.diff         | missing API export for block ostream operator         |
 | zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |
