@@ -13,25 +13,25 @@ index 7b7b270..4ff8d5c 100644
      <ConfigurationType>StaticLibrary</ConfigurationType>
      <UseOfMfc>false</UseOfMfc>
      <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v120</PlatformToolset>
++    <PlatformToolset>v140</PlatformToolset>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
      <ConfigurationType>StaticLibrary</ConfigurationType>
      <UseOfMfc>false</UseOfMfc>
      <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v120</PlatformToolset>
++    <PlatformToolset>v140</PlatformToolset>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
      <ConfigurationType>StaticLibrary</ConfigurationType>
      <UseOfMfc>false</UseOfMfc>
      <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v120</PlatformToolset>
++    <PlatformToolset>v140</PlatformToolset>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
      <ConfigurationType>StaticLibrary</ConfigurationType>
      <UseOfMfc>false</UseOfMfc>
      <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v120</PlatformToolset>
++    <PlatformToolset>v140</PlatformToolset>
    </PropertyGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <ImportGroup Label="ExtensionSettings">
@@ -57,25 +57,25 @@ index 71ef783..cdcc837 100644
      <ConfigurationType>DynamicLibrary</ConfigurationType>
      <UseOfMfc>false</UseOfMfc>
      <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v120</PlatformToolset>
++    <PlatformToolset>v140</PlatformToolset>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
      <ConfigurationType>DynamicLibrary</ConfigurationType>
      <UseOfMfc>false</UseOfMfc>
      <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v120</PlatformToolset>
++    <PlatformToolset>v140</PlatformToolset>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
      <ConfigurationType>DynamicLibrary</ConfigurationType>
      <UseOfMfc>false</UseOfMfc>
      <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v120</PlatformToolset>
++    <PlatformToolset>v140</PlatformToolset>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
      <ConfigurationType>DynamicLibrary</ConfigurationType>
      <UseOfMfc>false</UseOfMfc>
      <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v120</PlatformToolset>
++    <PlatformToolset>v140</PlatformToolset>
    </PropertyGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <ImportGroup Label="ExtensionSettings">
