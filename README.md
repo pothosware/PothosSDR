@@ -40,7 +40,19 @@ and can be to replicate the complete build environment.
 * Qt: https://download.qt.io/archive/qt/5.7/5.7.1/
 * SWIG: http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip
 * FFTW: ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip
-* NSIS: http://sourceforge.net/projects/nsis/files/NSIS%202/2.50/
+* NSIS: https://sourceforge.net/projects/nsis/files/NSIS%203/
+
+Python environments needed for the build:
+
+* Python3.6 for python3 bindings
+* Python2.7 for python2 bindings
+
+Python2.7 modules needed for GNU Radio build:
+
+* Use pip to install: Cheetah, mako, ply
+* Download prebuilt wheels and install with pip
+  * http://www.lfd.uci.edu/~gohlke/pythonlibs
+  * pygtk, wxpython, numpy, lxml, pyopengl
 
 ##Building the environment
 

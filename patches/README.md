@@ -8,3 +8,4 @@
 | FAAD2         | faad2_dll_project_files.diff         | updated the project files for faad2                   |
 | CppUnit       | cppunit_dll_project_files.diff       | updated the project files for cppunit                 |
 | zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |
+| GNURadio      | gr_fec_polar_llr_factor.diff         | Issue with BOOST_CONSTEXPR_OR_CONST                   |

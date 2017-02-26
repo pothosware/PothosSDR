@@ -66,6 +66,8 @@ ExternalProject_Add(GNURadio
     DEPENDS volk uhd CppZMQ PortAudio CppUnit gsl
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/gr_fec_polar_llr_factor.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
