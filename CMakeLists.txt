@@ -46,6 +46,7 @@ install(DIRECTORY patches DESTINATION ".")
 # Setup the external projects for a flat structure
 ########################################################################
 set_property(DIRECTORY PROPERTY "EP_BASE" ${CMAKE_BINARY_DIR})
+#set_property(DIRECTORY PROPERTY "EP_UPDATE_DISCONNECTED" TRUE) #no auto update
 include(ExternalProject)
 
 ########################################################################

@@ -150,6 +150,11 @@ install(
     DESTINATION licenses/bladeRF
 )
 
+#bladerf tries to install this file, but its not part of the SDK, so make it
+if (NOT EXISTS "${FX3_SDK_PATH}/license/license.txt")
+    file(WRITE "${FX3_SDK_PATH}/license/license.txt" "http://www.cypress.com")
+endif()
+
 ############################################################
 ## Build HackRF
 ############################################################
@@ -167,6 +172,8 @@ ExternalProject_Add(hackRF
         -DLIBUSB_LIBRARIES=${LIBUSB_LIBRARIES}
         -DTHREADS_PTHREADS_INCLUDE_DIR=${THREADS_PTHREADS_INCLUDE_DIR}
         -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
+        -DFFTW_INCLUDES=${FFTW3F_INCLUDE_DIRS}
+        -DFFTW_LIBRARIES=${FFTW3F_LIBRARIES}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
         #post install: move lib from bin into the library path directory
