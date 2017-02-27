@@ -30,35 +30,26 @@ set(POTHOS_MODULES_DIR "modules0.4-3")
 ############################################################
 ## Build Pothos Serialization
 ############################################################
-message(STATUS "Configuring PothosSerialization - ${POTHOS_SERIALIZATION_BRANCH}")
-ExternalProject_Add(PothosSerialization
+MyExternalProject_Add(PothosSerialization
     GIT_REPOSITORY https://github.com/pothosware/pothos-serialization.git
     GIT_TAG ${POTHOS_SERIALIZATION_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(PothosSerialization SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/PothosSerialization
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 ############################################################
 ## Build Pothos framework
 ############################################################
-message(STATUS "Configuring PothosFramework - ${POTHOS_BRANCH}")
-ExternalProject_Add(Pothos
+MyExternalProject_Add(Pothos
     DEPENDS Poco PothosSerialization muparserx
     GIT_REPOSITORY https://github.com/pothosware/pothos.git
     GIT_TAG ${POTHOS_BRANCH}
     GIT_SUBMODULES muparserx #cant turn them all off, so turn only one on
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -70,14 +61,7 @@ ExternalProject_Add(Pothos
         -DENABLE_INTERNAL_MUPARSERX=OFF
         -DENABLE_INTERNAL_SERIALIZATION=OFF
         -DENABLE_TOOLKITS=OFF
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(Pothos SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/Pothos
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
@@ -91,12 +75,11 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"POTHOS_ROOT\\\"
 ############################################################
 ## Build Pothos Audio toolkit
 ############################################################
-message(STATUS "Configuring PothosAudio - ${POTHOS_AUDIO_BRANCH}")
-ExternalProject_Add(PothosAudio
+MyExternalProject_Add(PothosAudio
     DEPENDS Pothos PortAudio
     GIT_REPOSITORY https://github.com/pothosware/pothos-audio.git
     GIT_TAG ${POTHOS_AUDIO_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -104,40 +87,26 @@ ExternalProject_Add(PothosAudio
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
         -DPORTAUDIO_INCLUDE_DIR=${PORTAUDIO_INCLUDE_DIR}
         -DPORTAUDIO_LIBRARY=${PORTAUDIO_LIBRARY}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(PothosAudio SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/PothosAudio
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 ############################################################
 ## Build Pothos Blocks toolkit
 ############################################################
-message(STATUS "Configuring PothosBlocks - ${POTHOS_BLOCKS_BRANCH}")
-ExternalProject_Add(PothosBlocks
+MyExternalProject_Add(PothosBlocks
     DEPENDS Pothos
     GIT_REPOSITORY https://github.com/pothosware/pothos-blocks.git
     GIT_TAG ${POTHOS_BLOCKS_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 ExternalProject_Get_Property(PothosBlocks SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/PothosBlocks
-)
-
 install(
     FILES ${SOURCE_DIR}/network/udt4/LICENSE.txt
     DESTINATION licenses/udt
@@ -146,27 +115,20 @@ install(
 ############################################################
 ## Build Pothos Comms toolkit
 ############################################################
-message(STATUS "Configuring PothosComms - ${POTHOS_COMMS_BRANCH}")
-ExternalProject_Add(PothosComms
+MyExternalProject_Add(PothosComms
     DEPENDS Pothos Spuce
     GIT_REPOSITORY https://github.com/pothosware/pothos-comms.git
     GIT_TAG ${POTHOS_COMMS_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 ExternalProject_Get_Property(PothosComms SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/PothosComms
-)
-
 install(
     FILES ${SOURCE_DIR}/fft/COPYING.kissfft
     DESTINATION licenses/kissfft
@@ -175,28 +137,21 @@ install(
 ############################################################
 ## Build Pothos Gui toolkit
 ############################################################
-message(STATUS "Configuring PothosGui - ${POTHOS_GUI_BRANCH}")
-ExternalProject_Add(PothosGui
+MyExternalProject_Add(PothosGui
     DEPENDS Pothos
     GIT_REPOSITORY https://github.com/pothosware/pothos-gui.git
     GIT_TAG ${POTHOS_GUI_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
         -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 ExternalProject_Get_Property(PothosGui SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/PothosGui
-)
-
 install(
     FILES
         ${SOURCE_DIR}/qtcolorpicker/LGPL_EXCEPTION.txt
@@ -224,28 +179,21 @@ DeleteRegKey HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\"
 ############################################################
 ## Build Pothos Plotters toolkit
 ############################################################
-message(STATUS "Configuring PothosPlotters - ${POTHOS_PLOTTERS_BRANCH}")
-ExternalProject_Add(PothosPlotters
+MyExternalProject_Add(PothosPlotters
     DEPENDS Pothos Spuce
     GIT_REPOSITORY https://github.com/pothosware/pothos-plotters.git
     GIT_TAG ${POTHOS_PLOTTERS_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
         -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 ExternalProject_Get_Property(PothosPlotters SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/PothosPlotters
-)
-
 install(
     FILES ${SOURCE_DIR}/qwt6/COPYING
     DESTINATION licenses/qwt
@@ -260,9 +208,7 @@ install(
 ## Each module is also copied to a version-specific name
 ## so the user can switch between python versions.
 ############################################################
-message(STATUS "Configuring PothosPython - ${POTHOS_PYTHON_BRANCH}")
-
-ExternalProject_Add(PothosPython2
+MyExternalProject_Add(PothosPython2
     DEPENDS Pothos
     GIT_REPOSITORY https://github.com/pothosware/pothos-python.git
     GIT_TAG ${POTHOS_PYTHON_BRANCH}
@@ -281,9 +227,10 @@ ExternalProject_Add(PothosPython2
         && ${CMAKE_COMMAND} -E copy
             ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport.dll
             ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport.dll.2
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
-ExternalProject_Add(PothosPython3
+MyExternalProject_Add(PothosPython3
     DEPENDS Pothos PothosPython2
     GIT_REPOSITORY https://github.com/pothosware/pothos-python.git
     GIT_TAG ${POTHOS_PYTHON_BRANCH}
@@ -302,98 +249,69 @@ ExternalProject_Add(PothosPython3
         && ${CMAKE_COMMAND} -E copy
             ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport.dll
             ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport.dll.3
-)
-
-ExternalProject_Get_Property(PothosPython3 SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/PothosPython
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 ############################################################
 ## Build Pothos SDR toolkit
 ############################################################
-message(STATUS "Configuring PothosSDR - ${POTHOS_SDR_BRANCH}")
-ExternalProject_Add(PothosSDR
+MyExternalProject_Add(PothosSDR
     DEPENDS Pothos SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/pothos-sdr.git
     GIT_TAG ${POTHOS_SDR_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
         -DSoapySDR_DIR=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(PothosSDR SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/PothosSDR
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 ############################################################
 ## Build Pothos Widgets toolkit
 ############################################################
-message(STATUS "Configuring PothosWidgets - ${POTHOS_WIDGETS_BRANCH}")
-ExternalProject_Add(PothosWidgets
+MyExternalProject_Add(PothosWidgets
     DEPENDS Pothos
     GIT_REPOSITORY https://github.com/pothosware/pothos-widgets.git
     GIT_TAG ${POTHOS_WIDGETS_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
         -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(PothosWidgets SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/PothosWidgets
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 ############################################################
 ## Build BTLE demo
 ############################################################
-set(BLTE_DEMO_BRANCH master)
-message(STATUS "Configuring BtleDemo - ${BLTE_DEMO_BRANCH}")
-ExternalProject_Add(BtleDemo
+MyExternalProject_Add(BtleDemo
     DEPENDS Pothos
     GIT_REPOSITORY https://github.com/DesignSparkrs/sdr-ble-demo.git
-    GIT_TAG ${BLTE_DEMO_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    LICENSE_FILES README.md
 )
 
 ############################################################
 ## Build LoRa demo
 ############################################################
-set(LORA_DEMO_BRANCH master)
-message(STATUS "Configuring LoRaDemo - ${LORA_DEMO_BRANCH}")
-ExternalProject_Add(LoRaDemo
+MyExternalProject_Add(LoRaDemo
     DEPENDS Pothos
     GIT_REPOSITORY https://github.com/myriadrf/LoRa-SDR.git
-    GIT_TAG ${LORA_DEMO_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    LICENSE_FILES README.md
 )

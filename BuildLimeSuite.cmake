@@ -25,12 +25,11 @@ endif()
 ## If the SDK is not present, USB support will be disabled.
 ##
 ############################################################
-message(STATUS "Configuring LimeSuite - ${LIME_SUITE_BRANCH}")
-ExternalProject_Add(LimeSuite
+MyExternalProject_Add(LimeSuite
     DEPENDS SoapySDR wxWidgets
     GIT_REPOSITORY https://github.com/myriadrf/LimeSuite.git
     GIT_TAG ${LIME_SUITE_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -41,14 +40,7 @@ ExternalProject_Add(LimeSuite
         -DSoapySDR_DIR=${CMAKE_INSTALL_PREFIX}
         -DFX3_SDK_PATH=${FX3_SDK_PATH}
         -DENABLE_uLimeSDR=${ENABLE_uLimeSDR}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(LimeSuite SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/LimeSuite
+    LICENSE_FILES COPYING
 )
 
 list(APPEND CPACK_PACKAGE_EXECUTABLES "LimeSuiteGUI" "Lime Suite")

@@ -26,11 +26,10 @@ set(GRRFTAP_BRANCH master)
 ############################################################
 ## Build Volk
 ############################################################
-message(STATUS "Configuring volk - ${VOLK_BRANCH}")
-ExternalProject_Add(volk
+MyExternalProject_Add(volk
     GIT_REPOSITORY https://github.com/gnuradio/volk.git
     GIT_TAG ${VOLK_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -40,14 +39,7 @@ ExternalProject_Add(volk
         -DBOOST_ALL_DYN_LINK=TRUE
         -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
         -DVOLK_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(volk SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/volk
+    LICENSE_FILES COPYING
 )
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
@@ -61,14 +53,13 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"VOLK_PREFIX\\\"
 ############################################################
 ## Build GNU Radio
 ############################################################
-message(STATUS "Configuring GNURadio - ${GNURADIO_BRANCH}")
-ExternalProject_Add(GNURadio
+MyExternalProject_Add(GNURadio
     DEPENDS volk uhd CppZMQ PortAudio CppUnit gsl
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/gr_fec_polar_llr_factor.diff
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -98,14 +89,7 @@ ExternalProject_Add(GNURadio
         -DGSL_INCLUDE_DIRS=${GSL_INCLUDE_DIRS}
         -DGSL_LIBRARY=${GSL_LIBRARY}
         -DGSL_CBLAS_LIBRARY=${GSL_CBLAS_LIBRARY}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(GNURadio SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/GNURadio
+    LICENSE_FILES COPYING
 )
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
@@ -121,17 +105,13 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GRC_BLOCKS_PATH\\\"
 ########################################################################
 ## gnuradio-companion.exe
 ########################################################################
-set(GNURADIO_COMPANION_EXE_BRANCH master)
-message(STATUS "Configuring GnuradioCompanionExe - ${GNURADIO_COMPANION_EXE_BRANCH}")
-ExternalProject_Add(GnuradioCompanionExe
+MyExternalProject_Add(GnuradioCompanionExe
     GIT_REPOSITORY https://github.com/pothosware/gnuradio-companion-exe.git
-    GIT_TAG ${GNURADIO_COMPANION_EXE_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    LICENSE_FILES README.md
 )
 
 list(APPEND CPACK_PACKAGE_EXECUTABLES "gnuradio-companion" "GNURadio Companion")
@@ -151,26 +131,18 @@ DeleteRegKey HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\"
 ############################################################
 ## GR Pothos bindings
 ############################################################
-message(STATUS "Configuring gr-pothos - ${GR_POTHOS_BRANCH}")
-ExternalProject_Add(GrPothos
+MyExternalProject_Add(GrPothos
     DEPENDS GNURadio Pothos
     GIT_REPOSITORY https://github.com/pothosware/gr-pothos.git
     GIT_TAG ${GR_POTHOS_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(GrPothos SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/GrPothos
+    LICENSE_FILES COPYING
 )
 
 ############################################################
@@ -178,12 +150,11 @@ install(
 ##
 ## * ENABLE_RFSPACE=OFF build errors
 ############################################################
-message(STATUS "Configuring GrOsmoSDR - ${GROSMOSDR_BRANCH}")
-ExternalProject_Add(GrOsmoSDR
+MyExternalProject_Add(GrOsmoSDR
     DEPENDS GNURadio SoapySDR bladeRF uhd hackRF rtl-sdr osmo-sdr miri-sdr airspy
     GIT_REPOSITORY git://git.osmocom.org/gr-osmosdr
     GIT_TAG ${GROSMOSDR_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -199,25 +170,17 @@ ExternalProject_Add(GrOsmoSDR
         -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
         -DENABLE_RFSPACE=OFF
         -DENABLE_REDPITAYA=ON
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(GrOsmoSDR SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/GrOsmoSDR
+    LICENSE_FILES COPYING
 )
 
 ############################################################
 ## Build gr-rds
 ############################################################
-message(STATUS "Configuring GrRDS - ${GRRDS_BRANCH}")
-ExternalProject_Add(GrRDS
+MyExternalProject_Add(GrRDS
     DEPENDS GNURadio
     GIT_REPOSITORY https://github.com/bastibl/gr-rds.git
     GIT_TAG ${GRRDS_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -229,25 +192,17 @@ ExternalProject_Add(GrRDS
         -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
         -DSWIG_DIR=${SWIG_DIR}
         -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(GrRDS SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/GrRDS
+    LICENSE_FILES COPYING
 )
 
 ############################################################
 ## Build GQRX
 ############################################################
-message(STATUS "Configuring GQRX - ${GQRX_BRANCH}")
-ExternalProject_Add(GQRX
+MyExternalProject_Add(GQRX
     DEPENDS GNURadio GrOsmoSDR
     GIT_REPOSITORY https://github.com/csete/gqrx.git
     GIT_TAG ${GQRX_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -255,14 +210,7 @@ ExternalProject_Add(GQRX
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(GQRX SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/GQRX
+    LICENSE_FILES COPYING
 )
 
 list(APPEND CPACK_PACKAGE_EXECUTABLES "gqrx" "GQRX SDR")
@@ -271,12 +219,11 @@ list(APPEND CPACK_CREATE_DESKTOP_LINKS "gqrx")
 ############################################################
 ## Build gr-drm
 ############################################################
-message(STATUS "Configuring GrDRM - ${GRDRM_BRANCH}")
-ExternalProject_Add(GrDRM
+MyExternalProject_Add(GrDRM
     DEPENDS GNURadio faac faad2
     GIT_REPOSITORY https://github.com/kit-cel/gr-drm.git
     GIT_TAG ${GRDRM_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -292,25 +239,17 @@ ExternalProject_Add(GrDRM
         -DFaac_LIBRARY=${Faac_LIBRARY}
         -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
         -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(GrDRM SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING.txt
-    DESTINATION licenses/GrDRM
+    LICENSE_FILES COPYING.txt
 )
 
 ############################################################
 ## Build gr-RFtap
 ############################################################
-message(STATUS "Configuring GrRFtap - ${GRRFTAP_BRANCH}")
-ExternalProject_Add(GrRFtap
+MyExternalProject_Add(GrRFtap
     DEPENDS GNURadio
     GIT_REPOSITORY https://github.com/rftap/gr-rftap.git
     GIT_TAG ${GRRFTAP_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -324,12 +263,5 @@ ExternalProject_Add(GrRFtap
         -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
         -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
         -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(GrRFtap SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/MANIFEST.md
-    DESTINATION licenses/GrRFtap
+    LICENSE_FILES MANIFEST.md
 )

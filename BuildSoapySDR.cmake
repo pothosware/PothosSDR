@@ -32,11 +32,10 @@ set(SOAPY_RX_TOOLS_BRANCH master)
 ############################################################
 ## Build SoapySDR
 ############################################################
-message(STATUS "Configuring SoapySDR - ${SOAPY_SDR_BRANCH}")
-ExternalProject_Add(SoapySDR
+MyExternalProject_Add(SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
     GIT_TAG ${SOAPY_SDR_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -51,14 +50,7 @@ ExternalProject_Add(SoapySDR
         -DPYTHON3_INSTALL_DIR=${PYTHON3_INSTALL_DIR}
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DSWIG_DIR=${SWIG_DIR}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapySDR SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/SoapySDR
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
@@ -72,69 +64,45 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"SOAPY_SDR_ROOT\\\"
 ############################################################
 ## Build SoapyAirspy
 ############################################################
-message(STATUS "Configuring SoapyAirspy - ${SOAPY_AIRSPY_BRANCH}")
-ExternalProject_Add(SoapyAirspy
+MyExternalProject_Add(SoapyAirspy
     DEPENDS SoapySDR airspy
     GIT_REPOSITORY https://github.com/pothosware/SoapyAirspy.git
     GIT_TAG ${SOAPY_AIRSPY_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyAirspy SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE.txt
-    DESTINATION licenses/SoapyAirspy
+    LICENSE_FILES LICENSE.txt
 )
 
 ############################################################
 ## Build SoapyBladeRF
 ############################################################
-message(STATUS "Configuring SoapyBladeRF - ${SOAPY_BLADERF_BRANCH}")
-ExternalProject_Add(SoapyBladeRF
+MyExternalProject_Add(SoapyBladeRF
     DEPENDS SoapySDR bladeRF
     GIT_REPOSITORY https://github.com/pothosware/SoapyBladeRF.git
     GIT_TAG ${SOAPY_BLADERF_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyBladeRF SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE.LGPLv2.1
-    DESTINATION licenses/SoapyBladeRF
+    LICENSE_FILES LICENSE.LGPLv2.1
 )
 
 ############################################################
 ## Build SoapyHackRF
 ############################################################
-message(STATUS "Configuring SoapyHackRF - ${SOAPY_HACKRF_BRANCH}")
-ExternalProject_Add(SoapyHackRF
+MyExternalProject_Add(SoapyHackRF
     DEPENDS SoapySDR hackRF
     GIT_REPOSITORY https://github.com/pothosware/SoapyHackRF.git
     GIT_TAG ${SOAPY_HACKRF_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DLIBHACKRF_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include/libhackrf
         -DLIBHACKRF_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/hackrf.lib
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyHackRF SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE
-    DESTINATION licenses/SoapyHackRF
+    LICENSE_FILES LICENSE
 )
 
 ############################################################
@@ -146,12 +114,11 @@ install(
 ## * ENABLE_RTL=OFF see Soapy RTL-SDR
 ## * ENABLE_AIRSPY=OFF see Soapy Airspy
 ############################################################
-message(STATUS "Configuring SoapyOsmo - ${SOAPY_OSMO_BRANCH}")
-ExternalProject_Add(SoapyOsmo
+MyExternalProject_Add(SoapyOsmo
     DEPENDS SoapySDR osmo-sdr miri-sdr #airspy bladeRF hackRF rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
     GIT_TAG ${SOAPY_OSMO_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -164,69 +131,45 @@ ExternalProject_Add(SoapyOsmo
         -DENABLE_AIRSPY=OFF
         -DENABLE_OSMOSDR=ON
         -DENABLE_MIRI=ON
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyOsmo SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/SoapyOsmo
+    LICENSE_FILES COPYING
 )
 
 ############################################################
 ## Build SoapyRTLSDR
 ############################################################
-message(STATUS "Configuring SoapyRTLSDR - ${SOAPY_RTLSDR_BRANCH}")
-ExternalProject_Add(SoapyRTLSDR
+MyExternalProject_Add(SoapyRTLSDR
     DEPENDS SoapySDR rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyRTLSDR.git
     GIT_TAG ${SOAPY_RTLSDR_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyRTLSDR SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE.txt
-    DESTINATION licenses/SoapyRTLSDR
+    LICENSE_FILES LICENSE.txt
 )
 
 ############################################################
 ## Build SoapyRemote
 ############################################################
-message(STATUS "Configuring SoapyRemote - ${SOAPY_REMOTE_BRANCH}")
-ExternalProject_Add(SoapyRemote
+MyExternalProject_Add(SoapyRemote
     DEPENDS SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapyRemote.git
     GIT_TAG ${SOAPY_REMOTE_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyRemote SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE_1_0.txt
-    DESTINATION licenses/SoapyRemote
+    LICENSE_FILES LICENSE_1_0.txt
 )
 
 ############################################################
 ## Build SoapyUHD
 ############################################################
-message(STATUS "Configuring SoapyUHD - ${SOAPY_UHD_BRANCH}")
-ExternalProject_Add(SoapyUHD
+MyExternalProject_Add(SoapyUHD
     DEPENDS SoapySDR uhd
     GIT_REPOSITORY https://github.com/pothosware/SoapyUHD.git
     GIT_TAG ${SOAPY_UHD_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -234,58 +177,35 @@ ExternalProject_Add(SoapyUHD
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DUHD_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include
         -DUHD_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/uhd.lib
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyUHD SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/SoapyUHD
+    LICENSE_FILES COPYING
 )
 
 ############################################################
 ## Build SoapyRedPitaya
 ############################################################
-message(STATUS "Configuring SoapyRedPitaya - ${SOAPY_RED_PITAYA_BRANCH}")
-ExternalProject_Add(SoapyRedPitaya
+MyExternalProject_Add(SoapyRedPitaya
     DEPENDS SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapyRedPitaya.git
     GIT_TAG ${SOAPY_RED_PITAYA_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyRedPitaya SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/SoapyRedPitaya
+    LICENSE_FILES COPYING
 )
 
 ############################################################
 ## Build SoapyAudio
 ############################################################
-message(STATUS "Configuring SoapyAudio - ${SOAPY_AUDIO_BRANCH}")
-ExternalProject_Add(SoapyAudio
+MyExternalProject_Add(SoapyAudio
     DEPENDS SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapyAudio.git
     GIT_TAG ${SOAPY_AUDIO_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyAudio SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE.txt
-    DESTINATION licenses/SoapyAudio
+    LICENSE_FILES LICENSE.txt
 )
 
 ############################################################
@@ -296,23 +216,15 @@ install(
 get_filename_component(SDRPLAY_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\API;Install_Dir]" ABSOLUTE)
 if (EXISTS "${SDRPLAY_API_DIR}")
 
-message(STATUS "Configuring SoapySDRPlay - ${SOAPY_SDRPLAY_BRANCH}")
-ExternalProject_Add(SoapySDRPlay
+MyExternalProject_Add(SoapySDRPlay
     DEPENDS SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapySDRPlay.git
     GIT_TAG ${SOAPY_SDRPLAY_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapySDRPlay SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE.txt
-    DESTINATION licenses/SoapySDRPlay
+    LICENSE_FILES LICENSE.txt
 )
 
 message(STATUS "SDRPLAY_API_DIR: ${SDRPLAY_API_DIR}")
@@ -328,23 +240,15 @@ endif ()
 ############################################################
 ## Build SoapyRxTools
 ############################################################
-message(STATUS "Configuring SoapyRxTools - ${SOAPY_RX_TOOLS_BRANCH}")
-ExternalProject_Add(SoapyRxTools
+MyExternalProject_Add(SoapyRxTools
     DEPENDS SoapySDR Pthreads
     GIT_REPOSITORY https://github.com/rxseger/rx_tools.git
     GIT_TAG ${SOAPY_RX_TOOLS_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DTHREADS_PTHREADS_INCLUDE_DIR=${THREADS_PTHREADS_INCLUDE_DIR}
         -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-)
-
-ExternalProject_Get_Property(SoapyRxTools SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/COPYING
-    DESTINATION licenses/SoapyRxTools
+    LICENSE_FILES COPYING
 )

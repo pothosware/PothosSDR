@@ -20,12 +20,11 @@ endif()
 ## -DWX_ROOT_DIR is a hack to prevent FindwxWidgets.cmake
 ## from clearing wxWidgets_LIB_DIR the first configuration.
 ############################################################
-message(STATUS "Configuring CubicSDR - ${CUBIC_SDR_BRANCH}")
-ExternalProject_Add(CubicSDR
+MyExternalProject_Add(CubicSDR
     DEPENDS SoapySDR wxWidgets
     GIT_REPOSITORY https://github.com/cjcliffe/CubicSDR.git
     GIT_TAG ${CUBIC_SDR_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
+    CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -36,15 +35,10 @@ ExternalProject_Add(CubicSDR
         -DFFTW_LIBRARIES=${FFTW3F_LIBRARIES}
         -DFFTW_DLL=${FFTW3F_LIBRARIES} #this gets installed to bin
         -DSoapySDR_DIR=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    LICENSE_FILES LICENSE
 )
 
 ExternalProject_Get_Property(CubicSDR SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/LICENSE
-    DESTINATION licenses/CubicSDR
-)
 
 #install pre-built liquid dsp dll from external/
 install(
