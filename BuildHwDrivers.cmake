@@ -130,7 +130,7 @@ endif()
 ## Build HackRF
 ############################################################
 MyExternalProject_Add(hackRF
-    DEPENDS Pthreads libusb
+    DEPENDS Pthreads libusb fftw
     GIT_REPOSITORY https://github.com/mossmann/hackrf.git
     GIT_TAG ${HACKRF_BRANCH}
     CONFIGURE_COMMAND
@@ -182,6 +182,9 @@ set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
 DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"UHD_PKG_PATH\\\"
 ")
 
+set(UHD_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
+set(UHD_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/uhd.lib)
+
 ############################################################
 ## Build UmTRX
 ############################################################
@@ -198,8 +201,8 @@ MyExternalProject_Add(umtrx
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DBOOST_ALL_DYN_LINK=TRUE
-        -DUHD_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include
-        -DUHD_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/uhd.lib
+        -DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
+        -DUHD_LIBRARIES=${UHD_LIBRARIES}
     LICENSE_FILES README
 )
 

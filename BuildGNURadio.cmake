@@ -54,7 +54,7 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"VOLK_PREFIX\\\"
 ## Build GNU Radio
 ############################################################
 MyExternalProject_Add(GNURadio
-    DEPENDS volk uhd CppZMQ PortAudio CppUnit gsl
+    DEPENDS volk uhd CppZMQ PortAudio CppUnit gsl fftw swig
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
@@ -76,8 +76,8 @@ MyExternalProject_Add(GNURadio
         -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
         -DFFTW3F_INCLUDE_DIRS=${FFTW3F_INCLUDE_DIRS}
         -DFFTW3F_LIBRARIES=${FFTW3F_LIBRARIES}
-        -DUHD_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include
-        -DUHD_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/uhd.lib
+        -DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
+        -DUHD_LIBRARIES=${UHD_LIBRARIES}
         -DENABLE_TESTING=ON
         -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
         -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
@@ -159,8 +159,8 @@ MyExternalProject_Add(GrOsmoSDR
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DUHD_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include
-        -DUHD_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/uhd.lib
+        -DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
+        -DUHD_LIBRARIES=${UHD_LIBRARIES}
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DBOOST_ALL_DYN_LINK=TRUE

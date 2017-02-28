@@ -33,6 +33,7 @@ set(SOAPY_RX_TOOLS_BRANCH master)
 ## Build SoapySDR
 ############################################################
 MyExternalProject_Add(SoapySDR
+    DEPENDS swig
     GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
     GIT_TAG ${SOAPY_SDR_BRANCH}
     CMAKE_DEFAULTS ON
@@ -175,8 +176,8 @@ MyExternalProject_Add(SoapyUHD
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DUHD_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include
-        -DUHD_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/uhd.lib
+        -DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
+        -DUHD_LIBRARIES=${UHD_LIBRARIES}
     LICENSE_FILES COPYING
 )
 
@@ -210,8 +211,6 @@ MyExternalProject_Add(SoapyAudio
 
 ############################################################
 ## Build SoapySDRPlay
-##
-## Requires: SDRplay_RSP_API-Windows-2.09.1.exe
 ############################################################
 get_filename_component(SDRPLAY_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\API;Install_Dir]" ABSOLUTE)
 if (EXISTS "${SDRPLAY_API_DIR}")

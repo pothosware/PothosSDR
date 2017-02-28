@@ -55,7 +55,10 @@ function(MyExternalProject_Add name)
     CMAKE_PARSE_ARGUMENTS(MYEPA "" "CMAKE_DEFAULTS;GIT_TAG" "LICENSE_FILES" ${ARGN})
 
     #use master branch if not specified
-    if (NOT MYEPA_GIT_TAG)
+    if (MYEPA_GIT_TAG)
+        message(STATUS "Configuring ${name} - ${MYEPA_GIT_TAG}")
+    else()
+        message(STATUS "Configuring ${name}")
         set(MYEPA_GIT_TAG "master")
     endif()
 
@@ -67,7 +70,6 @@ function(MyExternalProject_Add name)
     endif()
 
     #create the actual external project
-    message(STATUS "Configuring ${name} - ${MYEPA_GIT_TAG}")
     ExternalProject_Add(${name}
         GIT_TAG ${MYEPA_GIT_TAG}
         GIT_SHALLOW 1
@@ -108,7 +110,6 @@ include(BuildCubicSDR.cmake)
 # Target to manually update cloned repos
 ########################################################################
 add_custom_target(update DEPENDS ${MYEPA_UPDATE_TARGETS})
-message(STATUS "MYEPA_UPDATE_TARGETS ${MYEPA_UPDATE_TARGETS}")
 
 ########################################################################
 # Package environment with NSIS

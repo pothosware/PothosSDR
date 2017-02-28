@@ -59,7 +59,11 @@ install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
 ############################################################
 ## Qt5 (prebuilt)
 ############################################################
-set(QT5_ROOT C:/Qt/Qt5.7.1-vc${MSVC_VERSION_XX})
+set(QT5_ROOT C:/Qt/Qt5.7.1)
+#support VC-specific suffix for multiple installs to coexist
+if (EXISTS ${QT5_ROOT}-vc${MSVC_VERSION_XX})
+    set(QT5_ROOT ${QT5_ROOT}-vc${MSVC_VERSION_XX})
+endif()
 set(QT5_LIB_PATH ${QT5_ROOT}/5.7/msvc${MSVC_VERSION_YEAR}_64)
 
 message(STATUS "QT5_ROOT: ${QT5_ROOT}")
@@ -96,6 +100,7 @@ if (EXISTS ${FX3_SDK_PATH})
     message(STATUS "FX3_SDK_PATH: ${FX3_SDK_PATH}")
     set(FX3_SDK_FOUND TRUE)
 else()
+    message(STATUS "!FX3 SDK not found (${FX3_SDK_PATH})")
     set(FX3_SDK_FOUND FALSE)
 endif()
 
@@ -104,49 +109,33 @@ endif()
 ############################################################
 ## SWIG dependency (prebuilt)
 ############################################################
-set(SWIG_ROOT C:/local/swigwin-3.0.12)
-set(SWIG_EXECUTABLE ${SWIG_ROOT}/swig.exe)
-set(SWIG_DIR ${SWIG_ROOT}/Lib)
+MyExternalProject_Add(swig
+    URL https://downloads.sourceforge.net/project/swig/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip
+    URL_MD5 a49524dad2c91ae1920974e7062bfc93
+    CONFIGURE_COMMAND echo "..."
+    BUILD_COMMAND echo "..."
+    INSTALL_COMMAND echo "..."
+    LICENSE_FILES LICENSE LICENSE-GPL COPYRIGHT
+)
 
-message(STATUS "SWIG_ROOT: ${SWIG_ROOT}")
+ExternalProject_Get_Property(swig SOURCE_DIR)
+set(SWIG_EXECUTABLE ${SOURCE_DIR}/swig.exe)
+set(SWIG_DIR ${SOURCE_DIR}/Lib)
 
 ############################################################
 ## FFTW (prebuilt)
 ############################################################
-set(FFTW3F_ROOT C:/local/fftw-3.3.5-dll64)
-set(FFTW3F_INCLUDE_DIRS ${FFTW3F_ROOT})
-set(FFTW3F_LIBRARIES ${FFTW3F_ROOT}/libfftw3f-3.lib)
-
-message(STATUS "FFTW3F_ROOT: ${FFTW3F_ROOT}")
-
-install(FILES "${FFTW3F_ROOT}/libfftw3f-3.dll" DESTINATION bin)
-
-if (NOT EXISTS ${FFTW3F_LIBRARIES})
-    message(STATUS "Generating ${FFTW3F_LIBRARIES}...")
-    get_filename_component(VC_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
-    find_program(VCVARS_BAT "vcvarsx86_amd64.bat" HINTS "${VC_BIN_DIR}")
-    if (NOT VCVARS_BAT)
-        message(FATAL_ERROR "Cant find vcvars script")
-    endif()
-    message(STATUS "VCVARS_BAT: ${VCVARS_BAT}")
-    set(GEN_FFTW3F_LIB_BAT "${CMAKE_BINARY_DIR}/gen_fftw3f_lib.bat")
-    file(WRITE "${GEN_FFTW3F_LIB_BAT}" "call \"${VCVARS_BAT}\"\n")
-    file(APPEND "${GEN_FFTW3F_LIB_BAT}" "lib /machine:x64 /def:libfftw3f-3.def\n")
-    file(APPEND "${GEN_FFTW3F_LIB_BAT}" "exit /b %ERRORLEVEL%\n")
-    message(STATUS "Executing ${GEN_FFTW3F_LIB_BAT}")
-    execute_process(COMMAND "${GEN_FFTW3F_LIB_BAT}"
-        WORKING_DIRECTORY ${FFTW3F_ROOT}
-        RESULT_VARIABLE GEN_FFTW3F_LIB_RESULT
-        OUTPUT_VARIABLE GEN_FFTW3F_LIB_OUTPUT
-        ERROR_VARIABLE GEN_FFTW3F_LIB_OUTPUT)
-    if (NOT "${GEN_FFTW3F_LIB_RESULT}" STREQUAL "0")
-        message(FATAL_ERROR "${GEN_FFTW3F_LIB_RESULT}: ${GEN_FFTW3F_LIB_OUTPUT}")
-    endif()
-    message(STATUS "Done")
-endif ()
-
-install(FILES
-    "${FFTW3F_ROOT}/COPYING"
-    "${FFTW3F_ROOT}/COPYRIGHT"
-    DESTINATION licenses/fftw
+MyExternalProject_Add(fftw
+    URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip
+    URL_MD5 cb3c5ad19a89864f036e7a2dd5be168c
+    CONFIGURE_COMMAND echo "..."
+    BUILD_COMMAND lib /machine:x64 /def:libfftw3f-3.def
+    BUILD_IN_SOURCE TRUE
+    INSTALL_COMMAND echo "..."
+    LICENSE_FILES COPYING COPYRIGHT
 )
+
+ExternalProject_Get_Property(fftw SOURCE_DIR)
+set(FFTW3F_INCLUDE_DIRS ${SOURCE_DIR})
+set(FFTW3F_LIBRARIES ${SOURCE_DIR}/libfftw3f-3.lib)
+install(FILES "${SOURCE_DIR}/libfftw3f-3.dll" DESTINATION bin)
