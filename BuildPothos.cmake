@@ -3,7 +3,6 @@
 ##
 ## This script builds the Pothos framework and toolkits
 ##
-## * serialization (dependency)
 ## * pothos (framework)
 ## * pothos-audio (toolkit)
 ## * pothos-blocks (toolkit)
@@ -15,37 +14,22 @@
 ## * pothos-widgets (toolkit)
 ############################################################
 
-set(POTHOS_SERIALIZATION_BRANCH pothos-serialization-0.2.0)
-set(POTHOS_BRANCH maint) #pothos-0.4.*
-set(POTHOS_AUDIO_BRANCH maint) #pothos-audio-0.2.*
-set(POTHOS_BLOCKS_BRANCH maint) #pothos-blocks-0.4.*
-set(POTHOS_COMMS_BRANCH maint) #pothos-comms-0.2.*
-set(POTHOS_GUI_BRANCH maint) #pothos-gui-0.4.*
-set(POTHOS_PLOTTERS_BRANCH maint) #pothos-plotters-0.2.*
-set(POTHOS_PYTHON_BRANCH maint) #pothos-python-0.2.*
-set(POTHOS_SDR_BRANCH maint) #pothos-sdr-0.4.*
-set(POTHOS_WIDGETS_BRANCH maint) #pothos-widgets-0.4.*
-set(POTHOS_MODULES_DIR "modules0.4-3")
-
-############################################################
-## Build Pothos Serialization
-############################################################
-MyExternalProject_Add(PothosSerialization
-    GIT_REPOSITORY https://github.com/pothosware/pothos-serialization.git
-    GIT_TAG ${POTHOS_SERIALIZATION_BRANCH}
-    CMAKE_DEFAULTS ON
-    CMAKE_ARGS
-        -Wno-dev
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    LICENSE_FILES LICENSE_1_0.txt
-)
+set(POTHOS_BRANCH maint)
+set(POTHOS_AUDIO_BRANCH maint)
+set(POTHOS_BLOCKS_BRANCH maint)
+set(POTHOS_COMMS_BRANCH maint)
+set(POTHOS_GUI_BRANCH maint)
+set(POTHOS_PLOTTERS_BRANCH maint)
+set(POTHOS_PYTHON_BRANCH maint)
+set(POTHOS_SDR_BRANCH maint)
+set(POTHOS_WIDGETS_BRANCH maint)
+set(POTHOS_MODULES_DIR "modules0.5")
 
 ############################################################
 ## Build Pothos framework
 ############################################################
 MyExternalProject_Add(Pothos
-    DEPENDS Poco PothosSerialization muparserx
+    DEPENDS Poco muparserx
     GIT_REPOSITORY https://github.com/pothosware/pothos.git
     GIT_TAG ${POTHOS_BRANCH}
     GIT_SUBMODULES muparserx #cant turn them all off, so turn only one on
@@ -59,7 +43,6 @@ MyExternalProject_Add(Pothos
         -DENABLE_INTERNAL_POCO=OFF
         -DENABLE_INTERNAL_SPUCE=OFF
         -DENABLE_INTERNAL_MUPARSERX=OFF
-        -DENABLE_INTERNAL_SERIALIZATION=OFF
         -DENABLE_TOOLKITS=OFF
     LICENSE_FILES LICENSE_1_0.txt
 )
@@ -165,14 +148,12 @@ list(APPEND CPACK_CREATE_DESKTOP_LINKS "PothosGui")
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
 WriteRegStr HKEY_CLASSES_ROOT \\\".pothos\\\" \\\"\\\" \\\"Pothos.GUI\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\".pth\\\" \\\"\\\" \\\"Pothos.GUI\\\"
 WriteRegStr HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\bin\\\\PothosGui.exe\\\"
 WriteRegStr HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${NEQ}$INSTDIR\\\\bin\\\\PothosGui.exe${NEQ} ${NEQ}%1${NEQ} %*\\\"
 ")
 
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
 DeleteRegKey HKEY_CLASSES_ROOT \\\".pothos\\\"
-DeleteRegKey HKEY_CLASSES_ROOT \\\".pth\\\"
 DeleteRegKey HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\"
 ")
 

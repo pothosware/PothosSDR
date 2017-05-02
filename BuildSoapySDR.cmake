@@ -16,8 +16,8 @@
 ## * SoapyRxTools
 ############################################################
 
-set(SOAPY_SDR_BRANCH maint) #soapy-sdr-0.5.*
-set(SOAPY_REMOTE_BRANCH maint) #soapy-remote-0.3.*
+set(SOAPY_SDR_BRANCH maint)
+set(SOAPY_REMOTE_BRANCH maint)
 set(SOAPY_AIRSPY_BRANCH master)
 set(SOAPY_BLADERF_BRANCH master)
 set(SOAPY_HACKRF_BRANCH master)
