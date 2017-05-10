@@ -7,5 +7,4 @@
 | FAAC          | faac_dll_project_files.diff          | updated the project files for faac                    |
 | FAAD2         | faad2_dll_project_files.diff         | updated the project files for faad2                   |
 | CppUnit       | cppunit_dll_project_files.diff       | updated the project files for cppunit                 |
-| zeromq        | zeromq_readme_docs_path.diff         | Do not install readme docs into the top directory     |
 | BladeRF       | bladerf_cyapi_win10.diff             | Allow for win10 build linking with CyAPI              |

@@ -94,8 +94,6 @@ set(LIBUSB_LIBRARIES ${SOURCE_DIR}/x64/Release/dll/libusb-1.0.lib)
 MyExternalProject_Add(ZeroMQ
     GIT_REPOSITORY https://github.com/zeromq/zeromq4-1.git
     GIT_TAG ${ZEROMQ_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/zeromq_readme_docs_path.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
@@ -103,7 +101,15 @@ MyExternalProject_Add(ZeroMQ
         -DHAVE_RPCRT4=ON
         -DHAVE_IPHLAPI=ON
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/zmq
+    INSTALL_COMMAND
+        #the actual cmake install target
+        ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+        #zmq has non standard installation rules, move selected files from zmq -> root
+        && ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/zmq/bin ${CMAKE_INSTALL_PREFIX}/bin
+        && ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/zmq/lib ${CMAKE_INSTALL_PREFIX}/lib
+        && ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/zmq/include ${CMAKE_INSTALL_PREFIX}/include
+        && ${CMAKE_COMMAND} -E remove_directory ${CMAKE_INSTALL_PREFIX}/zmq
     LICENSE_FILES COPYING COPYING.LESSER
 )
 
