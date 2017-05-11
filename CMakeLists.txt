@@ -47,7 +47,7 @@ install(DIRECTORY patches DESTINATION ".")
 ########################################################################
 set_property(DIRECTORY PROPERTY "EP_BASE" ${CMAKE_BINARY_DIR})
 set_property(DIRECTORY PROPERTY "EP_UPDATE_DISCONNECTED" TRUE) #no auto update
-set_property(DIRECTORY PROPERTY "EP_STEP_TARGETS" update)
+set_property(DIRECTORY PROPERTY "EP_INDEPENDENT_STEP_TARGETS" update)
 include(ExternalProject)
 include(CMakeParseArguments)
 
