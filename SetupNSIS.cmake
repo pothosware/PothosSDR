@@ -6,7 +6,6 @@ set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}")
 set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-${PACKAGE_SUFFIX}")
 set(CPACK_PACKAGE_VENDOR "Pothosware")
-set(CPACK_INSTALLED_DIRECTORIES "${CMAKE_INSTALL_PREFIX}" ".") #install entire directory from external projects
 
 #general super license text file for complete license summary in installer
 file(GLOB_RECURSE license_files RELATIVE
@@ -60,5 +59,76 @@ set(CREATE_ICONS_REPLACE "
 string(REPLACE "@CPACK_NSIS_CREATE_ICONS@" "${CREATE_ICONS_REPLACE}" NSIS_template "${NSIS_template}")
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/NSIS.template.in" "${NSIS_template}")
 set(CPACK_MODULE_PATH "${CMAKE_CURRENT_BINARY_DIR}")
+
+########################################################################
+# Setup components (only works after install + reconfigure)
+########################################################################
+file(GLOB_RECURSE ALL_FILES RELATIVE "${CMAKE_INSTALL_PREFIX}" "${CMAKE_INSTALL_PREFIX}/*")
+foreach(install_file ${ALL_FILES})
+    string(REGEX MATCH "^include/.+$" include_match ${install_file})
+    string(REGEX MATCH "^.*cmake/.+$" cmake_match ${install_file})
+    string(REGEX MATCH "^lib/.+\\.lib$" lib_match ${install_file})
+    string(REGEX MATCH "^lib/python.+/.+$" python_match ${install_file})
+    string(REGEX MATCH "^(.+/gnuradio/.+)|(bin/gnuradio.+)|(bin/gr.+)$" gr_match ${install_file})
+
+    #other matches can be greedy, so the order here matters
+    if (gr_match)
+        set(MYCOMPONENT gnuradio)
+    elseif (include_match)
+        set(MYCOMPONENT includes)
+    elseif (cmake_match)
+        set(MYCOMPONENT cmake)
+    elseif (lib_match)
+        set(MYCOMPONENT libdevel)
+    elseif (python_match)
+        set(MYCOMPONENT python)
+    else ()
+        set(MYCOMPONENT runtime)
+    endif()
+
+    #install file to itself with the component name
+    get_filename_component(MYDESTINATION "${install_file}" DIRECTORY)
+    install(
+        FILES "${CMAKE_INSTALL_PREFIX}/${install_file}"
+        DESTINATION "${MYDESTINATION}"
+        COMPONENT "${MYCOMPONENT}")
+endforeach()
+
+include(CPackComponent)
+cpack_add_component(includes
+    DISPLAY_NAME "C/C++ headers"
+    GROUP development
+    INSTALL_TYPES full)
+
+cpack_add_component(cmake
+    DISPLAY_NAME "CMake modules"
+    GROUP development
+    INSTALL_TYPES full)
+
+cpack_add_component(libdevel
+    DISPLAY_NAME "Import libraries"
+    GROUP development
+    INSTALL_TYPES full)
+
+cpack_add_component(python
+    DISPLAY_NAME "Python modules"
+    GROUP application
+    INSTALL_TYPES apps full)
+
+cpack_add_component(runtime
+    DISPLAY_NAME "Application runtime"
+    GROUP application
+    INSTALL_TYPES apps full)
+
+cpack_add_component(gnuradio
+    DISPLAY_NAME "GNU Radio support"
+    GROUP application
+    INSTALL_TYPES apps full)
+
+cpack_add_component_group(application DISPLAY_NAME "Application" EXPANDED)
+cpack_add_component_group(development DISPLAY_NAME "Development" EXPANDED)
+
+cpack_add_install_type(apps DISPLAY_NAME "Applications only")
+cpack_add_install_type(full DISPLAY_NAME "Full installation")
 
 include(CPack)
