@@ -113,6 +113,7 @@ cpack_add_component(libdevel
 cpack_add_component(python
     DISPLAY_NAME "Python modules"
     GROUP application
+    DEPENDS runtime
     INSTALL_TYPES apps full)
 
 cpack_add_component(runtime
@@ -123,9 +124,10 @@ cpack_add_component(runtime
 cpack_add_component(gnuradio
     DISPLAY_NAME "GNU Radio support"
     GROUP application
+    DEPENDS runtime
     INSTALL_TYPES apps full)
 
-cpack_add_component_group(application DISPLAY_NAME "Application" EXPANDED)
+cpack_add_component_group(application DISPLAY_NAME "Applications" EXPANDED)
 cpack_add_component_group(development DISPLAY_NAME "Development" EXPANDED)
 
 cpack_add_install_type(apps DISPLAY_NAME "Applications only")
