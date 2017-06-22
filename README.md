@@ -37,7 +37,7 @@ The current download URLs are maintained here for reference,
 and can be to replicate the complete build environment.
 
 * Boost: http://sourceforge.net/projects/boost/files/boost-binaries/1.63.0/
-* Qt: https://download.qt.io/archive/qt/5.7/5.7.1/
+* Qt: https://download.qt.io/archive/qt/5.8/5.8.0/
 * NSIS: https://sourceforge.net/projects/nsis/files/NSIS%203/
 * CyAPI: cy_ssusbsuite_v1.3.3_0.zip
 * SDRplayAPI: SDRplay_RSP_API-Windows-2.09.1.exe

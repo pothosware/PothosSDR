@@ -59,12 +59,12 @@ install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
 ############################################################
 ## Qt5 (prebuilt)
 ############################################################
-set(QT5_ROOT C:/Qt/Qt5.7.1)
+set(QT5_ROOT C:/Qt/Qt5.8.0)
 #support VC-specific suffix for multiple installs to coexist
 if (EXISTS ${QT5_ROOT}-vc${MSVC_VERSION_XX})
     set(QT5_ROOT ${QT5_ROOT}-vc${MSVC_VERSION_XX})
 endif()
-set(QT5_LIB_PATH ${QT5_ROOT}/5.7/msvc${MSVC_VERSION_YEAR}_64)
+set(QT5_LIB_PATH ${QT5_ROOT}/5.8/msvc${MSVC_VERSION_YEAR}_64)
 
 message(STATUS "QT5_ROOT: ${QT5_ROOT}")
 message(STATUS "QT5_LIB_PATH: ${QT5_LIB_PATH}")
