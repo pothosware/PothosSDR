@@ -83,6 +83,7 @@ MyExternalProject_Add(bladeRF
     GIT_TAG ${BLADERF_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/bladerf_cyapi_win10.diff
+        ${PROJECT_SOURCE_DIR}/patches/bladerf_cal_dc_fix.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
