@@ -59,6 +59,7 @@ MyExternalProject_Add(GNURadio
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/grc_template_attr_issue.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_revert_logging.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
