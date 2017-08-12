@@ -1,83 +1,13 @@
-diff --git a/config.h.in b/config.h.in
-index e1f98cdac..ad6e3d022 100644
---- a/config.h.in
-+++ b/config.h.in
-@@ -36,5 +36,11 @@
- #ifndef GR_RPCSERVER_THRIFT
- #cmakedefine GR_RPCSERVER_THRIFT
- #endif
-+#ifndef ENABLE_GR_LOG
-+#cmakedefine ENABLE_GR_LOG
-+#endif
-+#ifndef HAVE_LOG4CPP
-+#cmakedefine HAVE_LOG4CPP
-+#endif
- 
- #endif /* GNURADIO_CONFIG_H */
 diff --git a/gnuradio-runtime/include/gnuradio/logger.h.in b/gnuradio-runtime/include/gnuradio/logger.h.in
-index 13fda6f6c..08cb209c7 100644
+index 13fda6f6c..ec3c347f9 100644
 --- a/gnuradio-runtime/include/gnuradio/logger.h.in
 +++ b/gnuradio-runtime/include/gnuradio/logger.h.in
-@@ -35,60 +35,13 @@
- *
- */
+@@ -111,7 +111,7 @@ typedef unsigned short mode_t;
  
--// handle current status of GR_LOG
--#ifdef EXT_ENABLE_GR_LOG
--#undef EXT_ENABLE_GR_LOG
--#endif
--#ifdef ENABLE_GR_LOG
--#define EXT_ENABLE_GR_LOG
--#undef ENABLE_GR_LOG
--#endif
--
--// did GR enable LOG?
-+#ifndef ENABLE_GR_LOG
- #cmakedefine ENABLE_GR_LOG
--
--// if GR does not provide logging and the current module is requesting
--// it, disable it.
--#if defined(EXT_ENABLE_GR_LOG) && !defined(ENABLE_GR_LOG)
--#warning "Logging was requested but is not enabled in GNU Radio, so disabling."
--#undef EXT_ENABLE_GR_LOG
- #endif
--
--// if GR provides logging but the current module is not requesting it,
--// disable it.
--#if !defined(EXT_ENABLE_GR_LOG) && defined(ENABLE_GR_LOG)
--#undef ENABLE_GR_LOG
--#endif
--
--// the other 2 cases work; no need to check them!
--
--// handle current status of LOG4CPP
--#ifdef EXT_HAVE_LOG4CPP
--#undef EXT_HAVE_LOG4CPP
--#endif
--#ifdef HAVE_LOG4CPP
--#define EXT_HAVE_LOG4CPP
--#undef HAVE_LOG4CPP
--#endif
--
--// did GR use log4cpp?
-+#ifndef HAVE_LOG4CPP
- #cmakedefine HAVE_LOG4CPP
--
--// if GR does not use log4cpp and the current module is requesting it,
--// disable it & print a warning.
--#if defined(EXT_HAVE_LOG4CPP) && !defined(HAVE_LOG4CPP)
--#warning "Log4Cpp use was requested but was not in GNU Radio, so disabling."
--#undef EXT_HAVE_LOG4CPP
--#endif
--
--// if GR provides for using log4cpp but the current module is not
--// requesting it, disable it quietly.
--#if !defined(EXT_HAVE_LOG4CPP) && defined(HAVE_LOG4CPP)
--#undef HAVE_LOG4CPP
- #endif
+ namespace gr {
+   //#warning GR logging Enabled and using std::cout
+-  typedef std::string logger_ptr;
++  typedef void* logger_ptr;
+ } /* namespace gr */
  
--// the other 2 cases work; no need to check them!
--
- #ifdef _MSC_VER
- typedef unsigned short mode_t;
- #else
+ #define GR_LOG_DECLARE_LOGPTR(logger)
