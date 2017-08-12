@@ -9,5 +9,4 @@
 | CppUnit       | cppunit_dll_project_files.diff       | updated the project files for cppunit                 |
 | BladeRF       | bladerf_cyapi_win10.diff             | Allow for win10 build linking with CyAPI              |
 | BladeRF       | bladerf_cal_dc_fix.diff              | Patch cast type warning treated as an error           |
-| GNURadio      | grc_template_attr_issue.diff         | Fix for template argument attribute access            |
 | GNURadio      | gnuradio_revert_logging.diff         | Fix segfaults due to logging header defines           |
