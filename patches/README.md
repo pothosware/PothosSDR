@@ -7,4 +7,3 @@
 | FAAC          | faac_dll_project_files.diff          | updated the project files for faac                    |
 | FAAD2         | faad2_dll_project_files.diff         | updated the project files for faad2                   |
 | CppUnit       | cppunit_dll_project_files.diff       | updated the project files for cppunit                 |
-| GNURadio      | gnuradio_revert_logging.diff         | Fix segfaults due to logging header defines           |
