@@ -6,7 +6,7 @@
 ## * LimeSuite
 ############################################################
 
-set(LIME_SUITE_BRANCH stable)
+set(LIME_SUITE_BRANCH master)
 
 #only support uLimeSDR under msvc 2015 to match dlls in uLimeSDR/FTD3XXLibrary
 set(ENABLE_uLimeSDR TRUE)
