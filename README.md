@@ -40,7 +40,7 @@ and can be to replicate the complete build environment.
 * Qt: https://download.qt.io/archive/qt/5.8/5.8.0/
 * NSIS: https://sourceforge.net/projects/nsis/files/NSIS%203/
 * CyAPI: cy_ssusbsuite_v1.3.3_0.zip
-* SDRplayAPI: SDRplay_RSP_API-Windows-2.09.1.exe
+* SDRplayAPI: SDRplay_RSP_API-Windows-2.11.1.exe
 
 Python environments needed for the build:
 
@@ -80,4 +80,9 @@ cmake ../ -G "Visual Studio 14 2015 Win64" ^
 rebuild_all.bat
 ```
 
-For full compilation instructions, see README.build.
+Note for building with MSVC 2015 when 2017 is installed:
+https://stackoverflow.com/questions/14372706/visual-studio-cant-build-due-to-rc-exe
+
+```
+%comspec% /k "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64 8.1
+```

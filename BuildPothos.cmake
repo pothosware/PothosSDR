@@ -9,7 +9,7 @@
 ## * pothos-comms (toolkit)
 ## * pothos-gui (toolkit)
 ## * pothos-plotters (toolkit)
-## * pothos-python (toolkit)
+## * PothosPython (toolkit)
 ## * pothos-sdr (toolkit)
 ## * pothos-widgets (toolkit)
 ############################################################
@@ -30,7 +30,7 @@ set(POTHOS_MODULES_DIR "modules0.5")
 ############################################################
 MyExternalProject_Add(Pothos
     DEPENDS Poco muparserx
-    GIT_REPOSITORY https://github.com/pothosware/pothos.git
+    GIT_REPOSITORY https://github.com/pothosware/PothosCore.git
     GIT_TAG ${POTHOS_BRANCH}
     GIT_SUBMODULES muparserx #cant turn them all off, so turn only one on
     CMAKE_DEFAULTS ON
@@ -60,7 +60,7 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"POTHOS_ROOT\\\"
 ############################################################
 MyExternalProject_Add(PothosAudio
     DEPENDS Pothos PortAudio
-    GIT_REPOSITORY https://github.com/pothosware/pothos-audio.git
+    GIT_REPOSITORY https://github.com/pothosware/PothosAudio.git
     GIT_TAG ${POTHOS_AUDIO_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
@@ -78,7 +78,7 @@ MyExternalProject_Add(PothosAudio
 ############################################################
 MyExternalProject_Add(PothosBlocks
     DEPENDS Pothos
-    GIT_REPOSITORY https://github.com/pothosware/pothos-blocks.git
+    GIT_REPOSITORY https://github.com/pothosware/PothosBlocks.git
     GIT_TAG ${POTHOS_BLOCKS_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
@@ -100,7 +100,7 @@ install(
 ############################################################
 MyExternalProject_Add(PothosComms
     DEPENDS Pothos Spuce
-    GIT_REPOSITORY https://github.com/pothosware/pothos-comms.git
+    GIT_REPOSITORY https://github.com/pothosware/PothosComms.git
     GIT_TAG ${POTHOS_COMMS_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
@@ -122,7 +122,7 @@ install(
 ############################################################
 MyExternalProject_Add(PothosGui
     DEPENDS Pothos
-    GIT_REPOSITORY https://github.com/pothosware/pothos-gui.git
+    GIT_REPOSITORY https://github.com/pothosware/PothosFlow.git
     GIT_TAG ${POTHOS_GUI_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
@@ -162,7 +162,7 @@ DeleteRegKey HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\"
 ############################################################
 MyExternalProject_Add(PothosPlotters
     DEPENDS Pothos Spuce
-    GIT_REPOSITORY https://github.com/pothosware/pothos-plotters.git
+    GIT_REPOSITORY https://github.com/pothosware/PothosPlotters.git
     GIT_TAG ${POTHOS_PLOTTERS_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
@@ -191,7 +191,7 @@ install(
 ############################################################
 MyExternalProject_Add(PothosPython2
     DEPENDS Pothos
-    GIT_REPOSITORY https://github.com/pothosware/pothos-python.git
+    GIT_REPOSITORY https://github.com/pothosware/PothosPython.git
     GIT_TAG ${POTHOS_PYTHON_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
@@ -213,7 +213,7 @@ MyExternalProject_Add(PothosPython2
 
 MyExternalProject_Add(PothosPython3
     DEPENDS Pothos PothosPython2
-    GIT_REPOSITORY https://github.com/pothosware/pothos-python.git
+    GIT_REPOSITORY https://github.com/pothosware/PothosPython.git
     GIT_TAG ${POTHOS_PYTHON_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
@@ -238,7 +238,7 @@ MyExternalProject_Add(PothosPython3
 ############################################################
 MyExternalProject_Add(PothosSDR
     DEPENDS Pothos SoapySDR
-    GIT_REPOSITORY https://github.com/pothosware/pothos-sdr.git
+    GIT_REPOSITORY https://github.com/pothosware/PothosSoapy.git
     GIT_TAG ${POTHOS_SDR_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
@@ -255,7 +255,7 @@ MyExternalProject_Add(PothosSDR
 ############################################################
 MyExternalProject_Add(PothosWidgets
     DEPENDS Pothos
-    GIT_REPOSITORY https://github.com/pothosware/pothos-widgets.git
+    GIT_REPOSITORY https://github.com/pothosware/PothosWidgets.git
     GIT_TAG ${POTHOS_WIDGETS_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
