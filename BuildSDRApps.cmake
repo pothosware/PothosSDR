@@ -1,18 +1,14 @@
 ############################################################
 ## Pothos SDR environment build sub-script
 ##
-## This script builds CubicSDR and dependencies
+## This script builds SDR applications
 ##
 ## * CubicSDR
+## * Inspectrum
 ############################################################
 
 set(CUBIC_SDR_BRANCH master)
-
-#only support msvc 2015 build to match dlls in CubicSDR/external
-if (NOT MSVC14)
-    message(STATUS "!Skipping CubicSDR - only supported on VC14")
-    return()
-endif()
+set(INSPECTRUM_SDR_BRANCH master)
 
 ############################################################
 ## Build CubicSDR
@@ -34,17 +30,32 @@ MyExternalProject_Add(CubicSDR
         -DFFTW_INCLUDES=${FFTW3F_INCLUDE_DIRS}
         -DFFTW_LIBRARIES=${FFTW3F_LIBRARIES}
         -DFFTW_DLL=${FFTW3F_LIBRARIES} #this gets installed to bin
+        -DLIQUID_INCLUDES=${LIQUIDDSP_INCLUDE_DIR}
+        -DLIQUID_LIBRARIES=${LIQUIDDSP_LIBRARY}
+        -DLIQUID_DLL=${LIQUIDDSP_DLL}
         -DSoapySDR_DIR=${CMAKE_INSTALL_PREFIX}
     LICENSE_FILES LICENSE
 )
 
-ExternalProject_Get_Property(CubicSDR SOURCE_DIR)
-
-#install pre-built liquid dsp dll from external/
-install(
-    FILES ${SOURCE_DIR}/external/liquid-dsp/msvc/64/libliquid.dll
-    DESTINATION bin
-)
-
 list(APPEND CPACK_PACKAGE_EXECUTABLES "CubicSDR" "CubicSDR")
 list(APPEND CPACK_CREATE_DESKTOP_LINKS "CubicSDR")
+
+############################################################
+## Build Inspectrum
+############################################################
+MyExternalProject_Add(Inspectrum
+    DEPENDS mman
+    GIT_REPOSITORY https://github.com/miek/inspectrum.git
+    GIT_TAG ${INSPECTRUM_SDR_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
+        -DMMAN=${CMAKE_INSTALL_PREFIX}/lib/mman.lib
+        -DFFTW_INCLUDES=${FFTW3F_INCLUDE_DIRS}
+        -DFFTW_LIBRARIES=${FFTW3F_LIBRARIES}
+        -DLIQUID_INCLUDES=${LIQUIDDSP_INCLUDE_DIR}
+        -DLIQUID_LIBRARIES=${LIQUIDDSP_LIBRARY}
+    LICENSE_FILES LICENSE
+)
