@@ -17,7 +17,7 @@ set(INSPECTRUM_SDR_BRANCH master)
 ## from clearing wxWidgets_LIB_DIR the first configuration.
 ############################################################
 MyExternalProject_Add(CubicSDR
-    DEPENDS SoapySDR wxWidgets
+    DEPENDS SoapySDR wxWidgets liquiddsp
     GIT_REPOSITORY https://github.com/cjcliffe/CubicSDR.git
     GIT_TAG ${CUBIC_SDR_BRANCH}
     CMAKE_DEFAULTS ON
@@ -44,7 +44,7 @@ list(APPEND CPACK_CREATE_DESKTOP_LINKS "CubicSDR")
 ## Build Inspectrum
 ############################################################
 MyExternalProject_Add(Inspectrum
-    DEPENDS mman
+    DEPENDS mman liquiddsp
     GIT_REPOSITORY https://github.com/miek/inspectrum.git
     GIT_TAG ${INSPECTRUM_SDR_BRANCH}
     CMAKE_DEFAULTS ON

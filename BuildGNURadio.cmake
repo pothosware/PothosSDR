@@ -130,7 +130,7 @@ DeleteRegKey HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\"
 ## GR Pothos bindings
 ############################################################
 MyExternalProject_Add(GrPothos
-    DEPENDS GNURadio Pothos
+    DEPENDS GNURadio PothosCore
     GIT_REPOSITORY https://github.com/pothosware/gr-pothos.git
     GIT_TAG ${GR_POTHOS_BRANCH}
     CMAKE_DEFAULTS ON
