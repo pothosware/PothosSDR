@@ -12,6 +12,7 @@
 ## * PothosPython (toolkit)
 ## * PothosSoapy (toolkit)
 ## * PothosWidgets (toolkit)
+## * PothosLiquidDSP (toolkit)
 ############################################################
 
 set(POTHOS_BRANCH maint)
@@ -25,6 +26,12 @@ set(POTHOS_SDR_BRANCH maint)
 set(POTHOS_WIDGETS_BRANCH maint)
 set(POTHOS_LIQUID_DSP_BRANCH maint)
 set(POTHOS_MODULES_DIR "modules0.5")
+
+############################################################
+# python generation tools
+# PothosLiquidDSP uses ply, mako, colorama
+############################################################
+execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako ply pyyaml colorama OUTPUT_QUIET)
 
 ############################################################
 ## Build Pothos framework

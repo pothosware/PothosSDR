@@ -24,6 +24,13 @@ set(GRDRM_BRANCH master)
 set(GRRFTAP_BRANCH master)
 
 ############################################################
+# python generation tools
+# volk uses cheetah
+# gr-pothos uses ply, cheetah, colorama
+############################################################
+execute_process(COMMAND ${PYTHON2_ROOT}/Scripts/pip.exe install ply Cheetah colorama OUTPUT_QUIET)
+
+############################################################
 ## Build Volk
 ############################################################
 MyExternalProject_Add(volk
