@@ -59,3 +59,6 @@ MyExternalProject_Add(Inspectrum
         -DLIQUID_LIBRARIES=${LIQUIDDSP_LIBRARY}
     LICENSE_FILES LICENSE
 )
+
+list(APPEND CPACK_PACKAGE_EXECUTABLES "inspectrum" "Inspectrum")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "inspectrum")
