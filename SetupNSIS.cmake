@@ -68,7 +68,7 @@ foreach(install_file ${ALL_FILES})
     string(REGEX MATCH "^include/.+$" include_match ${install_file})
     string(REGEX MATCH "^.*cmake/.+$" cmake_match ${install_file})
     string(REGEX MATCH "^lib/.+\\.lib$" lib_match ${install_file})
-    string(REGEX MATCH "^lib/python.+/.+$" python_match ${install_file})
+    string(REGEX MATCH "^(lib/python.+/.+)|(lib/.+Python.+)$" python_match ${install_file})
     string(REGEX MATCH "^(.+/gnuradio/.+)|(bin/gnuradio.+)|(bin/gr.+)$" gr_match ${install_file})
 
     #other matches can be greedy, so the order here matters
