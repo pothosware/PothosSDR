@@ -3,15 +3,16 @@
 ##
 ## This script builds the Pothos framework and toolkits
 ##
-## * pothos (framework)
-## * pothos-audio (toolkit)
-## * pothos-blocks (toolkit)
-## * pothos-comms (toolkit)
-## * pothos-gui (toolkit)
-## * pothos-plotters (toolkit)
+## * PothosCore (framework)
+## * PothosAudio (toolkit)
+## * PothosBlocks (toolkit)
+## * PothosComms (toolkit)
+## * PothosFlow (designer)
+## * PothosPlotters (toolkit)
 ## * PothosPython (toolkit)
-## * pothos-sdr (toolkit)
-## * pothos-widgets (toolkit)
+## * PothosSoapy (toolkit)
+## * PothosWidgets (toolkit)
+## * PothosLiquidDSP (toolkit)
 ############################################################
 
 set(POTHOS_BRANCH maint)
@@ -23,12 +24,19 @@ set(POTHOS_PLOTTERS_BRANCH maint)
 set(POTHOS_PYTHON_BRANCH maint)
 set(POTHOS_SDR_BRANCH maint)
 set(POTHOS_WIDGETS_BRANCH maint)
+set(POTHOS_LIQUID_DSP_BRANCH maint)
 set(POTHOS_MODULES_DIR "modules0.5")
+
+############################################################
+# python generation tools
+# PothosLiquidDSP uses ply, mako, colorama
+############################################################
+execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako ply pyyaml colorama OUTPUT_QUIET)
 
 ############################################################
 ## Build Pothos framework
 ############################################################
-MyExternalProject_Add(Pothos
+MyExternalProject_Add(PothosCore
     DEPENDS Poco muparserx
     GIT_REPOSITORY https://github.com/pothosware/PothosCore.git
     GIT_TAG ${POTHOS_BRANCH}
@@ -59,7 +67,7 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"POTHOS_ROOT\\\"
 ## Build Pothos Audio toolkit
 ############################################################
 MyExternalProject_Add(PothosAudio
-    DEPENDS Pothos PortAudio
+    DEPENDS PothosCore PortAudio
     GIT_REPOSITORY https://github.com/pothosware/PothosAudio.git
     GIT_TAG ${POTHOS_AUDIO_BRANCH}
     CMAKE_DEFAULTS ON
@@ -77,7 +85,7 @@ MyExternalProject_Add(PothosAudio
 ## Build Pothos Blocks toolkit
 ############################################################
 MyExternalProject_Add(PothosBlocks
-    DEPENDS Pothos
+    DEPENDS PothosCore
     GIT_REPOSITORY https://github.com/pothosware/PothosBlocks.git
     GIT_TAG ${POTHOS_BLOCKS_BRANCH}
     CMAKE_DEFAULTS ON
@@ -99,7 +107,7 @@ install(
 ## Build Pothos Comms toolkit
 ############################################################
 MyExternalProject_Add(PothosComms
-    DEPENDS Pothos Spuce
+    DEPENDS PothosCore Spuce
     GIT_REPOSITORY https://github.com/pothosware/PothosComms.git
     GIT_TAG ${POTHOS_COMMS_BRANCH}
     CMAKE_DEFAULTS ON
@@ -118,10 +126,10 @@ install(
 )
 
 ############################################################
-## Build Pothos Gui toolkit
+## Build Pothos Flow graphical designer
 ############################################################
 MyExternalProject_Add(PothosGui
-    DEPENDS Pothos
+    DEPENDS PothosCore
     GIT_REPOSITORY https://github.com/pothosware/PothosFlow.git
     GIT_TAG ${POTHOS_GUI_BRANCH}
     CMAKE_DEFAULTS ON
@@ -161,7 +169,7 @@ DeleteRegKey HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\"
 ## Build Pothos Plotters toolkit
 ############################################################
 MyExternalProject_Add(PothosPlotters
-    DEPENDS Pothos Spuce
+    DEPENDS PothosCore Spuce
     GIT_REPOSITORY https://github.com/pothosware/PothosPlotters.git
     GIT_TAG ${POTHOS_PLOTTERS_BRANCH}
     CMAKE_DEFAULTS ON
@@ -190,7 +198,7 @@ install(
 ## so the user can switch between python versions.
 ############################################################
 MyExternalProject_Add(PothosPython2
-    DEPENDS Pothos
+    DEPENDS PothosCore
     GIT_REPOSITORY https://github.com/pothosware/PothosPython.git
     GIT_TAG ${POTHOS_PYTHON_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -212,7 +220,7 @@ MyExternalProject_Add(PothosPython2
 )
 
 MyExternalProject_Add(PothosPython3
-    DEPENDS Pothos PothosPython2
+    DEPENDS PothosCore PothosPython2
     GIT_REPOSITORY https://github.com/pothosware/PothosPython.git
     GIT_TAG ${POTHOS_PYTHON_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -234,10 +242,10 @@ MyExternalProject_Add(PothosPython3
 )
 
 ############################################################
-## Build Pothos SDR toolkit
+## Build Pothos Soapy SDR toolkit
 ############################################################
 MyExternalProject_Add(PothosSDR
-    DEPENDS Pothos SoapySDR
+    DEPENDS PothosCore SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/PothosSoapy.git
     GIT_TAG ${POTHOS_SDR_BRANCH}
     CMAKE_DEFAULTS ON
@@ -254,7 +262,7 @@ MyExternalProject_Add(PothosSDR
 ## Build Pothos Widgets toolkit
 ############################################################
 MyExternalProject_Add(PothosWidgets
-    DEPENDS Pothos
+    DEPENDS PothosCore
     GIT_REPOSITORY https://github.com/pothosware/PothosWidgets.git
     GIT_TAG ${POTHOS_WIDGETS_BRANCH}
     CMAKE_DEFAULTS ON
@@ -271,7 +279,7 @@ MyExternalProject_Add(PothosWidgets
 ## Build BTLE demo
 ############################################################
 MyExternalProject_Add(BtleDemo
-    DEPENDS Pothos
+    DEPENDS PothosCore
     GIT_REPOSITORY https://github.com/DesignSparkrs/sdr-ble-demo.git
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
@@ -286,7 +294,7 @@ MyExternalProject_Add(BtleDemo
 ## Build LoRa demo
 ############################################################
 MyExternalProject_Add(LoRaDemo
-    DEPENDS Pothos
+    DEPENDS PothosCore
     GIT_REPOSITORY https://github.com/myriadrf/LoRa-SDR.git
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
@@ -295,4 +303,23 @@ MyExternalProject_Add(LoRaDemo
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
     LICENSE_FILES README.md
+)
+
+############################################################
+## Build Pothos LiquidDSP toolkit
+############################################################
+MyExternalProject_Add(PothosLiquidDSP
+    DEPENDS PothosCore liquiddsp
+    GIT_REPOSITORY https://github.com/pothosware/PothosLiquidDSP.git
+    GIT_TAG ${POTHOS_LIQUID_DSP_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
+        -DLIQUIDDSP_INCLUDE_DIR=${LIQUIDDSP_INCLUDE_DIR}
+        -DLIQUIDDSP_LIBRARY=${LIQUIDDSP_LIBRARY}
+    LICENSE_FILES LICENSE_1_0.txt
 )

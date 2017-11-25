@@ -139,3 +139,29 @@ ExternalProject_Get_Property(fftw SOURCE_DIR)
 set(FFTW3F_INCLUDE_DIRS ${SOURCE_DIR})
 set(FFTW3F_LIBRARIES ${SOURCE_DIR}/libfftw3f-3.lib)
 install(FILES "${SOURCE_DIR}/libfftw3f-3.dll" DESTINATION bin)
+
+############################################################
+## LiquidDSP (prebuilt)
+##
+## external directory in CubicSDR (thanks!)
+############################################################
+MyExternalProject_Add(liquiddsp
+    GIT_REPOSITORY https://github.com/cjcliffe/CubicSDR.git
+    CONFIGURE_COMMAND echo "Configure liquiddsp..."
+    BUILD_COMMAND echo "..."
+    INSTALL_COMMAND echo "..."
+    LICENSE_FILES external/liquid-dsp/COPYING
+)
+
+ExternalProject_Get_Property(liquiddsp SOURCE_DIR)
+set(SOURCE_DIR "${SOURCE_DIR}/external/liquid-dsp")
+
+#use these variable to setup liquiddsp in dependent projects
+set(LIQUIDDSP_INCLUDE_DIR ${SOURCE_DIR}/include)
+set(LIQUIDDSP_LIBRARY ${SOURCE_DIR}/msvc/64/libliquid.lib)
+set(LIQUIDDSP_DLL ${SOURCE_DIR}/msvc/64/libliquid.dll)
+
+#external install commands, variables use build paths
+install(FILES ${LIQUIDDSP_INCLUDE_DIR}/liquid/liquid.h DESTINATION include/liquid)
+install(FILES ${LIQUIDDSP_LIBRARY} DESTINATION lib)
+install(FILES ${LIQUIDDSP_DLL} DESTINATION bin)
