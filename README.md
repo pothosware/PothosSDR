@@ -75,14 +75,8 @@ Building the environment with CMake:
 mkdir build
 cd build
 cmake ../ -G "Visual Studio 14 2015 Win64" ^
+    -DCMAKE_SYSTEM_VERSION=8.1 ^
     -DCMAKE_INSTALL_PREFIX=C:/PothosSDR ^
     -DCMAKE_BUILD_TYPE=RelWithDebInfo
 rebuild_all.bat
-```
-
-Note for building with MSVC 2015 when 2017 is installed:
-https://stackoverflow.com/questions/14372706/visual-studio-cant-build-due-to-rc-exe
-
-```
-%comspec% /k "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64 8.1
 ```
