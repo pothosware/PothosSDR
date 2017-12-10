@@ -16,7 +16,6 @@
 ## * faad2 (gr-drm)
 ## * cppunit (gnuradio)
 ## * gsl (gnuradio)
-## * mman-win32 (inspectrum)
 ############################################################
 
 set(PTHREADS_BRANCH master)
@@ -32,7 +31,6 @@ set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
 set(GSL_BRANCH master)
-set(MMAN_BRANCH master)
 
 ############################################################
 ## Build Pthreads for win32
@@ -328,18 +326,3 @@ MyExternalProject_Add(gsl
 set(GSL_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
 set(GSL_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/gsl.lib)
 set(GSL_CBLAS_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/gslcblas.lib)
-
-############################################################
-## Build MMAN
-############################################################
-MyExternalProject_Add(mman
-    GIT_REPOSITORY https://github.com/witwall/mman-win32.git
-    GIT_TAG ${MMAN_BRANCH}
-    CMAKE_DEFAULTS ON
-    CMAKE_ARGS
-        -DBUILD_TESTS=OFF
-        -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    LICENSE_FILES README.md
-)

@@ -47,7 +47,7 @@ list(APPEND CPACK_CREATE_DESKTOP_LINKS "CubicSDR")
 ## Build Inspectrum
 ############################################################
 MyExternalProject_Add(Inspectrum
-    DEPENDS mman liquiddsp
+    DEPENDS liquiddsp
     GIT_REPOSITORY https://github.com/miek/inspectrum.git
     GIT_TAG ${INSPECTRUM_SDR_BRANCH}
     CMAKE_DEFAULTS ON
