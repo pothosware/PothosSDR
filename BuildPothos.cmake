@@ -25,7 +25,7 @@ set(POTHOS_PYTHON_BRANCH maint)
 set(POTHOS_SDR_BRANCH maint)
 set(POTHOS_WIDGETS_BRANCH maint)
 set(POTHOS_LIQUID_DSP_BRANCH maint)
-set(POTHOS_MODULES_DIR "modules0.5")
+set(POTHOS_MODULES_DIR "modules0.6")
 
 ############################################################
 # python generation tools
@@ -128,7 +128,7 @@ install(
 ############################################################
 ## Build Pothos Flow graphical designer
 ############################################################
-MyExternalProject_Add(PothosGui
+MyExternalProject_Add(PothosFlow
     DEPENDS PothosCore
     GIT_REPOSITORY https://github.com/pothosware/PothosFlow.git
     GIT_TAG ${POTHOS_GUI_BRANCH}
@@ -142,7 +142,7 @@ MyExternalProject_Add(PothosGui
     LICENSE_FILES LICENSE_1_0.txt
 )
 
-ExternalProject_Get_Property(PothosGui SOURCE_DIR)
+ExternalProject_Get_Property(PothosFlow SOURCE_DIR)
 install(
     FILES
         ${SOURCE_DIR}/qtcolorpicker/LGPL_EXCEPTION.txt
@@ -151,18 +151,18 @@ install(
     DESTINATION licenses/qtcolorpicker
 )
 
-list(APPEND CPACK_PACKAGE_EXECUTABLES "PothosGui" "Pothos GUI")
-list(APPEND CPACK_CREATE_DESKTOP_LINKS "PothosGui")
+list(APPEND CPACK_PACKAGE_EXECUTABLES "PothosFlow" "Pothos Flow")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "PothosFlow")
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
-WriteRegStr HKEY_CLASSES_ROOT \\\".pothos\\\" \\\"\\\" \\\"Pothos.GUI\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\bin\\\\PothosGui.exe\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${NEQ}$INSTDIR\\\\bin\\\\PothosGui.exe${NEQ} ${NEQ}%1${NEQ} %*\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\".pothos\\\" \\\"\\\" \\\"Pothos.Flow\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\"Pothos.Flow\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\bin\\\\PothosFlow.exe\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\"Pothos.Flow\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${NEQ}$INSTDIR\\\\bin\\\\PothosFlow.exe${NEQ} ${NEQ}%1${NEQ} %*\\\"
 ")
 
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
 DeleteRegKey HKEY_CLASSES_ROOT \\\".pothos\\\"
-DeleteRegKey HKEY_CLASSES_ROOT \\\"Pothos.GUI\\\"
+DeleteRegKey HKEY_CLASSES_ROOT \\\"Pothos.Flow\\\"
 ")
 
 ############################################################
@@ -244,7 +244,7 @@ MyExternalProject_Add(PothosPython3
 ############################################################
 ## Build Pothos Soapy SDR toolkit
 ############################################################
-MyExternalProject_Add(PothosSDR
+MyExternalProject_Add(PothosSoapy
     DEPENDS PothosCore SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/PothosSoapy.git
     GIT_TAG ${POTHOS_SDR_BRANCH}
