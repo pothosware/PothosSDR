@@ -8,7 +8,7 @@ Links to the pre-built binaries will be available from the main wiki page:
 
 * https://github.com/pothosware/PothosSDR/wiki
 
-##Basic instructions
+## Basic instructions
 
 Instructions for downloading, installing,
 and using the development environment
@@ -16,7 +16,7 @@ can be found on the getting started tutorial:
 
 * https://github.com/pothosware/PothosSDR/wiki/Tutorial
 
-##About the environment
+## About the environment
 
 The Pothos SDR environment includes:
 
@@ -30,7 +30,7 @@ and links to the actual source code, checkout this wiki page:
 
 * https://github.com/pothosware/PothosSDR/wiki/Sources
 
-##Prebuilt binaries manifest
+## Prebuilt binaries manifest
 
 Pothos SDR relies on a number of pre-build package from the internet.
 The current download URLs are maintained here for reference,
@@ -54,7 +54,7 @@ Python2.7 modules needed for GNU Radio build:
   * http://www.lfd.uci.edu/~gohlke/pythonlibs
   * pygtk, wxpython, numpy, lxml, pyopengl
 
-##Building the environment
+## Building the environment
 
 This repository contains build scripts for creating
 the Pothos SDR environment on a Windows/MSVC target system.
