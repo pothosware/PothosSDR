@@ -68,7 +68,6 @@ function(MyExternalProject_Add name)
     #create the actual external project
     ExternalProject_Add(${name}
         GIT_TAG ${MYEPA_GIT_TAG}
-        GIT_SHALLOW 1
         ${MYEPA_UNPARSED_ARGUMENTS})
 
     #install license files when listed (relative to source dir)

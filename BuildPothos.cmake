@@ -97,12 +97,6 @@ MyExternalProject_Add(PothosBlocks
     LICENSE_FILES LICENSE_1_0.txt
 )
 
-ExternalProject_Get_Property(PothosBlocks SOURCE_DIR)
-install(
-    FILES ${SOURCE_DIR}/network/udt4/LICENSE.txt
-    DESTINATION licenses/udt
-)
-
 ############################################################
 ## Build Pothos Comms toolkit
 ############################################################
