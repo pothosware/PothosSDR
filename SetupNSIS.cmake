@@ -69,6 +69,8 @@ foreach(install_file ${ALL_FILES})
     string(REGEX MATCH "^.*cmake/.+$" cmake_match ${install_file})
     string(REGEX MATCH "^lib/.+\\.lib$" lib_match ${install_file})
     string(REGEX MATCH "^(lib/python.+/.+)|(lib/.+Python.+)$" python_match ${install_file})
+    string(REGEX MATCH "^^lib/Pothos/.+/PythonSupport2.dll$" python2_support ${install_file})
+    string(REGEX MATCH "^^lib/Pothos/.+/PythonSupport3.dll$" python3_support ${install_file})
     string(REGEX MATCH "^(.+/gnuradio/.+)|(bin/gnuradio.+)|(bin/gr.+)$" gr_match ${install_file})
 
     #other matches can be greedy, so the order here matters
@@ -80,6 +82,10 @@ foreach(install_file ${ALL_FILES})
         set(MYCOMPONENT cmake)
     elseif (lib_match)
         set(MYCOMPONENT libdevel)
+    elseif (python2_support)
+        set(MYCOMPONENT python2_exclusive)
+    elseif (python3_support)
+        set(MYCOMPONENT python3_exclusive)
     elseif (python_match)
         set(MYCOMPONENT python)
     else ()
@@ -115,6 +121,18 @@ cpack_add_component(python
     GROUP application
     DEPENDS runtime
     INSTALL_TYPES apps full)
+
+cpack_add_component(python2_exclusive
+    DISPLAY_NAME "Python2 support"
+    DESCRIPTION "Python2 support plugin for Pothos. Install only Python2 or Python3 support, but not both."
+    GROUP application
+    DEPENDS runtime)
+
+cpack_add_component(python3_exclusive
+    DISPLAY_NAME "Python3 support"
+    DESCRIPTION "Python3 support plugin for Pothos. Install only Python2 or Python3 support, but not both."
+    GROUP application
+    DEPENDS runtime)
 
 cpack_add_component(runtime
     DISPLAY_NAME "Application runtime"
