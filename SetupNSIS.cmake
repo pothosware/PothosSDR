@@ -124,13 +124,13 @@ cpack_add_component(python
 
 cpack_add_component(python2_exclusive
     DISPLAY_NAME "Python2 support"
-    DESCRIPTION "Python2 support plugin for Pothos. Install only Python2 or Python3 support, but not both."
+    DESCRIPTION "Python2 support plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
     GROUP application
     DEPENDS runtime)
 
 cpack_add_component(python3_exclusive
     DISPLAY_NAME "Python3 support"
-    DESCRIPTION "Python3 support plugin for Pothos. Install only Python2 or Python3 support, but not both."
+    DESCRIPTION "Python3 support plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
     GROUP application
     DEPENDS runtime)
 
