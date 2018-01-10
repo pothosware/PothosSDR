@@ -14,6 +14,7 @@
 ## * SoapyAudio
 ## * SoapyS9CExtIO
 ## * SoapyRxTools
+## * SoapyIris
 ############################################################
 
 set(SOAPY_SDR_BRANCH maint)
@@ -28,6 +29,7 @@ set(SOAPY_RED_PITAYA_BRANCH master)
 set(SOAPY_AUDIO_BRANCH master)
 set(SOAPY_SDRPLAY_BRANCH master)
 set(SOAPY_RX_TOOLS_BRANCH master)
+set(SOAPY_IRIS_BRANCH master)
 
 ############################################################
 ## Build SoapySDR
@@ -250,4 +252,18 @@ MyExternalProject_Add(SoapyRxTools
         -DTHREADS_PTHREADS_INCLUDE_DIR=${THREADS_PTHREADS_INCLUDE_DIR}
         -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
     LICENSE_FILES COPYING
+)
+
+############################################################
+## Build Skylark's Iris support
+############################################################
+MyExternalProject_Add(SoapyIris
+    DEPENDS SoapySDR SoapyRemote
+    GIT_REPOSITORY https://github.com/skylarkwireless/sklk-soapyiris.git
+    GIT_TAG ${SOAPY_IRIS_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    LICENSE_FILES BSD-3-CLAUSE-LICENSE.txt
 )
