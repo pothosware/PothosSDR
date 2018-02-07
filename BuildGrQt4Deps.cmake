@@ -22,7 +22,9 @@ set(GRRFTAP_BRANCH master)
 ############################################################
 ## Qt4 (prebuilt)
 ## Can be built downlading https://download.qt.io/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.zip
-## and running from the VS2015 X64 Native Tools Command Prompt:
+## Patch with: https://gist.github.com/eduardosm/70beffbc6f78793ae0609fe7ea89978e
+## (bsed on the patch provided here: https://stackoverflow.com/a/32848999)
+## Running from the VS2015 X64 Native Tools Command Prompt:
 ## configure -make nmake -release -shared -platform win32-msvc2015 ^
 ##     -prefix C:\Qt\Qt4.8.7-msvc2015 -opensource -confirm-license ^
 ##     -opengl desktop -graphicssystem opengl -nomake examples -nomake network ^
