@@ -131,7 +131,7 @@ MyExternalProject_Add(python2_pyqt4
 ## Build Python2-PyQwt5
 ############################################################
 MyExternalProject_Add(python2_pyqwt5
-    DEPENDS python2_sip python2_pyqt4
+    DEPENDS qwt5 python2_sip python2_pyqt4
     GIT_REPOSITORY https://github.com/PyQwt/PyQwt5.git
     GIT_TAG master
     CONFIGURE_COMMAND cd <SOURCE_DIR>/configure &&
