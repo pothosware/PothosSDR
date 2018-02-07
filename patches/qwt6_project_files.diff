@@ -1,0 +1,92 @@
+diff --git a/qwt.pro b/qwt.pro
+index 4df4108..87b9aed 100644
+--- a/qwt.pro
++++ b/qwt.pro
+@@ -14,8 +14,7 @@ CONFIG   += ordered
+ 
+ SUBDIRS = \
+     src \
+-    textengines \
+-    doc
++    textengines
+ 
+ contains(QWT_CONFIG, QwtDesigner ) {
+     SUBDIRS += designer 
+diff --git a/qwtconfig.pri b/qwtconfig.pri
+index 1fe6055..60dbb62 100644
+--- a/qwtconfig.pri
++++ b/qwtconfig.pri
+@@ -24,12 +24,32 @@ unix {
+ }
+ 
+ win32 {
+-    QWT_INSTALL_PREFIX    = C:/Qwt-$$QWT_VERSION
+-    # QWT_INSTALL_PREFIX = C:/Qwt-$$QWT_VERSION-qt-$$QT_VERSION
++	message(Requested an install to $$PREFIX)
++	isEmpty(PREFIX) {
++		QWT_INSTALL_PREFIX    = C:/Qwt-$$VERSION
++	} else {
++		QWT_INSTALL_PREFIX = $$PREFIX
++	}
++	message(Installing to $$QWT_INSTALL_PREFIX)
++	contains(AVX2, YES) {
++		QMAKE_CXXFLAGS_RELEASE -= -O2
++		QMAKE_CXXFLAGS_RELEASE += -Ox -Zi
++		QMAKE_CXXFLAGS_RELEASE += -arch:AVX2
++		QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO -= -O2
++		QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO += -Ox -Zi
++		QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO += -arch:AVX2
++	} else {
++		QMAKE_CXXFLAGS_RELEASE -= -Ox
++		QMAKE_CXXFLAGS_RELEASE -= -arch:AVX2
++		QMAKE_CXXFLAGS_RELEASE += -O2 -Zi
++		QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO -= -Ox
++		QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO -= -arch:AVX2
++		QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO += -O2 -Zi
++	}
+ }
+ 
+ QWT_INSTALL_DOCS      = $${QWT_INSTALL_PREFIX}/doc
+-QWT_INSTALL_HEADERS   = $${QWT_INSTALL_PREFIX}/include
++QWT_INSTALL_HEADERS   = $${QWT_INSTALL_PREFIX}/include/qwt6
+ QWT_INSTALL_LIBS      = $${QWT_INSTALL_PREFIX}/lib
+ 
+ ######################################################################
+@@ -72,7 +92,14 @@ QWT_INSTALL_FEATURES  = $${QWT_INSTALL_PREFIX}/features
+ # it will be a static library.
+ ######################################################################
+ 
+-QWT_CONFIG           += QwtDll
++contains(MAKEDLL, YES) {
++	QWT_CONFIG 			 += QwtDll
++	SUFFIX_STR 			  = 6
++	message("Making DLLs")
++} else {
++	QWT_CONFIG           -= QwtDll
++	message("Making Static Libs")
++}
+ 
+ ######################################################################
+ # QwtPlot enables all classes, that are needed to use the QwtPlot 
+@@ -118,7 +145,7 @@ QWT_CONFIG     += QwtOpenGL
+ # Otherwise you have to build it from the designer directory.
+ ######################################################################
+ 
+-QWT_CONFIG     += QwtDesigner
++#QWT_CONFIG     += QwtDesigner
+ 
+ ######################################################################
+ # Compile all Qwt classes into the designer plugin instead
+diff --git a/src/src.pro b/src/src.pro
+index b2e1e13..8c0638f 100644
+--- a/src/src.pro
++++ b/src/src.pro
+@@ -17,7 +17,7 @@ include( $${QWT_ROOT}/qwtfunctions.pri )
+ QWT_OUT_ROOT = $${OUT_PWD}/..
+ 
+ TEMPLATE          = lib
+-TARGET            = $$qwtLibraryTarget(qwt)
++TARGET            = $$qwtLibraryTarget(qwt)$$SUFFIX_STR
+ 
+ DESTDIR           = $${QWT_OUT_ROOT}/lib
+ 

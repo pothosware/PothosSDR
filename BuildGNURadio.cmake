@@ -61,9 +61,11 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"VOLK_PREFIX\\\"
 ## Build GNU Radio
 ############################################################
 MyExternalProject_Add(GNURadio
-    DEPENDS volk uhd CppZMQ PortAudio CppUnit gsl fftw swig
+    DEPENDS volk uhd CppZMQ PortAudio CppUnit gsl fftw swig qwt5 qwt6 python2_pyqt4 python2_pyqwt5
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_python_path.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
@@ -94,6 +96,10 @@ MyExternalProject_Add(GNURadio
         -DGSL_INCLUDE_DIRS=${GSL_INCLUDE_DIRS}
         -DGSL_LIBRARY=${GSL_LIBRARY}
         -DGSL_CBLAS_LIBRARY=${GSL_CBLAS_LIBRARY}
+        -DENABLE_GR_QTGUI=ON
+        -DQT_QMAKE_EXECUTABLE=${QT4_ROOT}/bin/qmake.exe
+        -DQWT_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include/qwt6
+		-DQWT_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/qwt6.lib
     LICENSE_FILES COPYING
 )
 
