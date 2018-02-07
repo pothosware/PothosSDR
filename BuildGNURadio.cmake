@@ -99,7 +99,7 @@ MyExternalProject_Add(GNURadio
         -DENABLE_GR_QTGUI=ON
         -DQT_QMAKE_EXECUTABLE=${QT4_ROOT}/bin/qmake.exe
         -DQWT_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include/qwt6
-		-DQWT_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/qwt6.lib
+        -DQWT_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/qwt6.lib
     LICENSE_FILES COPYING
 )
 
