@@ -10,6 +10,7 @@
 ## * uhd/usrp
 ## * umtrx
 ## * airspy
+## * airspy-hf+
 ## * mirisdr
 ############################################################
 
@@ -21,6 +22,7 @@ set(HACKRF_BRANCH master)
 set(UHD_BRANCH maint)
 set(UMTRX_BRANCH master)
 set(AIRSPY_BRANCH master)
+set(AIRSPYHF_BRANCH master)
 
 ############################################################
 ## Build Osmo SDR
@@ -224,4 +226,22 @@ MyExternalProject_Add(airspy
         -DTHREADS_PTHREADS_INCLUDE_DIR=${THREADS_PTHREADS_INCLUDE_DIR}
         -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
     LICENSE_FILES README.md
+)
+
+############################################################
+## Build AirspyHF
+############################################################
+MyExternalProject_Add(airspyhf
+    DEPENDS Pthreads libusb
+    GIT_REPOSITORY https://github.com/airspy/airspyhf.git
+    GIT_TAG ${AIRSPYHF_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DLIBUSB_INCLUDE_DIR=${LIBUSB_INCLUDE_DIR}
+        -DLIBUSB_LIBRARIES=${LIBUSB_LIBRARIES}
+        -DTHREADS_PTHREADS_INCLUDE_DIR=${THREADS_PTHREADS_INCLUDE_DIR}
+        -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
+    LICENSE_FILES LICENSE
 )

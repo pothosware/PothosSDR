@@ -4,6 +4,8 @@
 ## This script builds SoapySDR and support modules
 ##
 ## * SoapySDR
+## * SoapyAirspy
+## * SoapyAirspyHF
 ## * SoapyBladeRF
 ## * SoapyHackRF
 ## * SoapyUHD
@@ -20,6 +22,7 @@
 set(SOAPY_SDR_BRANCH maint)
 set(SOAPY_REMOTE_BRANCH maint)
 set(SOAPY_AIRSPY_BRANCH master)
+set(SOAPY_AIRSPYHF_BRANCH master)
 set(SOAPY_BLADERF_BRANCH master)
 set(SOAPY_HACKRF_BRANCH master)
 set(SOAPY_UHD_BRANCH master)
@@ -71,6 +74,20 @@ MyExternalProject_Add(SoapyAirspy
     DEPENDS SoapySDR airspy
     GIT_REPOSITORY https://github.com/pothosware/SoapyAirspy.git
     GIT_TAG ${SOAPY_AIRSPY_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    LICENSE_FILES LICENSE.txt
+)
+
+############################################################
+## Build SoapyAirspyHF
+############################################################
+MyExternalProject_Add(SoapyAirspyHF
+    DEPENDS SoapySDR airspyhf
+    GIT_REPOSITORY https://github.com/pothosware/SoapyAirspyHF.git
+    GIT_TAG ${SOAPY_AIRSPYHF_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
