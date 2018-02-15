@@ -35,7 +35,7 @@ set(GRRFTAP_BRANCH master)
 ############################################################
 set(QT4_ROOT C:/Qt/Qt4.8.7-msvc2015)
 
-message(STATUS "QT4_ROOT: ${QT5_ROOT}")
+message(STATUS "QT4_ROOT: ${QT4_ROOT}")
 
 install(FILES
     "${QT4_ROOT}/bin/QtCore4.dll"
