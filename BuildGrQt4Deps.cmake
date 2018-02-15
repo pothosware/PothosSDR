@@ -110,7 +110,7 @@ MyExternalProject_Add(python2_sip
 )
 
 ############################################################
-## Build Python2-SIP
+## Build Python2-PyQt4
 ############################################################
 MyExternalProject_Add(python2_pyqt4
     DEPENDS python2_sip
