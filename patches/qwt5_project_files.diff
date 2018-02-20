@@ -1,0 +1,99 @@
+diff --git a/qwtconfig.pri b/qwtconfig.pri
+index 15bc865..afabec4 100644
+--- a/qwtconfig.pri
++++ b/qwtconfig.pri
+@@ -12,9 +12,14 @@ unix {
+ }
+ 
+ win32 {
+-    INSTALLBASE    = C:/Qwt-$$VERSION
++	message(Requested an install to $$PREFIX)
++	isEmpty(PREFIX) {
++		INSTALLBASE    = C:/Qwt-$$VERSION
++	} else {
++		INSTALLBASE = $$PREFIX
++	}
++	message(Installing to $$INSTALLBASE)
+ }
+-
+ target.path    = $$INSTALLBASE/lib
+ headers.path   = $$INSTALLBASE/include
+ doc.path       = $$INSTALLBASE/doc
+@@ -49,9 +54,24 @@ else {
+         # might need a debug version. 
+         # Enable debug_and_release + build_all if you want to build both.
+ 
+-        CONFIG           += release     # release/debug/debug_and_release
++        #CONFIG           += release     # release/debug/debug_and_release
+         #CONFIG           += debug_and_release
+         #CONFIG           += build_all
++		contains(AVX2, YES) {
++			QMAKE_CXXFLAGS_RELEASE -= -O2 
++			QMAKE_CXXFLAGS_RELEASE += -Ox -Zi
++			QMAKE_CXXFLAGS_RELEASE += -arch:AVX2
++			QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO -= -O2 
++			QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO += -Ox -Zi
++			QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO += -arch:AVX2
++		} else {
++			QMAKE_CXXFLAGS_RELEASE -= -Ox
++			QMAKE_CXXFLAGS_RELEASE -= -arch:AVX2 
++			QMAKE_CXXFLAGS_RELEASE += -O2 -Zi
++			QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO -= -Ox
++			QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO -= -arch:AVX2 
++			QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO += -O2 -Zi
++		}
+     }
+     else {
+         CONFIG           += release     # release/debug
+@@ -68,6 +88,8 @@ RELEASE_SUFFIX      =
+ 
+ win32 {
+     DEBUG_SUFFIX      = d
++	#CONFIG			  += FORCE_DEBUG_INFO
++	#CONFIG			  += RELEASE_WITH_DEBUGINFO
+ }
+ 
+ ######################################################################
+@@ -76,7 +98,13 @@ win32 {
+ # it will be a static library.
+ ######################################################################
+ 
+-CONFIG           += QwtDll
++contains(MAKEDLL, YES) {
++	CONFIG 			 += QwtDll
++	message("Making DLLs")
++} else {
++	CONFIG           -= QwtDll
++	message("Making Static Libs")
++}
+ 
+ ######################################################################
+ # QwtPlot enables all classes, that are needed to use the QwtPlot 
+@@ -98,7 +126,7 @@ CONFIG     += QwtWidgets
+ # QwtSVGItem.
+ ######################################################################
+ 
+-#CONFIG     += QwtSVGItem
++CONFIG     += QwtSVGItem
+ 
+ ######################################################################
+ # You can use the MathML renderer of the Qt solutions package to 
+@@ -115,7 +143,7 @@ CONFIG     += QwtWidgets
+ # Otherwise you have to build it from the designer directory.
+ ######################################################################
+ 
+-CONFIG     += QwtDesigner
++#CONFIG     += QwtDesigner
+ 
+ ######################################################################
+ # If you want to auto build the examples, enable the line below
+diff --git a/src/src.pro b/src/src.pro
+index 4113bc9..8eebefd 100644
+--- a/src/src.pro
++++ b/src/src.pro
+@@ -225,4 +225,4 @@ unix {
+     doc.files      += $${QWT_ROOT}/doc/man
+ }
+ 
+-INSTALLS       = target headers doc
++INSTALLS       = target headers

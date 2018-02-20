@@ -72,9 +72,26 @@ foreach(install_file ${ALL_FILES})
     string(REGEX MATCH "^^lib/Pothos/.+/PythonSupport2.dll$" python2_support ${install_file})
     string(REGEX MATCH "^^lib/Pothos/.+/PythonSupport3.dll$" python3_support ${install_file})
     string(REGEX MATCH "^(.+/gnuradio/.+)|(bin/gnuradio.+)|(bin/gr.+)$" gr_match ${install_file})
+    string(REGEX MATCH "^bin/Qt(Core|Gui|Svg|OpenGL)4\\.dll$" qt4_match ${install_file})
+    string(REGEX MATCH "^(include/qwt(\\.h|_.+\\.h))|lib/qwt\\.lib$" qwt6_skip_match ${install_file})
+    string(REGEX MATCH "^bin/qwt6\\.dll$" qwt6_dll_match ${install_file})
+    string(REGEX MATCH "^(sip/.+)|(lib/python2.7/site-packages/sip.+)|(include/sip\\.h)|(bin/sip\\.exe)$" python2_sip_match ${install_file})
+    string(REGEX MATCH "^(lib/python2.7/site-packages/PyQt4/.+)|(bin/(pylupdate4\\.exe|pyrcc4\\.exe|pyuic4\\.bat))$" python2_pyqt4_match ${install_file})
+    # pyqwt5 files will be matched by sip and pyqt4 regexs
 
     #other matches can be greedy, so the order here matters
-    if (gr_match)
+    if (qwt6_skip_match)
+        # skip
+    elseif (python2_sip_match)
+        # I'm not sure if these files are necessary
+        set(MYCOMPONENT gnuradio)
+    elseif (qt4_match)
+        set(MYCOMPONENT gnuradio)
+    elseif (qwt6_dll_match)
+        set(MYCOMPONENT gnuradio)
+    elseif (python2_pyqt4_match)
+        set(MYCOMPONENT gnuradio)
+    elseif (gr_match)
         set(MYCOMPONENT gnuradio)
     elseif (include_match)
         set(MYCOMPONENT includes)
