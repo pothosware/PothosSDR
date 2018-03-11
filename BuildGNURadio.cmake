@@ -61,7 +61,7 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"VOLK_PREFIX\\\"
 ## Build GNU Radio
 ############################################################
 MyExternalProject_Add(GNURadio
-    DEPENDS volk uhd CppZMQ PortAudio CppUnit gsl fftw swig qwt5 qwt6 python2_pyqt4 python2_pyqwt5
+    DEPENDS volk uhd CppZMQ PortAudio CppUnit gsl fftw swig qt4 qwt5 qwt6 python2_pyqt4 python2_pyqwt5
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}

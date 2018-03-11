@@ -1,0 +1,170 @@
+diff -Naur src/3rdparty/clucene/src/CLucene/StdHeader.h src/3rdparty/clucene/src/CLucene/StdHeader.h
+--- src/3rdparty/clucene/src/CLucene/StdHeader.h	2015-05-07 16:14:48.000000000 +0200
++++ src/3rdparty/clucene/src/CLucene/StdHeader.h	2018-02-03 23:00:53.723616000 +0100
+@@ -123,6 +123,9 @@
+ #endif
+ 
+ #if !defined(LUCENE_DISABLE_HASHING) && defined(_CL_HAVE_HASH_MAP) && defined(_CL_HAVE_HASH_SET)
++    #if (defined(_MSC_VER) && (_MSC_VER >= 1900))
++    #define _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
++    #endif
+ 	//hashing is all or nothing!
+ 	#include <hash_map>
+ 	#include <hash_set>
+diff -Naur src/3rdparty/clucene/src/CLucene/util/VoidMap.h src/3rdparty/clucene/src/CLucene/util/VoidMap.h
+--- src/3rdparty/clucene/src/CLucene/util/VoidMap.h	2015-05-07 16:14:48.000000000 +0200
++++ src/3rdparty/clucene/src/CLucene/util/VoidMap.h	2018-02-03 23:02:14.333327000 +0100
+@@ -222,12 +222,22 @@
+ 	typename _KeyDeletor=CL_NS(util)::Deletor::Dummy,
+ 	typename _ValueDeletor=CL_NS(util)::Deletor::Dummy>
+ class CLSet:public __CLMap<_kt,_vt,
+-	CL_NS_STD(map)<_kt,_vt, _Compare>,
++#if (defined(_MSC_VER) && (_MSC_VER >= 1900))
++    CL_NS_STD(map)<_kt,_vt>,
++#else
++    CL_NS_STD(map)<_kt,_vt, _Compare>,
++#endif
+ 	_KeyDeletor,_ValueDeletor>
+ {
++#if (defined(_MSC_VER) && (_MSC_VER >= 1900))
++    typedef typename CL_NS_STD(map)<_kt,_vt> _base;
++    typedef __CLMap<_kt, _vt, CL_NS_STD(map)<_kt,_vt>,
++        _KeyDeletor,_ValueDeletor> _this;
++#else
+ 	typedef typename CL_NS_STD(map)<_kt,_vt,_Compare> _base;
+ 	typedef __CLMap<_kt, _vt, CL_NS_STD(map)<_kt,_vt, _Compare>,
+ 		_KeyDeletor,_ValueDeletor> _this;
++#endif
+ public:
+ 	CLSet ( const bool deleteKey=false, const bool deleteValue=false )
+ 	{
+diff -Naur src/3rdparty/javascriptcore/JavaScriptCore/runtime/ArgList.h src/3rdparty/javascriptcore/JavaScriptCore/runtime/ArgList.h
+--- src/3rdparty/javascriptcore/JavaScriptCore/runtime/ArgList.h	2015-05-07 16:14:48.000000000 +0200
++++ src/3rdparty/javascriptcore/JavaScriptCore/runtime/ArgList.h	2018-02-03 22:58:56.801655000 +0100
+@@ -172,7 +172,10 @@
+         void operator delete[](void*);
+ 
+         void* operator new(size_t, void*);
++// FIXME: strange magic
++#if !(defined(_MSC_VER) && (_MSC_VER >= 1900))
+         void operator delete(void*, size_t);
++#endif
+     };
+ 
+     class ArgList {
+diff -Naur src/3rdparty/javascriptcore/JavaScriptCore/wtf/StringExtras.h src/3rdparty/javascriptcore/JavaScriptCore/wtf/StringExtras.h
+--- src/3rdparty/javascriptcore/JavaScriptCore/wtf/StringExtras.h	2015-05-07 16:14:48.000000000 +0200
++++ src/3rdparty/javascriptcore/JavaScriptCore/wtf/StringExtras.h	2018-02-03 22:58:56.801655000 +0100
+@@ -36,6 +36,7 @@
+ #if COMPILER(MSVC)
+ // FIXME: why a COMPILER check instead of OS? also, these should be HAVE checks
+ 
++#if (_MSC_VER < 1900)
+ inline int snprintf(char* buffer, size_t count, const char* format, ...) 
+ {
+     int result;
+@@ -45,6 +46,7 @@
+     va_end(args);
+     return result;
+ }
++#endif
+ 
+ #if COMPILER(MSVC7) || OS(WINCE)
+ 
+diff -Naur src/3rdparty/javascriptcore/JavaScriptCore/wtf/TypeTraits.h src/3rdparty/javascriptcore/JavaScriptCore/wtf/TypeTraits.h
+--- src/3rdparty/javascriptcore/JavaScriptCore/wtf/TypeTraits.h	2015-05-07 16:14:48.000000000 +0200
++++ src/3rdparty/javascriptcore/JavaScriptCore/wtf/TypeTraits.h	2018-02-03 22:58:56.816933000 +0100
+@@ -170,8 +170,16 @@
+ 
+     // GCC's libstdc++ 20070724 and later supports C++ TR1 type_traits in the std namespace.
+     // VC10 (VS2010) and later support C++ TR1 type_traits in the std::tr1 namespace.
++    // VC14 (VS2015) and later support C++11 type_traits in the std namespace, but old TR1 names
++    // have been removed. See https://msdn.microsoft.com/en-us/library/vstudio/bb531344(v=vs.140).aspx
++    // for details.
++#if (defined(_MSC_VER) && (_MSC_VER >= 1900))
++    template<typename T> struct HasTrivialConstructor : public std::is_trivially_default_constructible<T> { };
++    template<typename T> struct HasTrivialDestructor : public std::is_trivially_destructible<T> { };
++#else
+     template<typename T> struct HasTrivialConstructor : public std::tr1::has_trivial_constructor<T> { };
+     template<typename T> struct HasTrivialDestructor : public std::tr1::has_trivial_destructor<T> { };
++#endif
+ 
+ #else
+ 
+diff -Naur src/3rdparty/javascriptcore/WebKit.pri src/3rdparty/javascriptcore/WebKit.pri
+--- src/3rdparty/javascriptcore/WebKit.pri	2015-05-07 16:14:47.000000000 +0200
++++ src/3rdparty/javascriptcore/WebKit.pri	2018-02-03 22:58:56.816933000 +0100
+@@ -22,7 +22,7 @@
+ 
+ DEFINES += BUILDING_QT__=1
+ building-libs {
+-    win32-msvc*|win32-icc: INCLUDEPATH += $$PWD/JavaScriptCore/os-win32
++    win32-msvc200*|win32-msvc2010*|win32-msvc2012*|win32-msvc2013*|win32-icc: INCLUDEPATH += $$PWD/JavaScriptCore/os-win32
+ } else {
+     CONFIG(QTDIR_build) {
+         QT += webkit
+diff -Naur src/3rdparty/webkit/Source/JavaScriptCore/runtime/ArgList.h src/3rdparty/webkit/Source/JavaScriptCore/runtime/ArgList.h
+--- src/3rdparty/webkit/Source/JavaScriptCore/runtime/ArgList.h	2015-05-07 16:14:45.000000000 +0200
++++ src/3rdparty/webkit/Source/JavaScriptCore/runtime/ArgList.h	2018-02-03 22:58:56.816933000 +0100
+@@ -174,7 +174,10 @@
+         void operator delete[](void*);
+ 
+         void* operator new(size_t, void*);
++// FIXME: strange magic
++#if !(defined(_MSC_VER) && (_MSC_VER >= 1900))
+         void operator delete(void*, size_t);
++#endif
+     };
+ 
+     class ArgList {
+diff -Naur src/3rdparty/webkit/Source/JavaScriptCore/wtf/StringExtras.h src/3rdparty/webkit/Source/JavaScriptCore/wtf/StringExtras.h
+--- src/3rdparty/webkit/Source/JavaScriptCore/wtf/StringExtras.h	2015-05-07 16:14:45.000000000 +0200
++++ src/3rdparty/webkit/Source/JavaScriptCore/wtf/StringExtras.h	2018-02-03 22:58:56.832901000 +0100
+@@ -37,6 +37,7 @@
+ #if COMPILER(MSVC)
+ // FIXME: why a COMPILER check instead of OS? also, these should be HAVE checks
+ 
++#if (_MSC_VER < 1900)
+ inline int snprintf(char* buffer, size_t count, const char* format, ...) 
+ {
+     int result;
+@@ -52,6 +53,7 @@
+ 
+     return result;
+ }
++#endif
+ 
+ inline double wtf_vsnprintf(char* buffer, size_t count, const char* format, va_list args)
+ {
+diff -Naur src/3rdparty/webkit/Source/JavaScriptCore/wtf/TypeTraits.h src/3rdparty/webkit/Source/JavaScriptCore/wtf/TypeTraits.h
+--- src/3rdparty/webkit/Source/JavaScriptCore/wtf/TypeTraits.h	2015-05-07 16:14:45.000000000 +0200
++++ src/3rdparty/webkit/Source/JavaScriptCore/wtf/TypeTraits.h	2018-02-03 22:58:56.832901000 +0100
+@@ -183,8 +183,16 @@
+ 
+     // GCC's libstdc++ 20070724 and later supports C++ TR1 type_traits in the std namespace.
+     // VC10 (VS2010) and later support C++ TR1 type_traits in the std::tr1 namespace.
++    // VC14 (VS2015) and later support C++11 type_traits in the std namespace, but old TR1 names
++    // have been removed. See https://msdn.microsoft.com/en-us/library/vstudio/bb531344(v=vs.140).aspx
++    // for details.
++#if (defined(_MSC_VER) && (_MSC_VER >= 1900))
++    template<typename T> struct HasTrivialConstructor : public std::is_trivially_default_constructible<T> { };
++    template<typename T> struct HasTrivialDestructor : public std::is_trivially_destructible<T> { };
++#else
+     template<typename T> struct HasTrivialConstructor : public std::tr1::has_trivial_constructor<T> { };
+     template<typename T> struct HasTrivialDestructor : public std::tr1::has_trivial_destructor<T> { };
++#endif
+ 
+ #else
+ 
+diff -Naur src/3rdparty/webkit/Source/WebKit.pri src/3rdparty/webkit/Source/WebKit.pri
+--- src/3rdparty/webkit/Source/WebKit.pri	2015-05-07 16:14:45.000000000 +0200
++++ src/3rdparty/webkit/Source/WebKit.pri	2018-02-03 22:58:56.848620000 +0100
+@@ -38,7 +38,7 @@
+ 
+ DEFINES += BUILDING_QT__=1
+ building-libs {
+-    win32-msvc*|win32-icc: INCLUDEPATH += $$PWD/JavaScriptCore/os-win32
++    win32-msvc200*|win32-msvc2010*|win32-msvc2012*|win32-msvc2013*|win32-icc: INCLUDEPATH += $$PWD/JavaScriptCore/os-win32
+ } else {
+     CONFIG(QTDIR_build) {
+         QT += webkit
