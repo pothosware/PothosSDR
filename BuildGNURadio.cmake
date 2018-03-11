@@ -26,9 +26,9 @@ set(GRRFTAP_BRANCH master)
 ############################################################
 # python generation tools
 # volk uses cheetah
-# gr-pothos uses ply, cheetah, colorama
+# gr-pothos uses same python3 deps as PothosLiquidDSP
 ############################################################
-execute_process(COMMAND ${PYTHON2_ROOT}/Scripts/pip.exe install ply Cheetah colorama OUTPUT_QUIET)
+execute_process(COMMAND ${PYTHON2_ROOT}/Scripts/pip.exe install Cheetah OUTPUT_QUIET)
 
 ############################################################
 ## Build Volk
@@ -150,7 +150,7 @@ MyExternalProject_Add(GrPothos
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
     LICENSE_FILES COPYING
