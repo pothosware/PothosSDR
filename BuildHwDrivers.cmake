@@ -191,24 +191,26 @@ set(UHD_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/uhd.lib)
 
 ############################################################
 ## Build UmTRX
+##
+## Not building with recent UHD API
 ############################################################
-MyExternalProject_Add(umtrx
-    DEPENDS uhd
-    GIT_REPOSITORY https://github.com/fairwaves/UHD-Fairwaves.git
-    GIT_TAG ${UMTRX_BRANCH}
-    CMAKE_DEFAULTS ON
-    CONFIGURE_COMMAND
-        "${CMAKE_COMMAND}" <SOURCE_DIR>/host
-        -G ${CMAKE_GENERATOR}
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DBOOST_ALL_DYN_LINK=TRUE
-        -DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
-        -DUHD_LIBRARIES=${UHD_LIBRARIES}
-    LICENSE_FILES README
-)
+#MyExternalProject_Add(umtrx
+    #DEPENDS uhd
+    #GIT_REPOSITORY https://github.com/fairwaves/UHD-Fairwaves.git
+    #GIT_TAG ${UMTRX_BRANCH}
+    #CMAKE_DEFAULTS ON
+    #CONFIGURE_COMMAND
+        #"${CMAKE_COMMAND}" <SOURCE_DIR>/host
+        #-G ${CMAKE_GENERATOR}
+        #-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        #-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        #-DBOOST_ROOT=${BOOST_ROOT}
+        #-DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        #-DBOOST_ALL_DYN_LINK=TRUE
+        #-DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
+        #-DUHD_LIBRARIES=${UHD_LIBRARIES}
+    #LICENSE_FILES README
+#)
 
 ############################################################
 ## Build Airspy
