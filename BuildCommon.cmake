@@ -282,6 +282,23 @@ install(FILES ${SOURCE_DIR}/libfaad/ReleaseDLL/libfaad2.lib DESTINATION lib)
 install(FILES ${SOURCE_DIR}/libfaad/ReleaseDLL/libfaad2.dll DESTINATION bin)
 
 ############################################################
+## Build FDK-AAC
+############################################################
+MyExternalProject_Add(fdk_aac
+    GIT_REPOSITORY "https://github.com/argilo/fdk-aac.git"
+    GIT_TAG 3b63dab59416a629f3de82463eb3875319a086d5
+    CONFIGURE_COMMAND echo "..."
+    BUILD_COMMAND cd <SOURCE_DIR> && nmake -f Makefile.vc
+    INSTALL_COMMAND cd <SOURCE_DIR> && nmake -f Makefile.vc prefix=<BINARY_DIR> install
+    LICENSE_FILES NOTICE
+)
+
+ExternalProject_Get_Property(fdk_aac BINARY_DIR)
+execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${BINARY_DIR}/include)
+set(FDK_AAC_INCLUDE_DIR ${BINARY_DIR}/include)
+set(FDK_AAC_LIBRARY ${BINARY_DIR}/lib/fdk-aac.lib)
+
+############################################################
 ## Build CPPUNIT
 ############################################################
 MyExternalProject_Add(CppUnit

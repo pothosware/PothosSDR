@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 8f84309..7d13108 100644
+index 8f84309..44d702a 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -139,7 +139,7 @@ find_package(Doxygen)
@@ -11,21 +11,23 @@ index 8f84309..7d13108 100644
  find_package(Gnuradio "3.7.2" REQUIRED)
  list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake/Modules)
  include(GrVersion)
-@@ -206,12 +206,14 @@ ExternalProject_Add (
+@@ -195,6 +195,11 @@ add_custom_target(uninstall
+ ########################################################################
+ # Build patched fdk-aac
+ ########################################################################
++if (FDK_AAC_LIBRARY AND FDK_AAC_INCLUDE_DIR)
++    add_library(fdk-aac STATIC IMPORTED)
++    set_property(TARGET fdk-aac PROPERTY IMPORTED_LOCATION ${FDK_AAC_LIBRARY})
++    set_property(TARGET fdk-aac PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${FDK_AAC_INCLUDE_DIR})
++else()
+ include (ExternalProject)
  
-     BINARY_DIR ${FDK_AAC_PREFIX}/src/fdk_aac_external
-     UPDATE_COMMAND ""
--    CONFIGURE_COMMAND ./autogen.sh && ./configure --prefix=${FDK_AAC_PREFIX} --disable-shared --enable-static CXXFLAGS=-fPIC
--    BUILD_COMMAND make
-+    CONFIGURE_COMMAND ""
-+    BUILD_COMMAND nmake -f Makefile.vc
-+    INSTALL_COMMAND nmake -f Makefile.vc prefix=${FDK_AAC_PREFIX} install
- )
-+execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${FDK_AAC_PREFIX}/include)
- 
- add_library (fdk-aac STATIC IMPORTED)
--set_property (TARGET fdk-aac PROPERTY IMPORTED_LOCATION "${FDK_AAC_PREFIX}/lib/libfdk-aac.a")
-+set_property (TARGET fdk-aac PROPERTY IMPORTED_LOCATION "${FDK_AAC_PREFIX}/lib/fdk-aac.lib")
+ set (FDK_AAC_PREFIX "${CMAKE_BINARY_DIR}/fdk-aac-prefix")
+@@ -214,6 +219,7 @@ add_library (fdk-aac STATIC IMPORTED)
+ set_property (TARGET fdk-aac PROPERTY IMPORTED_LOCATION "${FDK_AAC_PREFIX}/lib/libfdk-aac.a")
  add_dependencies (fdk-aac fdk_aac_external)
  include_directories ("${FDK_AAC_PREFIX}/include")
++endif()
  
+ ########################################################################
+ # Add subdirectories

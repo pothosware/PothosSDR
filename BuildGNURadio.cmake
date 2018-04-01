@@ -282,7 +282,7 @@ MyExternalProject_Add(GrRFtap
 ## Build gr-NRSC5
 ############################################################
 MyExternalProject_Add(GrNRSC5
-    DEPENDS GNURadio
+    DEPENDS GNURadio fdk_aac
     GIT_REPOSITORY https://github.com/argilo/gr-nrsc5.git
     GIT_TAG ${GRNRSC5_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
@@ -301,5 +301,7 @@ MyExternalProject_Add(GrNRSC5
         -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
         -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
         -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
+        -DFDK_AAC_INCLUDE_DIR=${FDK_AAC_INCLUDE_DIR}
+        -DFDK_AAC_LIBRARY=${FDK_AAC_LIBRARY}
     LICENSE_FILES COPYING
 )
