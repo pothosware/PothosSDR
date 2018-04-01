@@ -22,6 +22,7 @@ set(GRRDS_BRANCH master)
 set(GQRX_BRANCH master)
 set(GRDRM_BRANCH master)
 set(GRRFTAP_BRANCH master)
+set(GRNRSC5_BRANCH master)
 
 ############################################################
 # python generation tools
@@ -275,4 +276,30 @@ MyExternalProject_Add(GrRFtap
         -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
         -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
     LICENSE_FILES MANIFEST.md
+)
+
+############################################################
+## Build gr-NRSC5
+############################################################
+MyExternalProject_Add(GrNRSC5
+    DEPENDS GNURadio
+    GIT_REPOSITORY https://github.com/argilo/gr-nrsc5.git
+    GIT_TAG ${GRNRSC5_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/gr_nrsc5_msvc.diff
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        -DBOOST_ALL_DYN_LINK=TRUE
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
+        -DSWIG_DIR=${SWIG_DIR}
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
+        -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
+    LICENSE_FILES COPYING
 )
