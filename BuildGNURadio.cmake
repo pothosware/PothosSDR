@@ -12,6 +12,7 @@
 ## * gqrx
 ## * gr-drm
 ## * gr-rftap
+## * gr-nrsc5
 ############################################################
 
 set(VOLK_BRANCH maint)
@@ -285,8 +286,6 @@ MyExternalProject_Add(GrNRSC5
     DEPENDS GNURadio fdk_aac
     GIT_REPOSITORY https://github.com/argilo/gr-nrsc5.git
     GIT_TAG ${GRNRSC5_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/gr_nrsc5_msvc.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
