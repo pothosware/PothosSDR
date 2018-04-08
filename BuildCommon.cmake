@@ -180,10 +180,8 @@ MyExternalProject_Add(muparserx
 ## Build PortAudio
 ############################################################
 MyExternalProject_Add(PortAudio
-    GIT_REPOSITORY https://github.com/EddieRingle/portaudio.git #git mirror
+    GIT_REPOSITORY https://git.assembla.com/portaudio.git
     GIT_TAG ${PORTAUDIO_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/portaudio_no_ksguid_lib.diff
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
     CMAKE_ARGS
         -Wno-dev
