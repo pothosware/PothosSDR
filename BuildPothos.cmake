@@ -25,6 +25,7 @@ set(POTHOS_PYTHON_BRANCH maint)
 set(POTHOS_SDR_BRANCH maint)
 set(POTHOS_WIDGETS_BRANCH maint)
 set(POTHOS_LIQUID_DSP_BRANCH maint)
+set(POTHOS_IIO_BRANCH master)
 set(POTHOS_MODULES_DIR "modules0.6")
 
 ############################################################
@@ -315,5 +316,23 @@ MyExternalProject_Add(PothosLiquidDSP
         -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
         -DLIQUIDDSP_INCLUDE_DIR=${LIQUIDDSP_INCLUDE_DIR}
         -DLIQUIDDSP_LIBRARY=${LIQUIDDSP_LIBRARY}
+    LICENSE_FILES LICENSE_1_0.txt
+)
+
+############################################################
+## Build IIO
+############################################################
+MyExternalProject_Add(PothosIIO
+    DEPENDS PothosCore libiio
+    GIT_REPOSITORY https://github.com/pothosware/PothosIIO.git
+    GIT_TAG ${POTHOS_IIO_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
+        -DLIBIIO_INCLUDE_DIR=${LIBIIO_INCLUDE_DIR}
+        -DLIBIIO_LIBRARY=${LIBIIO_LIBRARY}
     LICENSE_FILES LICENSE_1_0.txt
 )

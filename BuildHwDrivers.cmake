@@ -12,6 +12,7 @@
 ## * airspy
 ## * airspy-hf+
 ## * mirisdr
+## * libad9361 (plutosdr)
 ############################################################
 
 set(OSMO_BRANCH master)
@@ -23,6 +24,7 @@ set(UHD_BRANCH maint)
 set(UMTRX_BRANCH master)
 set(AIRSPY_BRANCH master)
 set(AIRSPYHF_BRANCH master)
+set(LIBAD9361_BRANCH master)
 
 ############################################################
 ## Build Osmo SDR
@@ -245,5 +247,21 @@ MyExternalProject_Add(airspyhf
         -DLIBUSB_LIBRARIES=${LIBUSB_LIBRARIES}
         -DTHREADS_PTHREADS_INCLUDE_DIR=${THREADS_PTHREADS_INCLUDE_DIR}
         -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
+    LICENSE_FILES LICENSE
+)
+
+############################################################
+## Build libad9361
+############################################################
+MyExternalProject_Add(libad9361
+    DEPENDS libiio
+    GIT_REPOSITORY https://github.com/analogdevicesinc/libad9361-iio.git
+    GIT_TAG ${LIBAD9361_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DLIBIIO_INCLUDEDIR=${LIBIIO_INCLUDE_DIR}
+        -DLIBIIO_LIBRARIES=${LIBIIO_LIBRARY}
     LICENSE_FILES LICENSE
 )

@@ -17,6 +17,7 @@
 ## * SoapyS9CExtIO
 ## * SoapyRxTools
 ## * SoapyIris
+## * SoapyPlutoSDR
 ############################################################
 
 set(SOAPY_SDR_BRANCH maint)
@@ -33,6 +34,7 @@ set(SOAPY_AUDIO_BRANCH master)
 set(SOAPY_SDRPLAY_BRANCH master)
 set(SOAPY_RX_TOOLS_BRANCH master)
 set(SOAPY_IRIS_BRANCH master)
+set(SOAPY_PLUTO_SDR_BRANCH master)
 
 ############################################################
 ## Build SoapySDR
@@ -283,4 +285,20 @@ MyExternalProject_Add(SoapyIris
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     LICENSE_FILES BSD-3-CLAUSE-LICENSE.txt
+)
+
+############################################################
+## Build SoapyPlutoSDR
+############################################################
+MyExternalProject_Add(SoapyPlutoSDR
+    DEPENDS SoapySDR libad9361
+    GIT_REPOSITORY https://github.com/jocover/SoapyPlutoSDR.git
+    GIT_TAG ${SOAPY_PLUTO_SDR_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DLIBIIO_INCLUDE_DIR=${LIBIIO_INCLUDE_DIR}
+        -DLIBIIO_LIBRARY=${LIBIIO_LIBRARY}
+    LICENSE_FILES LICENSE
 )
