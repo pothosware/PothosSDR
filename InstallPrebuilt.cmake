@@ -11,7 +11,6 @@
 ## * swig (prebuilt generator)
 ## * fftw (prebuilt runtime dlls)
 ## * liquiddsp (prebuilt runtime dlls)
-## * libiio (prebuilt runtime dlls)
 ############################################################
 
 ############################################################
@@ -167,27 +166,3 @@ set(LIQUIDDSP_DLL ${SOURCE_DIR}/msvc/64/libliquid.dll)
 install(FILES ${LIQUIDDSP_INCLUDE_DIR}/liquid/liquid.h DESTINATION include/liquid)
 install(FILES ${LIQUIDDSP_LIBRARY} DESTINATION lib)
 install(FILES ${LIQUIDDSP_DLL} DESTINATION bin)
-
-############################################################
-## libiio dependency (prebuilt)
-############################################################
-MyExternalProject_Add(libiio
-    URL https://github.com/analogdevicesinc/libiio/releases/download/v0.15/libiio-0.15.g6ecff5d-Windows.zip
-    URL_MD5 55f2d6de9b050db4cb1fda473dd9391e
-    CONFIGURE_COMMAND echo "..."
-    BUILD_COMMAND echo "..."
-    INSTALL_COMMAND echo "..."
-    LICENSE_FILES README.txt
-)
-
-ExternalProject_Get_Property(libiio SOURCE_DIR)
-
-#use these variable to setup liquiddsp in dependent projects
-set(LIBIIO_INCLUDE_DIR ${SOURCE_DIR}/include)
-set(LIBIIO_LIBRARY ${SOURCE_DIR}/MS64/libiio.lib)
-set(LIBIIO_DLL ${SOURCE_DIR}/MS64/libiio.dll)
-
-#external install commands, variables use build paths
-install(FILES ${LIBIIO_INCLUDE_DIR}/iio.h DESTINATION include)
-install(FILES ${LIBIIO_LIBRARY} DESTINATION lib)
-install(FILES ${LIBIIO_DLL} DESTINATION bin)
