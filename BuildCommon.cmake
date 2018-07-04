@@ -118,7 +118,7 @@ MyExternalProject_Add(ZeroMQ
 )
 
 set(ZEROMQ_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
-set(ZEROMQ_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/libzmq-v${MSVC_VERSION_XX}0-mt-4_1_7.lib)
+set(ZEROMQ_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/libzmq-v${MSVC_VERSION_MAJOR}${MSVC_VERSION_MINOR}-mt-4_1_7.lib)
 
 ############################################################
 ## Build CppZMQ
@@ -218,7 +218,7 @@ MyExternalProject_Add(wxWidgets
     CONFIGURE_COMMAND echo "Configure wxwidgets..."
     BUILD_COMMAND msbuild
         /p:Configuration=Release,Platform=x64
-        /m <SOURCE_DIR>/build/msw/wx_vc${MSVC_VERSION_XX}.sln
+        /m <SOURCE_DIR>/build/msw/wx_vc${MSVC_VERSION_MAJOR}.sln
     INSTALL_COMMAND echo "..."
     LICENSE_FILES README.md
 )

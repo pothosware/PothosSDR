@@ -36,8 +36,8 @@ list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig-2.3")
 ## Boost dependency (prebuilt)
 ############################################################
 set(BOOST_ROOT C:/local/boost_1_67_0)
-set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-${MSVC_VERSION_XX}.0)
-set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_XX}0-mt-1_67.dll)
+set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-${MSVC_VERSION_MAJOR}.${MSVC_VERSION_MINOR})
+set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_MAJOR}${MSVC_VERSION_MINOR}-mt-x64-1_67.dll)
 
 message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")
 message(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
@@ -62,8 +62,8 @@ install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
 ############################################################
 set(QT5_ROOT C:/Qt/Qt5.8.0)
 #support VC-specific suffix for multiple installs to coexist
-if (EXISTS ${QT5_ROOT}-vc${MSVC_VERSION_XX})
-    set(QT5_ROOT ${QT5_ROOT}-vc${MSVC_VERSION_XX})
+if (EXISTS ${QT5_ROOT}-vc${MSVC_VERSION_MAJOR})
+    set(QT5_ROOT ${QT5_ROOT}-vc${MSVC_VERSION_MAJOR})
 endif()
 set(QT5_LIB_PATH ${QT5_ROOT}/5.8/msvc${MSVC_VERSION_YEAR}_64)
 

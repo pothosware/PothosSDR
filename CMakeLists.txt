@@ -11,12 +11,15 @@ endif()
 enable_language(CXX) #defines MSVCxx variables
 message(STATUS "MSVC_VERSION: ${MSVC_VERSION}")
 message(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
-if (MSVC14)
+if ("${MSVC_VERSION}" STREQUAL "1900")
     set(MSVC_VERSION_YEAR 2015)
-    set(MSVC_VERSION_XX 14)
+    set(MSVC_VERSION_MAJOR 14)
+    set(MSVC_VERSION_MINOR 0)
+else ()
+    message(FATAL_ERROR "MSVC version ${MSVC_VERSION} not supported!")
 endif ()
 
-set(PACKAGE_SUFFIX "vc${MSVC_VERSION_XX}-x64")
+set(PACKAGE_SUFFIX "vc${MSVC_VERSION_MAJOR}-x64")
 
 #version tracking based on the day of the build
 string(TIMESTAMP PROJECT_VERSION "%Y.%m.%d")
