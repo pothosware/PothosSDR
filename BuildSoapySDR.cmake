@@ -40,7 +40,6 @@ set(SOAPY_PLUTO_SDR_BRANCH master)
 ## Build SoapySDR
 ############################################################
 MyExternalProject_Add(SoapySDR
-    DEPENDS swig
     GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
     GIT_TAG ${SOAPY_SDR_BRANCH}
     CMAKE_DEFAULTS ON
@@ -48,16 +47,8 @@ MyExternalProject_Add(SoapySDR
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DSOAPY_SDR_EXTVER=${EXTRA_VERSION_INFO}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON2_INCLUDE_DIR}
-        -DPYTHON_LIBRARY=${PYTHON2_LIBRARY}
-        -DPYTHON_INSTALL_DIR=${PYTHON2_INSTALL_DIR}
-        -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE}
-        -DPYTHON3_INCLUDE_DIR=${PYTHON3_INCLUDE_DIR}
-        -DPYTHON3_LIBRARY=${PYTHON3_LIBRARY}
-        -DPYTHON3_INSTALL_DIR=${PYTHON3_INSTALL_DIR}
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DSWIG_DIR=${SWIG_DIR}
+        -DENABLE_PYTHON=OFF
+        -DENABLE_PYTHON3=OFF
     LICENSE_FILES LICENSE_1_0.txt
 )
 
@@ -68,6 +59,51 @@ MyExternalProject_Add(SoapySDR
 #set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
 #DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"SOAPY_SDR_ROOT\\\"
 #")
+
+############################################################
+## Build SoapySDR python bindings
+############################################################
+MyExternalProject_Add(SoapySDRPython2
+    DEPENDS swig SoapySDR
+    GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
+    GIT_TAG ${SOAPY_SDR_BRANCH}
+    CONFIGURE_COMMAND
+        "${CMAKE_COMMAND}" <SOURCE_DIR>/python
+        -G ${CMAKE_GENERATOR}
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DPYTHON_INCLUDE_DIR=${PYTHON2_INCLUDE_DIR}
+        -DPYTHON_LIBRARY=${PYTHON2_LIBRARY}
+        -DPYTHON_INSTALL_DIR=${PYTHON2_INSTALL_DIR}
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DSWIG_DIR=${SWIG_DIR}
+        -DENABLE_LIBRARY=ON #remove for 0.7 release
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    LICENSE_FILES LICENSE_1_0.txt
+)
+
+MyExternalProject_Add(SoapySDRPython3
+    DEPENDS swig SoapySDR
+    GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
+    GIT_TAG ${SOAPY_SDR_BRANCH}
+    CONFIGURE_COMMAND
+        "${CMAKE_COMMAND}" <SOURCE_DIR>/python
+        -G ${CMAKE_GENERATOR}
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
+        -DPYTHON_INCLUDE_DIR=${PYTHON3_INCLUDE_DIR}
+        -DPYTHON_LIBRARY=${PYTHON3_LIBRARY}
+        -DPYTHON_INSTALL_DIR=${PYTHON3_INSTALL_DIR}
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DSWIG_DIR=${SWIG_DIR}
+        -DENABLE_LIBRARY=ON #remove for 0.7 release
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
+    LICENSE_FILES LICENSE_1_0.txt
+)
 
 ############################################################
 ## Build SoapyAirspy
