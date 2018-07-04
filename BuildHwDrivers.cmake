@@ -12,6 +12,8 @@
 ## * airspy
 ## * airspy-hf+
 ## * mirisdr
+## * libiio (plutosdr)
+## * libad9361 (plutosdr)
 ############################################################
 
 set(OSMO_BRANCH master)
@@ -23,6 +25,8 @@ set(UHD_BRANCH maint)
 set(UMTRX_BRANCH master)
 set(AIRSPY_BRANCH master)
 set(AIRSPYHF_BRANCH master)
+set(LIBIIO_BRANCH v0.15)
+set(LIBAD9361_BRANCH master)
 
 ############################################################
 ## Build Osmo SDR
@@ -62,7 +66,7 @@ MyExternalProject_Add(miri-sdr
 ## Build RTL SDR
 ############################################################
 MyExternalProject_Add(rtl-sdr
-    DEPENDS Pthreads libusb
+    DEPENDS Pthreads libusb Pthreads
     GIT_REPOSITORY https://github.com/librtlsdr/librtlsdr.git
     GIT_TAG ${RTL_BRANCH}
     CMAKE_DEFAULTS ON
@@ -80,7 +84,7 @@ MyExternalProject_Add(rtl-sdr
 ## Build BladeRF
 ############################################################
 MyExternalProject_Add(bladeRF
-    DEPENDS Pthreads libusb
+    DEPENDS Pthreads libusb Pthreads
     GIT_REPOSITORY https://github.com/Nuand/bladeRF.git
     GIT_TAG ${BLADERF_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
@@ -134,7 +138,7 @@ endif()
 ## Build HackRF
 ############################################################
 MyExternalProject_Add(hackRF
-    DEPENDS Pthreads libusb fftw
+    DEPENDS Pthreads libusb fftw Pthreads
     GIT_REPOSITORY https://github.com/mossmann/hackrf.git
     GIT_TAG ${HACKRF_BRANCH}
     CONFIGURE_COMMAND
@@ -216,7 +220,7 @@ set(UHD_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/uhd.lib)
 ## Build Airspy
 ############################################################
 MyExternalProject_Add(airspy
-    DEPENDS Pthreads libusb
+    DEPENDS Pthreads libusb Pthreads
     GIT_REPOSITORY https://github.com/airspy/host.git
     GIT_TAG ${AIRSPY_BRANCH}
     CMAKE_DEFAULTS ON
@@ -234,7 +238,7 @@ MyExternalProject_Add(airspy
 ## Build AirspyHF
 ############################################################
 MyExternalProject_Add(airspyhf
-    DEPENDS Pthreads libusb
+    DEPENDS Pthreads libusb Pthreads
     GIT_REPOSITORY https://github.com/airspy/airspyhf.git
     GIT_TAG ${AIRSPYHF_BRANCH}
     CMAKE_DEFAULTS ON
@@ -245,5 +249,47 @@ MyExternalProject_Add(airspyhf
         -DLIBUSB_LIBRARIES=${LIBUSB_LIBRARIES}
         -DTHREADS_PTHREADS_INCLUDE_DIR=${THREADS_PTHREADS_INCLUDE_DIR}
         -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
+    LICENSE_FILES LICENSE
+)
+
+############################################################
+## Build libiio
+############################################################
+MyExternalProject_Add(libiio
+    DEPENDS libxml2 libusb Pthreads
+    GIT_REPOSITORY https://github.com/analogdevicesinc/libiio.git
+    GIT_TAG ${LIBIIO_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DLIBUSB_INCLUDE_DIR=${LIBUSB_INCLUDE_DIR}
+        -DLIBUSB_LIBRARIES=${LIBUSB_LIBRARIES}
+        -DTHREADS_PTHREADS_INCLUDE_DIR=${THREADS_PTHREADS_INCLUDE_DIR}
+        -DTHREADS_PTHREADS_WIN32_LIBRARY=${THREADS_PTHREADS_WIN32_LIBRARY}
+        -DLIBXML2_INCLUDE_DIR=${LIBXML2_INCLUDE_DIR}
+        -DLIBXML2_LIBRARIES=${LIBXML2_LIBRARIES}
+        -DCSHARP_BINDINGS=OFF
+        -DPYTHON_BINDINGS=OFF
+        -DWITH_MATLAB_BINDINGS_API=OFF
+    LICENSE_FILES COPYING.txt
+)
+
+set(LIBIIO_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+set(LIBIIO_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/libiio.lib)
+
+############################################################
+## Build libad9361
+############################################################
+MyExternalProject_Add(libad9361
+    DEPENDS libiio
+    GIT_REPOSITORY https://github.com/analogdevicesinc/libad9361-iio.git
+    GIT_TAG ${LIBAD9361_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DLIBIIO_INCLUDEDIR=${LIBIIO_INCLUDE_DIR}
+        -DLIBIIO_LIBRARIES=${LIBIIO_LIBRARY}
     LICENSE_FILES LICENSE
 )

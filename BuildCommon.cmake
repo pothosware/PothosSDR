@@ -16,6 +16,7 @@
 ## * faad2 (gr-drm)
 ## * cppunit (gnuradio)
 ## * gsl (gnuradio)
+## * libxml2 (libiio)
 ############################################################
 
 set(PTHREADS_BRANCH master)
@@ -31,6 +32,7 @@ set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
 set(GSL_BRANCH master)
+set(LIBXML2_BRANCH v2.9.8)
 
 ############################################################
 ## Build Pthreads for win32
@@ -72,7 +74,9 @@ MyExternalProject_Add(libusb
     BUILD_COMMAND msbuild
         /p:Configuration=Release,Platform=x64
         /m <SOURCE_DIR>/msvc/libusb_dll_${MSVC_VERSION_YEAR}.vcxproj
-    INSTALL_COMMAND echo "..."
+    INSTALL_COMMAND #copy into libusb-1.0 for not smart source code with the wrong path
+        ${CMAKE_COMMAND} -E make_directory <SOURCE_DIR>/libusb/libusb-1.0 &&
+        ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libusb/libusb.h <SOURCE_DIR>/libusb/libusb-1.0
     LICENSE_FILES COPYING
 )
 
@@ -341,3 +345,20 @@ MyExternalProject_Add(gsl
 set(GSL_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
 set(GSL_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/gsl.lib)
 set(GSL_CBLAS_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/gslcblas.lib)
+
+############################################################
+## Build libxml2
+############################################################
+MyExternalProject_Add(libxml2
+    GIT_REPOSITORY https://github.com/GNOME/libxml2.git
+    GIT_TAG ${LIBXML2_BRANCH}
+    CONFIGURE_COMMAND cd <SOURCE_DIR>/win32 && cscript configure.js compiler=msvc iconv=no
+    BUILD_COMMAND cd <SOURCE_DIR>/win32 && nmake -f Makefile.msvc
+    INSTALL_COMMAND echo "..."
+    #INSTALL_COMMAND cd <SOURCE_DIR>/win32 && nmake -f Makefile.msvc install
+    LICENSE_FILES Copyright
+)
+
+ExternalProject_Get_Property(libxml2 SOURCE_DIR)
+set(LIBXML2_INCLUDE_DIR ${SOURCE_DIR}/include)
+set(LIBXML2_LIBRARIES ${SOURCE_DIR}/win32/bin.msvc/libxml2_a.lib) #static
