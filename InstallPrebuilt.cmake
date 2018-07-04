@@ -35,9 +35,9 @@ list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig-2.3")
 ############################################################
 ## Boost dependency (prebuilt)
 ############################################################
-set(BOOST_ROOT C:/local/boost_1_63_0)
+set(BOOST_ROOT C:/local/boost_1_67_0)
 set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-${MSVC_VERSION_XX}.0)
-set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_XX}0-mt-1_63.dll)
+set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_XX}0-mt-1_67.dll)
 
 message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")
 message(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
