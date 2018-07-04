@@ -68,6 +68,7 @@ MyExternalProject_Add(GNURadio
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_python_path.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio_posix_time.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
