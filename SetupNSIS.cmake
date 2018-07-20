@@ -140,15 +140,15 @@ cpack_add_component(python
     INSTALL_TYPES apps full)
 
 cpack_add_component(python2_exclusive
-    DISPLAY_NAME "Python2 support"
+    DISPLAY_NAME "Python2 bindings for Pothos runtime"
     DESCRIPTION "Python2 support plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
-    GROUP application
+    GROUP advanced
     DEPENDS runtime)
 
 cpack_add_component(python3_exclusive
-    DISPLAY_NAME "Python3 support"
+    DISPLAY_NAME "Python3 bindings for Pothos runtime"
     DESCRIPTION "Python3 support plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
-    GROUP application
+    GROUP advanced
     DEPENDS runtime)
 
 cpack_add_component(runtime
@@ -164,6 +164,7 @@ cpack_add_component(gnuradio
 
 cpack_add_component_group(application DISPLAY_NAME "Applications" EXPANDED)
 cpack_add_component_group(development DISPLAY_NAME "Development" EXPANDED)
+cpack_add_component_group(advanced DISPLAY_NAME "Advanced")
 
 cpack_add_install_type(apps DISPLAY_NAME "Applications only")
 cpack_add_install_type(full DISPLAY_NAME "Full installation")
