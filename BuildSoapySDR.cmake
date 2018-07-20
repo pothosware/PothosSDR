@@ -330,6 +330,8 @@ MyExternalProject_Add(SoapyPlutoSDR
     DEPENDS SoapySDR libad9361
     GIT_REPOSITORY https://github.com/jocover/SoapyPlutoSDR.git
     GIT_TAG ${SOAPY_PLUTO_SDR_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/soapy_plutosdr_network.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

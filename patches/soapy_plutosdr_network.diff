@@ -1,0 +1,29 @@
+diff --git a/PlutoSDR_Registation.cpp b/PlutoSDR_Registation.cpp
+index 038a087..dd4e136 100644
+--- a/PlutoSDR_Registation.cpp
++++ b/PlutoSDR_Registation.cpp
+@@ -23,17 +23,16 @@ static std::vector<SoapySDR::Kwargs> find_PlutoSDR(const SoapySDR::Kwargs &args)
+ 	options["device"] = "plutosdr";
+ 	if(ret == 0){
+ 
+-		ctx=iio_create_network_context(PLUTOSDR_DEFAULT_IP);
++		//require driver=plutosdr, and hostname=<ip/host> to continue network discovery
++		if (args.count("driver") == 0) return results;
++		if (args.at("driver") != "plutosdr") return results;
++		if (args.count("hostname") == 0) return results;
++		ctx=iio_create_network_context(args.at("hostname").c_str());
+ 		if(ctx !=nullptr){
+-			options["hostname"]=PLUTOSDR_DEFAULT_IP;
++			options["hostname"]=args.at("hostname");
+ 			
+ 		}else{
+-			ctx=iio_create_network_context(PLUTOSDR_DEFAULT_HOSTNAME);
+-			if(ctx !=nullptr){
+-				options["hostname"]=PLUTOSDR_DEFAULT_HOSTNAME;}
+-			else{
+-				return results;
+-			}
++			return results;
+ 		}
+ 	
+ 		sprintf(label_str, "%s #%d %s", options["device"].c_str(), 0, options["hostname"].c_str());

@@ -1,0 +1,69 @@
+diff --git a/host/lib/device.cpp b/host/lib/device.cpp
+index 90d7ae374..60e0f1e1a 100644
+--- a/host/lib/device.cpp
++++ b/host/lib/device.cpp
+@@ -20,6 +20,7 @@
+ #include <boost/functional/hash.hpp>
+ #include <boost/tuple/tuple.hpp>
+ #include <boost/thread/mutex.hpp>
++#include <future>
+ 
+ using namespace uhd;
+ 
+@@ -94,17 +95,21 @@ device_addrs_t device::find(const device_addr_t &hint, device_filter_t filter){
+     boost::mutex::scoped_lock lock(_device_mutex);
+ 
+     device_addrs_t device_addrs;
+-
++    std::vector<std::future<device_addrs_t>> futures;
+     for(const dev_fcn_reg_t &fcn:  get_dev_fcn_regs()) {
++        if (filter == ANY or fcn.get<2>() == filter) {
++            futures.push_back(std::async(std::launch::async, fcn.get<0>(), hint));
++        }
++    }
++
++    for(auto &future:  futures) {
+         try {
+-            if (filter == ANY or fcn.get<2>() == filter) {
+-                device_addrs_t discovered_addrs = fcn.get<0>()(hint);
+-                device_addrs.insert(
+-                    device_addrs.begin(),
+-                    discovered_addrs.begin(),
+-                    discovered_addrs.end()
+-                );
+-            }
++            device_addrs_t discovered_addrs = future.get();
++            device_addrs.insert(
++                device_addrs.begin(),
++                discovered_addrs.begin(),
++                discovered_addrs.end()
++            );
+         }
+         catch (const std::exception &e) {
+             UHD_LOGGER_ERROR("UHD") << "Device discovery error: " << e.what();
+diff --git a/host/lib/usrp/mpmd/mpmd_find.cpp b/host/lib/usrp/mpmd/mpmd_find.cpp
+index b2471d30c..97ab9610a 100644
+--- a/host/lib/usrp/mpmd/mpmd_find.cpp
++++ b/host/lib/usrp/mpmd/mpmd_find.cpp
+@@ -13,6 +13,7 @@
+ #include <uhd/transport/if_addrs.hpp>
+ #include <boost/algorithm/string.hpp>
+ #include <boost/asio.hpp>
++#include <future>
+ 
+ using namespace uhd;
+ using namespace uhd::mpmd;
+@@ -176,8 +177,12 @@ device_addrs_t mpmd_find_with_bcast(const device_addr_t& hint)
+     device_addrs_t addrs;
+     UHD_LOG_TRACE("MPMD FIND",
+             "Broadcasting on all available interfaces to find MPM devices.");
++    std::vector<std::future<device_addrs_t>> futures;
+     for (const transport::if_addrs_t& if_addr : transport::get_if_addrs()) {
+-        device_addrs_t reply_addrs = mpmd_find_with_addr(if_addr.bcast, hint);
++        futures.push_back(std::async(std::launch::async, mpmd_find_with_addr, if_addr.bcast, hint));
++    }
++    for (auto &future : futures) {
++        device_addrs_t reply_addrs = future.get();
+         addrs.insert(addrs.begin(), reply_addrs.begin(), reply_addrs.end());
+     }
+     return addrs;
