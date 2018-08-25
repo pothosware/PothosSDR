@@ -167,8 +167,6 @@ MyExternalProject_Add(uhd
     DEPENDS libusb
     GIT_REPOSITORY https://github.com/EttusResearch/uhd.git
     GIT_TAG ${UHD_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/uhd_find_speedup.diff
     CMAKE_DEFAULTS ON
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host

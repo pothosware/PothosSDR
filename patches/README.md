@@ -10,4 +10,3 @@
 | GrOsmoSDR     | grosmosdr_pthreads.diff              | pthread linker issue fix only for gcc                 |
 | GNURadio      | gnuradio_posix_time.diff             | cast input to posix time to long (boost 1.67)         |
 | GNURadio      | gnuradio_python_path.diff            | added python env search path to module check          |
-| UHD           | uhd_find_speedup.diff                | parallelize discovery for loops                       |
