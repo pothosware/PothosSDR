@@ -15,7 +15,6 @@
 ## * gr-nrsc5
 ## * gr-iio
 ## * gr-limesdr
-## * gr-dvbt2
 ############################################################
 
 set(VOLK_BRANCH maint)
@@ -29,7 +28,6 @@ set(GRRFTAP_BRANCH master)
 set(GRNRSC5_BRANCH master)
 set(GRIIO_BRANCH master)
 set(GRLIMESDR_BRANCH master)
-set(GRDVBT2_BRANCH master)
 
 ############################################################
 # python generation tools
@@ -365,27 +363,3 @@ MyExternalProject_Add(GrLimeSDR
         -DLIMESUITE_LIB=${CMAKE_INSTALL_PREFIX}/lib/LimeSuite.lib
     LICENSE_FILES LICENSE
 )
-
-#############################################################
-### Build gr-dvbt2
-#############################################################
-#MyExternalProject_Add(GrDvbt2
-    #DEPENDS GNURadio
-    #GIT_REPOSITORY https://github.com/drmpeg/gr-dvbt2.git
-    #GIT_TAG ${GRDVBT2_BRANCH}
-    #CMAKE_DEFAULTS ON
-    #CMAKE_ARGS
-        #-Wno-dev
-        #-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        #-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        #-DBOOST_ROOT=${BOOST_ROOT}
-        #-DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        #-DBOOST_ALL_DYN_LINK=TRUE
-        #-DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        #-DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
-        #-DSWIG_DIR=${SWIG_DIR}
-        #-DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        #-DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
-        #-DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
-    #LICENSE_FILES COPYING
-#)
