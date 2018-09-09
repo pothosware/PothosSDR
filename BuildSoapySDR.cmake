@@ -18,6 +18,7 @@
 ## * SoapyRxTools
 ## * SoapyIris
 ## * SoapyPlutoSDR
+## * LimeSuite
 ############################################################
 
 set(SOAPY_SDR_BRANCH maint)
@@ -35,6 +36,7 @@ set(SOAPY_SDRPLAY_BRANCH master)
 set(SOAPY_RX_TOOLS_BRANCH master)
 set(SOAPY_IRIS_BRANCH master)
 set(SOAPY_PLUTO_SDR_BRANCH master)
+set(LIME_SUITE_BRANCH master)
 
 ############################################################
 ## Build SoapySDR
@@ -338,3 +340,33 @@ MyExternalProject_Add(SoapyPlutoSDR
         -DLIBIIO_LIBRARY=${LIBIIO_LIBRARY}
     LICENSE_FILES LICENSE
 )
+
+############################################################
+## Build LimeSuite
+##
+## -DWX_ROOT_DIR is a hack to prevent FindwxWidgets.cmake
+## from clearing wxWidgets_LIB_DIR the first configuration.
+##
+## -DFX3_SDK_PATH specifies the USB support for LimeSuite
+## If the SDK is not present, USB support will be disabled.
+##
+############################################################
+MyExternalProject_Add(LimeSuite
+    DEPENDS SoapySDR wxWidgets
+    GIT_REPOSITORY https://github.com/myriadrf/LimeSuite.git
+    GIT_TAG ${LIME_SUITE_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DLIME_SUITE_EXTVER=${EXTRA_VERSION_INFO}
+        -DWX_ROOT_DIR=${wxWidgets_ROOT_DIR}
+        -DwxWidgets_ROOT_DIR=${wxWidgets_ROOT_DIR}
+        -DwxWidgets_LIB_DIR=${wxWidgets_LIB_DIR}
+        -DSoapySDR_DIR=${CMAKE_INSTALL_PREFIX}
+        -DFX3_SDK_PATH=${FX3_SDK_PATH}
+    LICENSE_FILES COPYING
+)
+
+list(APPEND CPACK_PACKAGE_EXECUTABLES "LimeSuiteGUI" "Lime Suite")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "LimeSuiteGUI")

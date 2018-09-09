@@ -31,7 +31,7 @@ set(WXWIDGETS_BRANCH v3.1.1)
 set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
-set(GSL_BRANCH master)
+set(GSL_BRANCH 24ddc443f06711fb311b02c710255ced7791e720)
 set(LIBXML2_BRANCH v2.9.8)
 
 ############################################################
@@ -207,7 +207,6 @@ install(FILES ${BINARY_DIR}/${CMAKE_BUILD_TYPE}/portaudio_x64.dll DESTINATION bi
 #use these variable to setup portaudio in dependent projects
 set(PORTAUDIO_INCLUDE_DIR ${SOURCE_DIR}/include)
 set(PORTAUDIO_LIBRARY ${BINARY_DIR}/${CMAKE_BUILD_TYPE}/portaudio_x64.lib)
-
 
 ############################################################
 ## Build wxWidgets

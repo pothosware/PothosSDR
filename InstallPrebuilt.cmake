@@ -11,6 +11,7 @@
 ## * swig (prebuilt generator)
 ## * fftw (prebuilt runtime dlls)
 ## * liquiddsp (prebuilt runtime dlls)
+## * winflexbison (generator exes)
 ############################################################
 
 ############################################################
@@ -166,3 +167,19 @@ set(LIQUIDDSP_DLL ${SOURCE_DIR}/msvc/64/libliquid.dll)
 install(FILES ${LIQUIDDSP_INCLUDE_DIR}/liquid/liquid.h DESTINATION include/liquid)
 install(FILES ${LIQUIDDSP_LIBRARY} DESTINATION lib)
 install(FILES ${LIQUIDDSP_DLL} DESTINATION bin)
+
+############################################################
+## Download winflexbison
+############################################################
+MyExternalProject_Add(winflexbison
+    URL https://github.com/lexxmark/winflexbison/archive/v2.5.15.zip
+    URL_MD5 cbc9d36d620c2cc7a4a2da32c4e96409
+    CONFIGURE_COMMAND echo "..."
+    BUILD_COMMAND echo "..."
+    INSTALL_COMMAND echo "..."
+    LICENSE_FILES README.md
+)
+
+ExternalProject_Get_Property(winflexbison SOURCE_DIR)
+set(FLEX_EXECUTABLE "${SOURCE_DIR}/bin/Release/win_flex.exe")
+set(BISON_EXECUTABLE "${SOURCE_DIR}/bin/Release/win_bison.exe")

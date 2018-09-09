@@ -13,6 +13,9 @@
 ## * gr-drm
 ## * gr-rftap
 ## * gr-nrsc5
+## * gr-iio
+## * gr-limesdr
+## * gr-dvbt2
 ############################################################
 
 set(VOLK_BRANCH maint)
@@ -24,6 +27,9 @@ set(GQRX_BRANCH master)
 set(GRDRM_BRANCH master)
 set(GRRFTAP_BRANCH master)
 set(GRNRSC5_BRANCH master)
+set(GRIIO_BRANCH master)
+set(GRLIMESDR_BRANCH master)
+set(GRDVBT2_BRANCH master)
 
 ############################################################
 # python generation tools
@@ -305,3 +311,81 @@ MyExternalProject_Add(GrNRSC5
         -DFDK_AAC_LIBRARY=${FDK_AAC_LIBRARY}
     LICENSE_FILES COPYING
 )
+
+############################################################
+## Build gr-IIO
+############################################################
+MyExternalProject_Add(GrIIO
+    DEPENDS GNURadio libad9361 winflexbison
+    GIT_REPOSITORY https://github.com/analogdevicesinc/gr-iio.git
+    GIT_TAG ${GRIIO_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        -DBOOST_ALL_DYN_LINK=TRUE
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
+        -DSWIG_DIR=${SWIG_DIR}
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DIIO_INCLUDE_DIRS=${LIBIIO_INCLUDE_DIR}
+        -DIIO_LIBRARIES=${LIBIIO_LIBRARY}
+        -DAD9361_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include/
+        -DAD9361_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/libad9361.lib
+        -DFLEX_EXECUTABLE=${FLEX_EXECUTABLE}
+        -DBISON_EXECUTABLE=${BISON_EXECUTABLE}
+    LICENSE_FILES COPYING
+)
+
+############################################################
+## Build gr-limesdr
+############################################################
+MyExternalProject_Add(GrLimeSDR
+    DEPENDS GNURadio LimeSuite
+    GIT_REPOSITORY https://github.com/myriadrf/gr-limesdr.git
+    GIT_TAG ${GRLIMESDR_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/grlimesdr_pmt_link_fix.diff
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        -DBOOST_ALL_DYN_LINK=TRUE
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
+        -DSWIG_DIR=${SWIG_DIR}
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DLIMESUITE_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include/lime
+        -DLIMESUITE_LIB=${CMAKE_INSTALL_PREFIX}/lib/LimeSuite.lib
+    LICENSE_FILES LICENSE
+)
+
+#############################################################
+### Build gr-dvbt2
+#############################################################
+#MyExternalProject_Add(GrDvbt2
+    #DEPENDS GNURadio
+    #GIT_REPOSITORY https://github.com/drmpeg/gr-dvbt2.git
+    #GIT_TAG ${GRDVBT2_BRANCH}
+    #CMAKE_DEFAULTS ON
+    #CMAKE_ARGS
+        #-Wno-dev
+        #-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        #-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        #-DBOOST_ROOT=${BOOST_ROOT}
+        #-DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        #-DBOOST_ALL_DYN_LINK=TRUE
+        #-DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        #-DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
+        #-DSWIG_DIR=${SWIG_DIR}
+        #-DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        #-DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
+        #-DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
+    #LICENSE_FILES COPYING
+#)
