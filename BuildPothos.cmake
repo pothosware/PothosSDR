@@ -15,18 +15,18 @@
 ## * PothosLiquidDSP (toolkit)
 ############################################################
 
-set(POTHOS_BRANCH maint)
-set(POTHOS_AUDIO_BRANCH maint)
-set(POTHOS_BLOCKS_BRANCH maint)
-set(POTHOS_COMMS_BRANCH maint)
-set(POTHOS_GUI_BRANCH maint)
-set(POTHOS_PLOTTERS_BRANCH maint)
-set(POTHOS_PYTHON_BRANCH maint)
-set(POTHOS_SDR_BRANCH maint)
-set(POTHOS_WIDGETS_BRANCH maint)
-set(POTHOS_LIQUID_DSP_BRANCH maint)
+set(POTHOS_BRANCH master)
+set(POTHOS_AUDIO_BRANCH master)
+set(POTHOS_BLOCKS_BRANCH master)
+set(POTHOS_COMMS_BRANCH master)
+set(POTHOS_GUI_BRANCH master)
+set(POTHOS_PLOTTERS_BRANCH master)
+set(POTHOS_PYTHON_BRANCH master)
+set(POTHOS_SDR_BRANCH master)
+set(POTHOS_WIDGETS_BRANCH master)
+set(POTHOS_LIQUID_DSP_BRANCH master)
 set(POTHOS_IIO_BRANCH master)
-set(POTHOS_MODULES_DIR "modules0.6")
+set(POTHOS_MODULES_DIR "modules0.7")
 
 ############################################################
 # python generation tools

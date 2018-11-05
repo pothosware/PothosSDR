@@ -21,8 +21,8 @@
 ## * LimeSuite
 ############################################################
 
-set(SOAPY_SDR_BRANCH maint)
-set(SOAPY_REMOTE_BRANCH maint)
+set(SOAPY_SDR_BRANCH master)
+set(SOAPY_REMOTE_BRANCH master)
 set(SOAPY_AIRSPY_BRANCH master)
 set(SOAPY_AIRSPYHF_BRANCH master)
 set(SOAPY_BLADERF_BRANCH master)
