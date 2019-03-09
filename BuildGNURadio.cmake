@@ -345,8 +345,6 @@ MyExternalProject_Add(GrLimeSDR
     DEPENDS GNURadio LimeSuite
     GIT_REPOSITORY https://github.com/myriadrf/gr-limesdr.git
     GIT_TAG ${GRLIMESDR_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/grlimesdr_pmt_link_fix.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
