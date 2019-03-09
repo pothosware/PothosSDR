@@ -1,0 +1,162 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9267e43..c4a8d17 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -140,7 +140,7 @@ find_package(Doxygen)
+ # components required to the list of GR_REQUIRED_COMPONENTS (in all
+ # caps such as FILTER or FFT) and change the version to the minimum
+ # API compatible version required.
+-set(GR_REQUIRED_COMPONENTS RUNTIME)
++set(GR_REQUIRED_COMPONENTS RUNTIME PMT)
+ find_package(Gnuradio "3.7.2" REQUIRED)
+ list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake/Modules)
+ include(GrVersion)
+diff --git a/lib/CMakeLists.txt b/lib/CMakeLists.txt
+index e8be177..84ab8de 100644
+--- a/lib/CMakeLists.txt
++++ b/lib/CMakeLists.txt
+@@ -55,6 +55,7 @@ if(NOT sdrplay_sources)
+ 	return()
+ endif(NOT sdrplay_sources)
+ 
++include_directories(${LIBSDRPLAY_INCLUDE_DIRS})
+ add_library(gnuradio-sdrplay SHARED ${sdrplay_sources})
+ target_link_libraries(gnuradio-sdrplay ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES} ${LIBSDRPLAY_LIBRARIES})
+ set_target_properties(gnuradio-sdrplay PROPERTIES DEFINE_SYMBOL "gnuradio_sdrplay_EXPORTS")
+diff --git a/lib/rsp1_source_impl.cc b/lib/rsp1_source_impl.cc
+index 0917f99..8f05fd8 100644
+--- a/lib/rsp1_source_impl.cc
++++ b/lib/rsp1_source_impl.cc
+@@ -21,8 +21,6 @@
+ #include <gnuradio/io_signature.h>
+ #include "rsp1_source_impl.h"
+ 
+-#include <mirsdrapi-rsp.h>
+-
+ #include <boost/assign.hpp>
+ #include <boost/format.hpp>
+ #include <boost/thread/mutex.hpp>
+diff --git a/lib/rsp1_source_impl.h b/lib/rsp1_source_impl.h
+index f0167a9..062bf2f 100644
+--- a/lib/rsp1_source_impl.h
++++ b/lib/rsp1_source_impl.h
+@@ -22,7 +22,6 @@
+ #define INCLUDED_SDRPLAY_RSP1_SOURCE_IMPL_H
+ 
+ #include <sdrplay/rsp1_source.h>
+-#include <mirsdrapi-rsp.h>
+ #include "rsp_dev.h"
+ 
+ 
+diff --git a/lib/rsp1a_source_impl.cc b/lib/rsp1a_source_impl.cc
+index 1220fb5..279faea 100644
+--- a/lib/rsp1a_source_impl.cc
++++ b/lib/rsp1a_source_impl.cc
+@@ -22,8 +22,6 @@
+ #include <gnuradio/io_signature.h>
+ #include "rsp1a_source_impl.h"
+ 
+-#include <mirsdrapi-rsp.h>
+-
+ #include <boost/assign.hpp>
+ #include <boost/format.hpp>
+ #include <boost/thread/mutex.hpp>
+diff --git a/lib/rsp1a_source_impl.h b/lib/rsp1a_source_impl.h
+index 53cd527..7a39c44 100644
+--- a/lib/rsp1a_source_impl.h
++++ b/lib/rsp1a_source_impl.h
+@@ -22,7 +22,6 @@
+ #define INCLUDED_SDRPLAY_RSP1A_SOURCE_IMPL_H
+ 
+ #include <sdrplay/rsp1a_source.h>
+-#include <mirsdrapi-rsp.h>
+ #include "rsp_dev.h"
+ 
+ 
+diff --git a/lib/rsp2_source_impl.cc b/lib/rsp2_source_impl.cc
+index 2991fcb..1aad9fa 100644
+--- a/lib/rsp2_source_impl.cc
++++ b/lib/rsp2_source_impl.cc
+@@ -21,8 +21,6 @@
+ #include <gnuradio/io_signature.h>
+ #include "rsp2_source_impl.h"
+ 
+-#include <mirsdrapi-rsp.h>
+-
+ #include <boost/assign.hpp>
+ #include <boost/format.hpp>
+ #include <boost/thread/mutex.hpp>
+diff --git a/lib/rsp2_source_impl.h b/lib/rsp2_source_impl.h
+index 9480cc6..3fbce09 100644
+--- a/lib/rsp2_source_impl.h
++++ b/lib/rsp2_source_impl.h
+@@ -22,7 +22,6 @@
+ #define INCLUDED_SDRPLAY_RSP2_SOURCE_IMPL_H
+ 
+ #include <sdrplay/rsp2_source.h>
+-#include <mirsdrapi-rsp.h>
+ #include "rsp_dev.h"
+ 
+ 
+diff --git a/lib/rsp_dev.cc b/lib/rsp_dev.cc
+index f834447..a225fb3 100644
+--- a/lib/rsp_dev.cc
++++ b/lib/rsp_dev.cc
+@@ -33,7 +33,6 @@
+ #include <iostream>
+ #include <string>
+ #include <mutex>
+-#include <mirsdrapi-rsp.h>
+ 
+ namespace gr
+ {
+@@ -656,7 +655,7 @@ double rsp_dev::set_bandwidth(double bandwidth)
+             continue;
+         if (bandwidth <= bw)
+         {
+-            _bwType = (mir_sdr_Bw_MHzT)(bw / 1e3);
++            _bwType = (mir_sdr_Bw_MHzT)int(bw / 1e3);
+             break;
+         }
+     }
+diff --git a/lib/rsp_dev.h b/lib/rsp_dev.h
+index 304a12c..038185b 100644
+--- a/lib/rsp_dev.h
++++ b/lib/rsp_dev.h
+@@ -22,7 +22,11 @@
+ #ifndef GR_SDRPLAY_RSP_DEV_H
+ #define GR_SDRPLAY_RSP_DEV_H
+ 
++#ifdef _WIN32
++#include <mir_sdr.h>
++#else
+ #include <mirsdrapi-rsp.h>
++#endif
+ #include <stdlib.h>
+ #include <string>
+ #include <vector>
+diff --git a/lib/rspduo_source_impl.cc b/lib/rspduo_source_impl.cc
+index e79d085..95ba0e9 100644
+--- a/lib/rspduo_source_impl.cc
++++ b/lib/rspduo_source_impl.cc
+@@ -21,8 +21,6 @@
+ #include <gnuradio/io_signature.h>
+ #include "rspduo_source_impl.h"
+ 
+-#include <mirsdrapi-rsp.h>
+-
+ #include <boost/assign.hpp>
+ #include <boost/format.hpp>
+ #include <boost/thread/mutex.hpp>
+diff --git a/lib/rspduo_source_impl.h b/lib/rspduo_source_impl.h
+index 889ca9c..fbe912a 100644
+--- a/lib/rspduo_source_impl.h
++++ b/lib/rspduo_source_impl.h
+@@ -22,7 +22,6 @@
+ #define INCLUDED_SDRPLAY_RSPDUO_SOURCE_IMPL_H
+ 
+ #include <sdrplay/rspduo_source.h>
+-#include <mirsdrapi-rsp.h>
+ #include "rsp_dev.h"
+ 
+ 

@@ -183,3 +183,15 @@ MyExternalProject_Add(winflexbison
 ExternalProject_Get_Property(winflexbison SOURCE_DIR)
 set(FLEX_EXECUTABLE "${SOURCE_DIR}/bin/Release/win_flex.exe")
 set(BISON_EXECUTABLE "${SOURCE_DIR}/bin/Release/win_bison.exe")
+
+############################################################
+## SDRplay API
+############################################################
+get_filename_component(SDRPLAY_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\API;Install_Dir]" ABSOLUTE)
+if (EXISTS "${SDRPLAY_API_DIR}")
+    message(STATUS "SDRPLAY_API_DIR: ${SDRPLAY_API_DIR}")
+    install(
+        FILES ${SDRPLAY_API_DIR}/x64/mir_sdr_api.dll
+        DESTINATION bin
+    )
+endif ()

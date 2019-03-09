@@ -8,3 +8,4 @@
 | CppUnit       | cppunit_dll_project_files.diff       | updated the project files for cppunit                 |
 | GNURadio      | gnuradio_posix_time.diff             | cast input to posix time to long (boost 1.67)         |
 | GNURadio      | gnuradio_python_path.diff            | added python env search path to module check          |
+| GrSDRPlay     | grsdrplay_win_fix.diff               | missing PMT library, include fixes, etc               |

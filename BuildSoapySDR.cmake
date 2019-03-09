@@ -271,7 +271,6 @@ MyExternalProject_Add(SoapyAudio
 ############################################################
 ## Build SoapySDRPlay
 ############################################################
-get_filename_component(SDRPLAY_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\API;Install_Dir]" ABSOLUTE)
 if (EXISTS "${SDRPLAY_API_DIR}")
 
 MyExternalProject_Add(SoapySDRPlay
@@ -283,12 +282,6 @@ MyExternalProject_Add(SoapySDRPlay
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     LICENSE_FILES LICENSE.txt
-)
-
-message(STATUS "SDRPLAY_API_DIR: ${SDRPLAY_API_DIR}")
-install(
-    FILES ${SDRPLAY_API_DIR}/x64/mir_sdr_api.dll
-    DESTINATION bin
 )
 
 else ()

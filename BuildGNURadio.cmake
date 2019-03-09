@@ -15,6 +15,7 @@
 ## * gr-nrsc5
 ## * gr-iio
 ## * gr-limesdr
+## * gr-sdrplay
 ############################################################
 
 set(VOLK_BRANCH maint)
@@ -28,6 +29,7 @@ set(GRRFTAP_BRANCH master)
 set(GRNRSC5_BRANCH master)
 set(GRIIO_BRANCH master)
 set(GRLIMESDR_BRANCH master)
+set(GRSDRPLAY_BRANCH master)
 
 ############################################################
 # python generation tools
@@ -361,3 +363,34 @@ MyExternalProject_Add(GrLimeSDR
         -DLIMESUITE_LIB=${CMAKE_INSTALL_PREFIX}/lib/LimeSuite.lib
     LICENSE_FILES LICENSE
 )
+############################################################
+## Build gr-sdrplay
+############################################################
+if (EXISTS "${SDRPLAY_API_DIR}")
+
+MyExternalProject_Add(GrSDRPlay
+    DEPENDS GNURadio CppUnit
+    GIT_REPOSITORY https://gitlab.com/HB9FXQ/gr-sdrplay.git
+    GIT_TAG ${GRLIMESDR_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/grsdrplay_win_fix.diff
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        -DBOOST_ALL_DYN_LINK=TRUE
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
+        -DSWIG_DIR=${SWIG_DIR}
+        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
+        -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
+    LICENSE_FILES MANIFEST.md
+)
+
+else ()
+    message(STATUS "!Skipping GrSDRPlay - MiricsSDRAPI not found")
+endif ()
