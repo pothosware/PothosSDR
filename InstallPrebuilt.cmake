@@ -17,12 +17,12 @@
 ############################################################
 ## Zadig for USB devices
 ############################################################
-set(ZADIG_NAME "zadig-2.3.exe")
+set(ZADIG_NAME "zadig-2.4.exe")
 
 if (NOT EXISTS "${CMAKE_BINARY_DIR}/${ZADIG_NAME}")
     message(STATUS "Downloading zadig...")
     file(DOWNLOAD
-        "http://zadig.akeo.ie/downloads/${ZADIG_NAME}"
+        "https://github.com/pbatard/libwdi/releases/download/b721/zadig-2.4.exe"
         ${CMAKE_BINARY_DIR}/${ZADIG_NAME}
     )
     message(STATUS "...done")
@@ -30,8 +30,8 @@ endif ()
 
 install(FILES "${CMAKE_BINARY_DIR}/${ZADIG_NAME}" DESTINATION bin)
 
-list(APPEND CPACK_PACKAGE_EXECUTABLES "zadig-2.3" "Zadig v2.3")
-list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig-2.3")
+list(APPEND CPACK_PACKAGE_EXECUTABLES "zadig-2.4" "Zadig v2.4")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig-2.4")
 
 ############################################################
 ## Boost dependency (prebuilt)
