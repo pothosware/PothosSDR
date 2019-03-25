@@ -134,20 +134,20 @@ cpack_add_component(libdevel
     INSTALL_TYPES full)
 
 cpack_add_component(python
-    DISPLAY_NAME "Python modules"
+    DISPLAY_NAME "Python bindings"
     GROUP application
     DEPENDS runtime
     INSTALL_TYPES apps full)
 
 cpack_add_component(python2_exclusive
-    DISPLAY_NAME "Python2 bindings for Pothos runtime"
-    DESCRIPTION "Python2 support plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
+    DISPLAY_NAME "Pothos Python2 blocks development plugin"
+    DESCRIPTION "Python2 blocks plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
     GROUP advanced
     DEPENDS runtime)
 
 cpack_add_component(python3_exclusive
-    DISPLAY_NAME "Python3 bindings for Pothos runtime"
-    DESCRIPTION "Python3 support plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
+    DISPLAY_NAME "Pothos Python3 blocks development plugin"
+    DESCRIPTION "Python3 blocks plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
     GROUP advanced
     DEPENDS runtime)
 
