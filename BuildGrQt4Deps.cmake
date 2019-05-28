@@ -20,7 +20,7 @@
 execute_process(COMMAND ${PYTHON2_ROOT}/Scripts/pip.exe install patch OUTPUT_QUIET)
 
 ExternalProject_Add(qt4
-    URL https://download.qt.io/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz
+    URL https://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz
     URL_MD5 d990ee66bf7ab0c785589776f35ba6ad
     PATCH_COMMAND ${PYTHON2_EXECUTABLE} -m patch -d <SOURCE_DIR>
         ${PROJECT_SOURCE_DIR}/patches/qt-4.8.7-msvc2015.diff
