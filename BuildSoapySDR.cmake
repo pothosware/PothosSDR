@@ -19,6 +19,7 @@
 ## * SoapyIris
 ## * SoapyPlutoSDR
 ## * LimeSuite
+## * SoapyNetSDR
 ############################################################
 
 set(SOAPY_SDR_BRANCH master)
@@ -37,6 +38,7 @@ set(SOAPY_RX_TOOLS_BRANCH master)
 set(SOAPY_IRIS_BRANCH master)
 set(SOAPY_PLUTO_SDR_BRANCH master)
 set(LIME_SUITE_BRANCH master)
+set(SOAPY_NET_SDR_BRANCH master)
 
 ############################################################
 ## Build SoapySDR
@@ -363,3 +365,16 @@ MyExternalProject_Add(LimeSuite
 
 list(APPEND CPACK_PACKAGE_EXECUTABLES "LimeSuiteGUI" "Lime Suite")
 list(APPEND CPACK_CREATE_DESKTOP_LINKS "LimeSuiteGUI")
+
+############################################################
+## Build SoapyNetSDR
+############################################################
+MyExternalProject_Add(SoapyNetSDR
+    DEPENDS SoapySDR
+    GIT_REPOSITORY https://github.com/pothosware/SoapyNetSDR.git
+    GIT_TAG ${SOAPY_NET_SDR_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+)
