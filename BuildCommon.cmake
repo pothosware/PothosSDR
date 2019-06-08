@@ -20,7 +20,7 @@
 ############################################################
 
 set(PTHREADS_BRANCH master)
-set(LIBUSB_BRANCH v1.0.21)
+set(LIBUSB_BRANCH v1.0.22)
 set(ZEROMQ_BRANCH master)
 set(CPPZMQ_BRANCH master)
 set(POCO_BRANCH poco-1.9.0-release)
