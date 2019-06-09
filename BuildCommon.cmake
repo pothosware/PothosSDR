@@ -22,7 +22,7 @@
 set(PTHREADS_BRANCH master)
 set(LIBUSB_BRANCH v1.0.22)
 set(ZEROMQ_BRANCH master)
-set(CPPZMQ_BRANCH master)
+set(CPPZMQ_BRANCH v4.3.0) #gr-zmq req due to zmq api change
 set(POCO_BRANCH poco-1.9.0-release)
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.7)

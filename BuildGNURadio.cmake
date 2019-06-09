@@ -18,11 +18,11 @@
 ## * gr-sdrplay
 ############################################################
 
-set(VOLK_BRANCH maint)
-set(GNURADIO_BRANCH maint)
+set(VOLK_BRANCH 1.4-support)
+set(GNURADIO_BRANCH maint-3.7)
 set(GR_POTHOS_BRANCH master)
 set(GROSMOSDR_BRANCH master)
-set(GRRDS_BRANCH master)
+set(GRRDS_BRANCH maint-3.7)
 set(GQRX_BRANCH master)
 set(GRDRM_BRANCH master)
 set(GRRFTAP_BRANCH master)
@@ -36,7 +36,7 @@ set(GRSDRPLAY_BRANCH master)
 # volk uses cheetah
 # gr-pothos uses same python3 deps as PothosLiquidDSP
 ############################################################
-execute_process(COMMAND ${PYTHON2_ROOT}/Scripts/pip.exe install Cheetah OUTPUT_QUIET)
+execute_process(COMMAND ${PYTHON2_ROOT}/Scripts/pip.exe install Cheetah six mako OUTPUT_QUIET)
 
 ############################################################
 ## Build Volk
@@ -44,6 +44,8 @@ execute_process(COMMAND ${PYTHON2_ROOT}/Scripts/pip.exe install Cheetah OUTPUT_Q
 MyExternalProject_Add(volk
     GIT_REPOSITORY https://github.com/gnuradio/volk.git
     GIT_TAG ${VOLK_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/volk_remove_sys_time.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
@@ -74,7 +76,6 @@ MyExternalProject_Add(GNURadio
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
         ${PROJECT_SOURCE_DIR}/patches/gnuradio_python_path.diff
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_posix_time.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
