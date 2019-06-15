@@ -321,18 +321,19 @@ MyExternalProject_Add(PothosLiquidDSP
 
 ############################################################
 ## Build IIO
+## Disabled because WITH_LOCAL_BACKEND is linux only
 ############################################################
-MyExternalProject_Add(PothosIIO
-    DEPENDS PothosCore libiio
-    GIT_REPOSITORY https://github.com/pothosware/PothosIIO.git
-    GIT_TAG ${POTHOS_IIO_BRANCH}
-    CMAKE_DEFAULTS ON
-    CMAKE_ARGS
-        -Wno-dev
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-        -DLIBIIO_INCLUDE_DIR=${LIBIIO_INCLUDE_DIR}
-        -DLIBIIO_LIBRARY=${LIBIIO_LIBRARY}
-    LICENSE_FILES LICENSE_1_0.txt
-)
+#MyExternalProject_Add(PothosIIO
+    #DEPENDS PothosCore libiio
+    #GIT_REPOSITORY https://github.com/pothosware/PothosIIO.git
+    #GIT_TAG ${POTHOS_IIO_BRANCH}
+    #CMAKE_DEFAULTS ON
+    #CMAKE_ARGS
+        #-Wno-dev
+        #-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        #-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        #-DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
+        #-DLIBIIO_INCLUDE_DIR=${LIBIIO_INCLUDE_DIR}
+        #-DLIBIIO_LIBRARY=${LIBIIO_LIBRARY}
+    #LICENSE_FILES LICENSE_1_0.txt
+#)

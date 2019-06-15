@@ -21,11 +21,11 @@ set(MIRISDR_BRANCH master)
 set(RTL_BRANCH master)
 set(BLADERF_BRANCH master)
 set(HACKRF_BRANCH master)
-set(UHD_BRANCH UHD-3.13)
+set(UHD_BRANCH UHD-3.13) #UHD-3.14 crashes
 set(UMTRX_BRANCH master)
 set(AIRSPY_BRANCH master)
 set(AIRSPYHF_BRANCH master)
-set(LIBIIO_BRANCH v0.15)
+set(LIBIIO_BRANCH v0.18)
 set(LIBAD9361_BRANCH master)
 
 ############################################################
