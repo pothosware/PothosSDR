@@ -8,7 +8,7 @@
 ## * Inspectrum
 ############################################################
 
-set(CUBIC_SDR_BRANCH master)
+set(CUBIC_SDR_BRANCH e0d1e2b6ff0ce006c37d7007e0c34ec25d20e944) #before rgb narrowing error
 set(INSPECTRUM_SDR_BRANCH master)
 
 ############################################################

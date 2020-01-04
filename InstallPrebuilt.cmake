@@ -112,8 +112,8 @@ endif()
 ## SWIG dependency (prebuilt)
 ############################################################
 MyExternalProject_Add(swig
-    URL https://downloads.sourceforge.net/project/swig/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip
-    URL_MD5 a49524dad2c91ae1920974e7062bfc93
+    URL https://downloads.sourceforge.net/project/swig/swigwin/swigwin-4.0.1/swigwin-4.0.1.zip
+    URL_MD5 eb6948ee80bb54e69190b630a29d3d4f
     CONFIGURE_COMMAND echo "..."
     BUILD_COMMAND echo "..."
     INSTALL_COMMAND echo "..."

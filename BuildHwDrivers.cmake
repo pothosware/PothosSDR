@@ -21,7 +21,7 @@ set(MIRISDR_BRANCH master)
 set(RTL_BRANCH master)
 set(BLADERF_BRANCH master)
 set(HACKRF_BRANCH master)
-set(UHD_BRANCH UHD-3.13) #UHD-3.14 crashes
+set(UHD_BRANCH UHD-3.15.LTS)
 set(UMTRX_BRANCH master)
 set(AIRSPY_BRANCH master)
 set(AIRSPYHF_BRANCH master)
@@ -193,26 +193,26 @@ set(UHD_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/uhd.lib)
 
 ############################################################
 ## Build UmTRX
-##
-## Not building with recent UHD API
 ############################################################
-#MyExternalProject_Add(umtrx
-    #DEPENDS uhd
-    #GIT_REPOSITORY https://github.com/fairwaves/UHD-Fairwaves.git
-    #GIT_TAG ${UMTRX_BRANCH}
-    #CMAKE_DEFAULTS ON
-    #CONFIGURE_COMMAND
-        #"${CMAKE_COMMAND}" <SOURCE_DIR>/host
-        #-G ${CMAKE_GENERATOR}
-        #-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        #-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        #-DBOOST_ROOT=${BOOST_ROOT}
-        #-DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        #-DBOOST_ALL_DYN_LINK=TRUE
-        #-DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
-        #-DUHD_LIBRARIES=${UHD_LIBRARIES}
-    #LICENSE_FILES README
-#)
+MyExternalProject_Add(umtrx
+    DEPENDS uhd
+    GIT_REPOSITORY https://github.com/fairwaves/UHD-Fairwaves.git
+    GIT_TAG ${UMTRX_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/umtrx_logger_fix.diff
+    CMAKE_DEFAULTS ON
+    CONFIGURE_COMMAND
+        "${CMAKE_COMMAND}" <SOURCE_DIR>/host
+        -G ${CMAKE_GENERATOR}
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
+        -DBOOST_ALL_DYN_LINK=TRUE
+        -DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
+        -DUHD_LIBRARIES=${UHD_LIBRARIES}
+    LICENSE_FILES README
+)
 
 ############################################################
 ## Build Airspy

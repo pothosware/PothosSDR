@@ -26,7 +26,7 @@ set(GRRDS_BRANCH maint-3.7)
 set(GQRX_BRANCH master)
 set(GRDRM_BRANCH master)
 set(GRRFTAP_BRANCH master)
-set(GRNRSC5_BRANCH master)
+set(GRNRSC5_BRANCH 610d6d772390cee9afdeea07f7e7a79bd3460a57) #prior to 3.8 req
 set(GRIIO_BRANCH master)
 set(GRLIMESDR_BRANCH master)
 set(GRSDRPLAY_BRANCH master)

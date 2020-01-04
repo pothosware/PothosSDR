@@ -20,19 +20,19 @@
 ############################################################
 
 set(PTHREADS_BRANCH master)
-set(LIBUSB_BRANCH v1.0.22)
+set(LIBUSB_BRANCH v1.0.23)
 set(ZEROMQ_BRANCH master)
 set(CPPZMQ_BRANCH v4.3.0) #gr-zmq req due to zmq api change
-set(POCO_BRANCH poco-1.9.0-release)
+set(POCO_BRANCH poco-1.9.3-release)
 set(SPUCE_BRANCH 0.4.3)
-set(MUPARSERX_BRANCH v4.0.7)
+set(MUPARSERX_BRANCH v4.0.8)
 set(PORTAUDIO_BRANCH master)
-set(WXWIDGETS_BRANCH v3.1.1)
+set(WXWIDGETS_BRANCH v3.1.2) #v3.1.3 has winsock def error
 set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
-set(GSL_BRANCH 24ddc443f06711fb311b02c710255ced7791e720)
-set(LIBXML2_BRANCH v2.9.8)
+set(GSL_BRANCH master)
+set(LIBXML2_BRANCH v2.9.9)
 
 ############################################################
 ## Build Pthreads for win32

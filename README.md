@@ -44,7 +44,7 @@ and can be to replicate the complete build environment.
 
 Python environments needed for the build:
 
-* Python3.6 for python3 bindings
+* Python3.8 for python3 bindings
 * Python2.7 for python2 bindings
 
 Python2.7 modules needed for GNU Radio build:
