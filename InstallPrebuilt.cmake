@@ -191,7 +191,7 @@ get_filename_component(SDRPLAY_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\
 if (EXISTS "${SDRPLAY_API_DIR}")
     message(STATUS "SDRPLAY_API_DIR: ${SDRPLAY_API_DIR}")
     install(
-        FILES ${SDRPLAY_API_DIR}/x64/mir_sdr_api.dll
+        FILES ${SDRPLAY_API_DIR}/x64/sdrplay_api.dll
         DESTINATION bin
     )
 endif ()

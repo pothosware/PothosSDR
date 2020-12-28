@@ -31,7 +31,7 @@ set(WXWIDGETS_BRANCH v3.1.2) #v3.1.3 has winsock def error
 set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
-set(GSL_BRANCH master)
+set(GSL_BRANCH v2.5.0)
 set(LIBXML2_BRANCH v2.9.9)
 
 ############################################################
@@ -118,7 +118,7 @@ MyExternalProject_Add(ZeroMQ
 )
 
 set(ZEROMQ_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
-set(ZEROMQ_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/libzmq-v${MSVC_VERSION_MAJOR}${MSVC_VERSION_MINOR}-mt-4_1_7.lib)
+set(ZEROMQ_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/libzmq-v${MSVC_VERSION_MAJOR}${MSVC_VERSION_MINOR}-mt-4_1_8.lib)
 
 ############################################################
 ## Build CppZMQ

@@ -18,10 +18,10 @@
 
 set(OSMO_BRANCH master)
 set(MIRISDR_BRANCH master)
-set(RTL_BRANCH master)
+set(RTL_BRANCH development)
 set(BLADERF_BRANCH master)
 set(HACKRF_BRANCH master)
-set(UHD_BRANCH UHD-3.15.LTS)
+set(UHD_BRANCH UHD-3.15.LTS) #bump MSVC ver to go higher
 set(UMTRX_BRANCH master)
 set(AIRSPY_BRANCH master)
 set(AIRSPYHF_BRANCH master)

@@ -278,9 +278,9 @@ MyExternalProject_Add(SoapyAudio
 ############################################################
 if (EXISTS "${SDRPLAY_API_DIR}")
 
-MyExternalProject_Add(SoapySDRPlay
+MyExternalProject_Add(SoapySDRPlay3
     DEPENDS SoapySDR
-    GIT_REPOSITORY https://github.com/pothosware/SoapySDRPlay.git
+    GIT_REPOSITORY https://github.com/SDRplay/SoapySDRPlay
     GIT_TAG ${SOAPY_SDRPLAY_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
@@ -290,7 +290,7 @@ MyExternalProject_Add(SoapySDRPlay
 )
 
 else ()
-    message(STATUS "!Skipping SoapySDRPlay - MiricsSDRAPI not found")
+    message(STATUS "!Skipping SoapySDRPlay3 - sdrplay_api not found")
 endif ()
 
 ############################################################
