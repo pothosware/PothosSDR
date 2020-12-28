@@ -77,6 +77,7 @@ foreach(install_file ${ALL_FILES})
     string(REGEX MATCH "^bin/qwt6\\.dll$" qwt6_dll_match ${install_file})
     string(REGEX MATCH "^(sip/.+)|(lib/python2.7/site-packages/sip.+)|(include/sip\\.h)|(bin/sip\\.exe)$" python2_sip_match ${install_file})
     string(REGEX MATCH "^(lib/python2.7/site-packages/PyQt4/.+)|(bin/(pylupdate4\\.exe|pyrcc4\\.exe|pyuic4\\.bat))$" python2_pyqt4_match ${install_file})
+    string(REGEX MATCH "^(lib/.+/PlutoSDRSupport.dll)$" plutosdr_support_match ${install_file})
     # pyqwt5 files will be matched by sip and pyqt4 regexs
 
     #other matches can be greedy, so the order here matters
@@ -105,6 +106,8 @@ foreach(install_file ${ALL_FILES})
         set(MYCOMPONENT python3_exclusive)
     elseif (python_match)
         set(MYCOMPONENT python)
+    elseif (plutosdr_support_match)
+        set(MYCOMPONENT plutosdr_experimental)
     else ()
         set(MYCOMPONENT runtime)
     endif()
@@ -142,13 +145,19 @@ cpack_add_component(python
 cpack_add_component(python2_exclusive
     DISPLAY_NAME "Pothos Python2 blocks development plugin"
     DESCRIPTION "Python2 blocks plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
-    GROUP advanced
+    GROUP experimental
     DEPENDS runtime)
 
 cpack_add_component(python3_exclusive
     DISPLAY_NAME "Pothos Python3 blocks development plugin"
     DESCRIPTION "Python3 blocks plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
-    GROUP advanced
+    GROUP experimental
+    DEPENDS runtime)
+
+cpack_add_component(plutosdr_experimental
+    DISPLAY_NAME "PlutoSDR SoapySDR binding (experimental)"
+    DESCRIPTION "PlutoSDR bindings may interfere with other libusb drivers."
+    GROUP experimental
     DEPENDS runtime)
 
 cpack_add_component(runtime
@@ -164,7 +173,7 @@ cpack_add_component(gnuradio
 
 cpack_add_component_group(application DISPLAY_NAME "Applications" EXPANDED)
 cpack_add_component_group(development DISPLAY_NAME "Development" EXPANDED)
-cpack_add_component_group(advanced DISPLAY_NAME "Advanced")
+cpack_add_component_group(experimental DISPLAY_NAME "Experimental!")
 
 cpack_add_install_type(apps DISPLAY_NAME "Applications only")
 cpack_add_install_type(full DISPLAY_NAME "Full installation")
