@@ -61,9 +61,9 @@ install(FILES
 ## Build Qwt5
 ############################################################
 MyExternalProject_Add(qwt5
-    GIT_REPOSITORY https://github.com/eduardosm/qwt-5.2.3.git
-    GIT_TAG v5.2.3
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+    URL https://sourceforge.net/projects/qwt/files/qwt/5.2.3/qwt-5.2.3.zip
+    URL_MD5 310a1c8ab831f4b2219505dcb7691cf1
+    PATCH_COMMAND ${PYTHON2_EXECUTABLE} -m patch -d <SOURCE_DIR>
         ${PROJECT_SOURCE_DIR}/patches/qwt5_project_files.diff
     CONFIGURE_COMMAND ${QT4_ROOT}/bin/qmake.exe <SOURCE_DIR>/qwt.pro
         CONFIG+=release
@@ -82,9 +82,9 @@ set(QWT5_INSTALL_PREFIX ${INSTALL_DIR})
 ############################################################
 MyExternalProject_Add(qwt6
     DEPENDS qt4
-    GIT_REPOSITORY https://github.com/eduardosm/qwt-6.1.3.git
-    GIT_TAG v6.1.3
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+    URL https://sourceforge.net/projects/qwt/files/qwt/6.1.3/qwt-6.1.3.zip
+    URL_MD5 558911df37aee4c0c3049860e967401c
+    PATCH_COMMAND ${PYTHON2_EXECUTABLE} -m patch -d <SOURCE_DIR>
         ${PROJECT_SOURCE_DIR}/patches/qwt6_project_files.diff
     CONFIGURE_COMMAND ${QT4_ROOT}/bin/qmake.exe <SOURCE_DIR>/qwt.pro
         CONFIG+=release
@@ -108,8 +108,8 @@ MyExternalProject_Add(qwt6
 ## Build Python2-SIP
 ############################################################
 MyExternalProject_Add(python2_sip
-    GIT_REPOSITORY https://github.com/eduardosm/sip-4.19.7.git
-    GIT_TAG v4.19.7
+    URL https://sourceforge.net/projects/pyqt/files/sip/sip-4.19.7/sip-4.19.7.zip
+    URL_MD5 f8856b709eb92dfb9820d4234854922c
     CONFIGURE_COMMAND cd <SOURCE_DIR> &&
         ${PYTHON2_EXECUTABLE} configure.py --platform win32-msvc2015
         -b ${CMAKE_INSTALL_PREFIX}/bin
@@ -127,8 +127,8 @@ MyExternalProject_Add(python2_sip
 ############################################################
 MyExternalProject_Add(python2_pyqt4
     DEPENDS qt4 python2_sip
-    GIT_REPOSITORY https://github.com/eduardosm/PyQt4_gpl_win-4.12.1.git
-    GIT_TAG v4.12.1
+    URL http://sourceforge.net/projects/pyqt/files/PyQt4/PyQt-4.12.1/PyQt4_gpl_win-4.12.1.zip
+    URL_MD5 88cde389b151572aa22dd0147cd325b6
     CONFIGURE_COMMAND cd <SOURCE_DIR> &&
         powershell -ExecutionPolicy ByPass
         -File ${PROJECT_SOURCE_DIR}/Scripts/python2_pyqt4_configure.ps1
