@@ -51,7 +51,7 @@ message(STATUS "CPACK_PACKAGE_FILE_NAME: ${CPACK_PACKAGE_FILE_NAME}")
 ## at least when using the shortcuts. This is a messy work around
 ## and CMake should probably provide a variable for SetOutPath.
 #######################################################################
-file(READ "${CMAKE_ROOT}/Modules/NSIS.template.in" NSIS_template)
+file(READ "${CMAKE_ROOT}/Modules/Internal/CPack/NSIS.template.in" NSIS_template)
 set(CREATE_ICONS_REPLACE "
   SetOutPath \"$INSTDIR\\bin\"
 @CPACK_NSIS_CREATE_ICONS@

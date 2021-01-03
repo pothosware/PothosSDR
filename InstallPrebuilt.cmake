@@ -36,9 +36,9 @@ list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig-2.4")
 ############################################################
 ## Boost dependency (prebuilt)
 ############################################################
-set(BOOST_ROOT C:/local/boost_1_67_0)
-set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-${MSVC_VERSION_MAJOR}.${MSVC_VERSION_MINOR})
-set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_MAJOR}${MSVC_VERSION_MINOR}-mt-x64-1_67.dll)
+set(BOOST_ROOT C:/local/boost_1_75_0)
+set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-${MSVC_VERSION_COMPAT})
+set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_MAJOR}${MSVC_VERSION_MINOR}-mt-x64-1_75.dll)
 
 message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")
 message(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
@@ -58,40 +58,40 @@ install(FILES
 
 install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
 
-############################################################
-## Qt5 (prebuilt)
-############################################################
-set(QT5_ROOT C:/Qt/Qt5.8.0)
-#support VC-specific suffix for multiple installs to coexist
-if (EXISTS ${QT5_ROOT}-vc${MSVC_VERSION_MAJOR})
-    set(QT5_ROOT ${QT5_ROOT}-vc${MSVC_VERSION_MAJOR})
-endif()
-set(QT5_LIB_PATH ${QT5_ROOT}/5.8/msvc${MSVC_VERSION_YEAR}_64)
+#############################################################
+### Qt5 (prebuilt)
+#############################################################
+#set(QT5_ROOT C:/Qt/Qt5.8.0)
+##support VC-specific suffix for multiple installs to coexist
+#if (EXISTS ${QT5_ROOT}-vc${MSVC_VERSION_MAJOR})
+    #set(QT5_ROOT ${QT5_ROOT}-vc${MSVC_VERSION_MAJOR})
+#endif()
+#set(QT5_LIB_PATH ${QT5_ROOT}/5.8/msvc${MSVC_VERSION_YEAR}_64)
 
-message(STATUS "QT5_ROOT: ${QT5_ROOT}")
-message(STATUS "QT5_LIB_PATH: ${QT5_LIB_PATH}")
+#message(STATUS "QT5_ROOT: ${QT5_ROOT}")
+#message(STATUS "QT5_LIB_PATH: ${QT5_LIB_PATH}")
 
-file(GLOB QT5_ICU_DLLS "${QT5_LIB_PATH}/bin/icu*.dll")
+#file(GLOB QT5_ICU_DLLS "${QT5_LIB_PATH}/bin/icu*.dll")
 
-install(FILES
-    ${QT5_ICU_DLLS}
-    "${QT5_LIB_PATH}/bin/libGLESv2.dll"
-    "${QT5_LIB_PATH}/bin/libEGL.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Core.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Gui.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Widgets.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Concurrent.dll"
-    "${QT5_LIB_PATH}/bin/Qt5OpenGL.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Svg.dll"
-    "${QT5_LIB_PATH}/bin/Qt5PrintSupport.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Network.dll"
-    DESTINATION bin
-)
+#install(FILES
+    #${QT5_ICU_DLLS}
+    #"${QT5_LIB_PATH}/bin/libGLESv2.dll"
+    #"${QT5_LIB_PATH}/bin/libEGL.dll"
+    #"${QT5_LIB_PATH}/bin/Qt5Core.dll"
+    #"${QT5_LIB_PATH}/bin/Qt5Gui.dll"
+    #"${QT5_LIB_PATH}/bin/Qt5Widgets.dll"
+    #"${QT5_LIB_PATH}/bin/Qt5Concurrent.dll"
+    #"${QT5_LIB_PATH}/bin/Qt5OpenGL.dll"
+    #"${QT5_LIB_PATH}/bin/Qt5Svg.dll"
+    #"${QT5_LIB_PATH}/bin/Qt5PrintSupport.dll"
+    #"${QT5_LIB_PATH}/bin/Qt5Network.dll"
+    #DESTINATION bin
+#)
 
-install(FILES "${QT5_LIB_PATH}/plugins/platforms/qwindows.dll" DESTINATION bin/platforms)
-install(FILES "${QT5_LIB_PATH}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
+#install(FILES "${QT5_LIB_PATH}/plugins/platforms/qwindows.dll" DESTINATION bin/platforms)
+#install(FILES "${QT5_LIB_PATH}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
 
-install(DIRECTORY ${QT5_ROOT}/Licenses/ DESTINATION licenses/Qt)
+#install(DIRECTORY ${QT5_ROOT}/Licenses/ DESTINATION licenses/Qt)
 
 ############################################################
 ## Cypress API (prebuilt)

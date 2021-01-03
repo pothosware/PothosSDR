@@ -27,7 +27,7 @@ set(POCO_BRANCH poco-1.9.3-release)
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.8)
 set(PORTAUDIO_BRANCH master)
-set(WXWIDGETS_BRANCH v3.1.2) #v3.1.3 has winsock def error
+set(WXWIDGETS_BRANCH v3.1.4)
 set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
