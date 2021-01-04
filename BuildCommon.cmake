@@ -12,6 +12,7 @@
 ## * muparserx (pothos framework)
 ## * portaudio (gr-audio, pothos-audio)
 ## * wxwidgets (cubicsdr, limesuite)
+## * qt5 (pothos-flow, gnuradio, gqrx)
 ## * faac (gr-drm)
 ## * faad2 (gr-drm)
 ## * cppunit (gnuradio)
@@ -20,7 +21,7 @@
 ############################################################
 
 set(PTHREADS_BRANCH master)
-set(LIBUSB_BRANCH v1.0.23)
+set(LIBUSB_BRANCH v1.0.24)
 set(ZEROMQ_BRANCH master)
 set(CPPZMQ_BRANCH v4.3.0) #gr-zmq req due to zmq api change
 set(POCO_BRANCH poco-1.9.3-release)
@@ -28,6 +29,7 @@ set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.8)
 set(PORTAUDIO_BRANCH master)
 set(WXWIDGETS_BRANCH v3.1.4)
+set(QT5_BRANCH 5.15) #LTS
 set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
@@ -227,6 +229,67 @@ ExternalProject_Get_Property(wxWidgets SOURCE_DIR)
 #use these variable to setup wxWidgets in dependent projects
 set(wxWidgets_ROOT_DIR ${SOURCE_DIR})
 set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_x64_lib)
+
+############################################################
+## Build Qt5
+############################################################
+
+#qt is huge, install to a staging ground, and install select dlls
+set(QT5_ROOT ${CMAKE_CURRENT_BINARY_DIR}/Qt${QT5_BRANCH}-vc${MSVC_VERSION_MAJOR})
+set(QT5_LIB_PATH ${QT5_ROOT}/lib)
+
+message(STATUS "QT5_ROOT: ${QT5_ROOT}")
+message(STATUS "QT5_LIB_PATH: ${QT5_LIB_PATH}")
+
+MyExternalProject_Add(Qt5
+    GIT_REPOSITORY git://code.qt.io/qt/qt5.git
+    GIT_TAG ${QT5_BRANCH}
+    GIT_SUBMODULES "" #handled by init-repository
+    GIT_SHALLOW TRUE
+    UPDATE_COMMAND perl init-repository || true
+    CONFIGURE_COMMAND echo "Configure Qt5..."
+    #dont put configure in the CONFIGURE_COMMAND
+    #it will confuse the external project build
+    #step dependencies for some reason
+    BUILD_COMMAND <SOURCE_DIR>/configure
+        -nomake examples
+        -nomake tests
+        -skip qtwebengine
+        -skip qtconnectivity
+        -opensource
+        -confirm-license
+        -release
+        -shared
+        -prefix ${QT5_ROOT}
+        QMAKE_CXXFLAGS+=/MP &&
+        cd <BINARY_DIR> && nmake
+    INSTALL_COMMAND nmake install
+    LICENSE_FILES
+        LICENSE.FDL
+        LICENSE.GPL3-EXCEPT
+        LICENSE.GPLv2
+        LICENSE.GPLv3
+        LICENSE.LGPLv21
+        LICENSE.LGPLv3
+        LICENSE.QT-LICENSE-AGREEMENT
+)
+
+install(FILES
+    "${QT5_LIB_PATH}/bin/libGLESv2.dll"
+    "${QT5_LIB_PATH}/bin/libEGL.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Core.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Gui.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Widgets.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Concurrent.dll"
+    "${QT5_LIB_PATH}/bin/Qt5OpenGL.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Svg.dll"
+    "${QT5_LIB_PATH}/bin/Qt5PrintSupport.dll"
+    "${QT5_LIB_PATH}/bin/Qt5Network.dll"
+    DESTINATION bin
+)
+
+install(FILES "${QT5_LIB_PATH}/plugins/platforms/qwindows.dll" DESTINATION bin/platforms)
+install(FILES "${QT5_LIB_PATH}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
 
 ############################################################
 ## Build FAAC

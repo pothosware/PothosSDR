@@ -19,7 +19,7 @@ set(POTHOS_BRANCH master)
 set(POTHOS_AUDIO_BRANCH master)
 set(POTHOS_BLOCKS_BRANCH master)
 set(POTHOS_COMMS_BRANCH master)
-set(POTHOS_GUI_BRANCH master)
+set(POTHOS_FLOW_BRANCH master)
 set(POTHOS_PLOTTERS_BRANCH master)
 set(POTHOS_PYTHON_BRANCH master)
 set(POTHOS_SDR_BRANCH master)
@@ -124,9 +124,9 @@ install(
 ## Build Pothos Flow graphical designer
 ############################################################
 MyExternalProject_Add(PothosFlow
-    DEPENDS PothosCore
+    DEPENDS PothosCore Qt5
     GIT_REPOSITORY https://github.com/pothosware/PothosFlow.git
-    GIT_TAG ${POTHOS_GUI_BRANCH}
+    GIT_TAG ${POTHOS_FLOW_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev

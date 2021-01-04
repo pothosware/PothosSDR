@@ -218,7 +218,7 @@ MyExternalProject_Add(GrRDS
 ## Build GQRX
 ############################################################
 MyExternalProject_Add(GQRX
-    DEPENDS GNURadio GrOsmoSDR
+    DEPENDS GNURadio GrOsmoSDR Qt5
     GIT_REPOSITORY https://github.com/csete/gqrx.git
     GIT_TAG ${GQRX_BRANCH}
     CMAKE_DEFAULTS ON
