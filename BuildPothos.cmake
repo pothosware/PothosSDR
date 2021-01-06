@@ -41,7 +41,7 @@ MyExternalProject_Add(PothosCore
     DEPENDS Poco muparserx
     GIT_REPOSITORY https://github.com/pothosware/PothosCore.git
     GIT_TAG ${POTHOS_BRANCH}
-    GIT_SUBMODULES muparserx #cant turn them all off, so turn only one on
+    GIT_SUBMODULES libsimdpp
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
@@ -133,7 +133,7 @@ MyExternalProject_Add(PothosFlow
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-        -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
+        -DCMAKE_PREFIX_PATH=${QT5_ROOT}
     LICENSE_FILES LICENSE_1_0.txt
 )
 
@@ -173,7 +173,7 @@ MyExternalProject_Add(PothosPlotters
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-        -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
+        -DCMAKE_PREFIX_PATH=${QT5_ROOT}
     LICENSE_FILES LICENSE_1_0.txt
 )
 
@@ -185,37 +185,9 @@ install(
 
 ############################################################
 ## Build Pothos Python toolkit
-##
-## Two builds here for python2 and python3:
-## Python3 depends on python2 so it will install last,
-## and overwrite the python2 module to become default.
-## Each module is also copied to a version-specific name
-## so the user can switch between python versions.
 ############################################################
-MyExternalProject_Add(PothosPython2
-    DEPENDS PothosCore
-    GIT_REPOSITORY https://github.com/pothosware/PothosPython.git
-    GIT_TAG ${POTHOS_PYTHON_BRANCH}
-    CMAKE_GENERATOR ${CMAKE_GENERATOR}
-    CMAKE_ARGS
-        -Wno-dev
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON2_INCLUDE_DIR}
-        -DPYTHON_LIBRARY=${PYTHON2_LIBRARY}
-        -DPOTHOS_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-        && ${CMAKE_COMMAND} -E copy
-            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport.dll
-            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport2.dll
-    LICENSE_FILES LICENSE_1_0.txt
-)
-
 MyExternalProject_Add(PothosPython3
-    DEPENDS PothosCore PothosPython2
+    DEPENDS PothosCore
     GIT_REPOSITORY https://github.com/pothosware/PothosPython.git
     GIT_TAG ${POTHOS_PYTHON_BRANCH}
     CMAKE_GENERATOR ${CMAKE_GENERATOR}
@@ -230,9 +202,6 @@ MyExternalProject_Add(PothosPython3
         -DPOTHOS_PYTHON_DIR=${PYTHON3_INSTALL_DIR}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-        && ${CMAKE_COMMAND} -E copy
-            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport.dll
-            ${CMAKE_INSTALL_PREFIX}/lib/Pothos/${POTHOS_MODULES_DIR}/proxy/environment/PythonSupport3.dll
     LICENSE_FILES LICENSE_1_0.txt
 )
 
@@ -266,7 +235,7 @@ MyExternalProject_Add(PothosWidgets
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-        -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
+        -DCMAKE_PREFIX_PATH=${QT5_ROOT}
     LICENSE_FILES LICENSE_1_0.txt
 )
 

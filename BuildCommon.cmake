@@ -161,7 +161,7 @@ MyExternalProject_Add(Spuce
         -DBUILD_SHARED_LIBS=OFF
         -DENABLE_PYTHON=OFF
         -DBUILD_TESTING=OFF
-        -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
+        -DCMAKE_PREFIX_PATH=${QT5_ROOT}
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     LICENSE_FILES LICENSE_1_0.txt
@@ -236,10 +236,8 @@ set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_x64_lib)
 
 #qt is huge, install to a staging ground, and install select dlls
 set(QT5_ROOT ${CMAKE_CURRENT_BINARY_DIR}/Qt${QT5_BRANCH}-vc${MSVC_VERSION_MAJOR})
-set(QT5_LIB_PATH ${QT5_ROOT}/lib)
 
 message(STATUS "QT5_ROOT: ${QT5_ROOT}")
-message(STATUS "QT5_LIB_PATH: ${QT5_LIB_PATH}")
 
 MyExternalProject_Add(Qt5
     GIT_REPOSITORY git://code.qt.io/qt/qt5.git
@@ -247,11 +245,8 @@ MyExternalProject_Add(Qt5
     GIT_SUBMODULES "" #handled by init-repository
     GIT_SHALLOW TRUE
     UPDATE_COMMAND perl init-repository || true
-    CONFIGURE_COMMAND echo "Configure Qt5..."
-    #dont put configure in the CONFIGURE_COMMAND
-    #it will confuse the external project build
-    #step dependencies for some reason
-    BUILD_COMMAND <SOURCE_DIR>/configure
+    #configure really messes up the cmake shell, so "call" fixes that
+    CONFIGURE_COMMAND cd <BINARY_DIR> && call <SOURCE_DIR>/configure
         -nomake examples
         -nomake tests
         -skip qtwebengine
@@ -261,8 +256,8 @@ MyExternalProject_Add(Qt5
         -release
         -shared
         -prefix ${QT5_ROOT}
-        QMAKE_CXXFLAGS+=/MP &&
-        cd <BINARY_DIR> && nmake
+        QMAKE_CXXFLAGS+=/MP
+    BUILD_COMMAND nmake
     INSTALL_COMMAND nmake install
     LICENSE_FILES
         LICENSE.FDL
@@ -275,21 +270,21 @@ MyExternalProject_Add(Qt5
 )
 
 install(FILES
-    "${QT5_LIB_PATH}/bin/libGLESv2.dll"
-    "${QT5_LIB_PATH}/bin/libEGL.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Core.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Gui.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Widgets.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Concurrent.dll"
-    "${QT5_LIB_PATH}/bin/Qt5OpenGL.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Svg.dll"
-    "${QT5_LIB_PATH}/bin/Qt5PrintSupport.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Network.dll"
+    "${QT5_ROOT}/bin/libGLESv2.dll"
+    "${QT5_ROOT}/bin/libEGL.dll"
+    "${QT5_ROOT}/bin/Qt5Core.dll"
+    "${QT5_ROOT}/bin/Qt5Gui.dll"
+    "${QT5_ROOT}/bin/Qt5Widgets.dll"
+    "${QT5_ROOT}/bin/Qt5Concurrent.dll"
+    "${QT5_ROOT}/bin/Qt5OpenGL.dll"
+    "${QT5_ROOT}/bin/Qt5Svg.dll"
+    "${QT5_ROOT}/bin/Qt5PrintSupport.dll"
+    "${QT5_ROOT}/bin/Qt5Network.dll"
     DESTINATION bin
 )
 
-install(FILES "${QT5_LIB_PATH}/plugins/platforms/qwindows.dll" DESTINATION bin/platforms)
-install(FILES "${QT5_LIB_PATH}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
+install(FILES "${QT5_ROOT}/plugins/platforms/qwindows.dll" DESTINATION bin/platforms)
+install(FILES "${QT5_ROOT}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
 
 ############################################################
 ## Build FAAC

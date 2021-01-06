@@ -67,26 +67,6 @@ MyExternalProject_Add(SoapySDR
 ############################################################
 ## Build SoapySDR python bindings
 ############################################################
-MyExternalProject_Add(SoapySDRPython2
-    DEPENDS swig SoapySDR
-    GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
-    GIT_TAG ${SOAPY_SDR_BRANCH}
-    CONFIGURE_COMMAND
-        "${CMAKE_COMMAND}" <SOURCE_DIR>/python
-        -G ${CMAKE_GENERATOR}
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON2_INCLUDE_DIR}
-        -DPYTHON_LIBRARY=${PYTHON2_LIBRARY}
-        -DPYTHON_INSTALL_DIR=${PYTHON2_INSTALL_DIR}
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DSWIG_DIR=${SWIG_DIR}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-    LICENSE_FILES LICENSE_1_0.txt
-)
-
 MyExternalProject_Add(SoapySDRPython3
     DEPENDS swig SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git

@@ -69,8 +69,7 @@ foreach(install_file ${ALL_FILES})
     string(REGEX MATCH "^.*cmake/.+$" cmake_match ${install_file})
     string(REGEX MATCH "^lib/.+\\.lib$" lib_match ${install_file})
     string(REGEX MATCH "^(lib/python.+/.+)|(lib/.+Python.+)$" python_match ${install_file})
-    string(REGEX MATCH "^^lib/Pothos/.+/PythonSupport2.dll$" python2_support ${install_file})
-    string(REGEX MATCH "^^lib/Pothos/.+/PythonSupport3.dll$" python3_support ${install_file})
+    string(REGEX MATCH "^^lib/Pothos/.+/PythonSupport.dll$" python3_support ${install_file})
     string(REGEX MATCH "^(.+/gnuradio/.+)|(bin/gnuradio.+)|(bin/gr.+)$" gr_match ${install_file})
     string(REGEX MATCH "^bin/Qt(Core|Gui|Svg|OpenGL)4\\.dll$" qt4_match ${install_file})
     string(REGEX MATCH "^(include/qwt(\\.h|_.+\\.h))|lib/qwt\\.lib$" qwt6_skip_match ${install_file})
@@ -100,8 +99,6 @@ foreach(install_file ${ALL_FILES})
         set(MYCOMPONENT cmake)
     elseif (lib_match)
         set(MYCOMPONENT libdevel)
-    elseif (python2_support)
-        set(MYCOMPONENT python2_exclusive)
     elseif (python3_support)
         set(MYCOMPONENT python3_exclusive)
     elseif (python_match)
@@ -142,15 +139,9 @@ cpack_add_component(python
     DEPENDS runtime
     INSTALL_TYPES apps full)
 
-cpack_add_component(python2_exclusive
-    DISPLAY_NAME "Pothos Python2 blocks development plugin"
-    DESCRIPTION "Python2 blocks plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
-    GROUP experimental
-    DEPENDS runtime)
-
 cpack_add_component(python3_exclusive
     DISPLAY_NAME "Pothos Python3 blocks development plugin"
-    DESCRIPTION "Python3 blocks plugin for Pothos.\nInstall only Python2 or Python3 support, but not both."
+    DESCRIPTION "Python3 blocks plugin for Pothos.\nInstall only to develop python blocks."
     GROUP experimental
     DEPENDS runtime)
 

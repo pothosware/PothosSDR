@@ -8,7 +8,6 @@
 ## * bladerf
 ## * hackrf
 ## * uhd/usrp
-## * umtrx
 ## * airspy
 ## * airspy-hf+
 ## * mirisdr
@@ -21,12 +20,18 @@ set(MIRISDR_BRANCH master)
 set(RTL_BRANCH development)
 set(BLADERF_BRANCH master)
 set(HACKRF_BRANCH master)
-set(UHD_BRANCH UHD-3.15.LTS) #bump MSVC ver to go higher
+set(UHD_BRANCH v4.0.0.0)
 set(UMTRX_BRANCH master)
 set(AIRSPY_BRANCH master)
 set(AIRSPYHF_BRANCH master)
-set(LIBIIO_BRANCH v0.18)
+set(LIBIIO_BRANCH v0.19)
 set(LIBAD9361_BRANCH master)
+
+############################################################
+# python generation tools
+# uhd uses mako
+############################################################
+execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako OUTPUT_QUIET)
 
 ############################################################
 ## Build Osmo SDR
@@ -176,7 +181,7 @@ MyExternalProject_Add(uhd
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DBOOST_ALL_DYN_LINK=TRUE
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
     LICENSE_FILES host/LICENSE
 )
 
@@ -190,29 +195,6 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"UHD_PKG_PATH\\\"
 
 set(UHD_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
 set(UHD_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/uhd.lib)
-
-############################################################
-## Build UmTRX
-############################################################
-MyExternalProject_Add(umtrx
-    DEPENDS uhd
-    GIT_REPOSITORY https://github.com/fairwaves/UHD-Fairwaves.git
-    GIT_TAG ${UMTRX_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/umtrx_logger_fix.diff
-    CMAKE_DEFAULTS ON
-    CONFIGURE_COMMAND
-        "${CMAKE_COMMAND}" <SOURCE_DIR>/host
-        -G ${CMAKE_GENERATOR}
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DBOOST_ALL_DYN_LINK=TRUE
-        -DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
-        -DUHD_LIBRARIES=${UHD_LIBRARIES}
-    LICENSE_FILES README
-)
 
 ############################################################
 ## Build Airspy
