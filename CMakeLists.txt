@@ -15,7 +15,6 @@ if ("${MSVC_VERSION}" STREQUAL "1928")
     set(MSVC_VERSION_YEAR 2019)
     set(MSVC_VERSION_MAJOR 16)
     set(MSVC_VERSION_MINOR 0)
-    set(MSVC_VERSION_COMPAT "14.2")
 else ()
     message(FATAL_ERROR "MSVC version ${MSVC_VERSION} not supported!")
 endif ()
@@ -47,7 +46,6 @@ install(DIRECTORY patches DESTINATION ".")
 ########################################################################
 set_property(DIRECTORY PROPERTY "EP_BASE" ${CMAKE_BINARY_DIR})
 set_property(DIRECTORY PROPERTY "EP_UPDATE_DISCONNECTED" TRUE) #no auto update
-#set_property(DIRECTORY PROPERTY "EP_INDEPENDENT_STEP_TARGETS" update)
 include(ExternalProject)
 include(CMakeParseArguments)
 
@@ -100,10 +98,10 @@ include(SetupPython.cmake)
 include(BuildCommon.cmake)
 include(BuildHwDrivers.cmake)
 include(BuildSoapySDR.cmake)
+include(BuildSDRApps.cmake)
 include(BuildPothos.cmake)
 #include(BuildGrQt4Deps.cmake)
 #include(BuildGNURadio.cmake)
-#include(BuildSDRApps.cmake)
 
 ########################################################################
 # Target to manually update cloned repos

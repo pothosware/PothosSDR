@@ -16,12 +16,12 @@
 ############################################################
 ## Zadig for USB devices
 ############################################################
-set(ZADIG_NAME "zadig-2.4.exe")
+set(ZADIG_NAME "zadig-2.5.exe")
 
 if (NOT EXISTS "${CMAKE_BINARY_DIR}/${ZADIG_NAME}")
     message(STATUS "Downloading zadig...")
     file(DOWNLOAD
-        "https://github.com/pbatard/libwdi/releases/download/b721/zadig-2.4.exe"
+        "https://github.com/pbatard/libwdi/releases/download/b730/zadig-2.5.exe"
         ${CMAKE_BINARY_DIR}/${ZADIG_NAME}
     )
     message(STATUS "...done")
@@ -29,15 +29,15 @@ endif ()
 
 install(FILES "${CMAKE_BINARY_DIR}/${ZADIG_NAME}" DESTINATION bin)
 
-list(APPEND CPACK_PACKAGE_EXECUTABLES "zadig-2.4" "Zadig v2.4")
-list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig-2.4")
+list(APPEND CPACK_PACKAGE_EXECUTABLES "zadig-2.5" "Zadig v2.5")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig-2.5")
 
 ############################################################
 ## Boost dependency (prebuilt)
 ############################################################
 set(BOOST_ROOT C:/local/boost_1_75_0)
-set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-${MSVC_VERSION_COMPAT})
-set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_MAJOR}${MSVC_VERSION_MINOR}-mt-x64-1_75.dll)
+set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-14.2)
+set(BOOST_DLL_SUFFIX vc142-mt-x64-1_75.dll)
 
 message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")
 message(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
@@ -76,8 +76,8 @@ endif()
 ## SWIG dependency (prebuilt)
 ############################################################
 MyExternalProject_Add(swig
-    URL https://downloads.sourceforge.net/project/swig/swigwin/swigwin-4.0.1/swigwin-4.0.1.zip
-    URL_MD5 eb6948ee80bb54e69190b630a29d3d4f
+    URL https://downloads.sourceforge.net/project/swig/swigwin/swigwin-4.0.2/swigwin-4.0.2.zip
+    URL_MD5 009926b512aee9318546bdd4c7eab6f9
     CONFIGURE_COMMAND echo "..."
     BUILD_COMMAND echo "..."
     INSTALL_COMMAND echo "..."

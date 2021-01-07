@@ -12,7 +12,7 @@
 ## * muparserx (pothos framework)
 ## * portaudio (gr-audio, pothos-audio)
 ## * wxwidgets (cubicsdr, limesuite)
-## * qt5 (pothos-flow, gnuradio, gqrx)
+## * qt5 (pothos-flow, gnuradio, gqrx, inspectrum)
 ## * faac (gr-drm)
 ## * faad2 (gr-drm)
 ## * cppunit (gnuradio)
@@ -23,8 +23,8 @@
 set(PTHREADS_BRANCH master)
 set(LIBUSB_BRANCH v1.0.24)
 set(ZEROMQ_BRANCH master)
-set(CPPZMQ_BRANCH v4.3.0) #gr-zmq req due to zmq api change
-set(POCO_BRANCH poco-1.9.3-release)
+set(CPPZMQ_BRANCH master)
+set(POCO_BRANCH poco-1.9.4-release) #1.10.x release missing openssl submodule
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.8)
 set(PORTAUDIO_BRANCH master)
@@ -34,7 +34,7 @@ set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
 set(GSL_BRANCH v2.5.0)
-set(LIBXML2_BRANCH v2.9.9)
+set(LIBXML2_BRANCH v2.9.10)
 
 ############################################################
 ## Build Pthreads for win32

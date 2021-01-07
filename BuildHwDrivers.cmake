@@ -201,7 +201,7 @@ set(UHD_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/uhd.lib)
 ############################################################
 MyExternalProject_Add(airspy
     DEPENDS Pthreads libusb Pthreads
-    GIT_REPOSITORY https://github.com/airspy/host.git
+    GIT_REPOSITORY https://github.com/airspy/airspyone_host.git
     GIT_TAG ${AIRSPY_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS

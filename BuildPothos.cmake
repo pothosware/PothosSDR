@@ -164,7 +164,7 @@ DeleteRegKey HKEY_CLASSES_ROOT \\\"Pothos.Flow\\\"
 ## Build Pothos Plotters toolkit
 ############################################################
 MyExternalProject_Add(PothosPlotters
-    DEPENDS PothosCore Spuce
+    DEPENDS PothosCore Spuce Qt5
     GIT_REPOSITORY https://github.com/pothosware/PothosPlotters.git
     GIT_TAG ${POTHOS_PLOTTERS_BRANCH}
     CMAKE_DEFAULTS ON
@@ -226,7 +226,7 @@ MyExternalProject_Add(PothosSoapy
 ## Build Pothos Widgets toolkit
 ############################################################
 MyExternalProject_Add(PothosWidgets
-    DEPENDS PothosCore
+    DEPENDS PothosCore Qt5
     GIT_REPOSITORY https://github.com/pothosware/PothosWidgets.git
     GIT_TAG ${POTHOS_WIDGETS_BRANCH}
     CMAKE_DEFAULTS ON

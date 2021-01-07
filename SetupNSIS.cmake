@@ -34,6 +34,7 @@ set(CPACK_GENERATOR "NSIS")
 set(CPACK_NSIS_INSTALL_ROOT "C:\\\\Program Files")
 set(CPACK_NSIS_MUI_ICON ${CMAKE_SOURCE_DIR}/icons/PothosSDR.ico)
 set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/icons\\\\wide_logo_pothosware.bmp")
+set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_NSIS_MODIFY_PATH ON)
 set(CPACK_NSIS_DISPLAY_NAME "Pothos SDR environment (${PACKAGE_SUFFIX})") #add/remove control panel
 set(CPACK_NSIS_PACKAGE_NAME "Pothos SDR environment (${PACKAGE_SUFFIX})") #installer package title
@@ -69,38 +70,39 @@ foreach(install_file ${ALL_FILES})
     string(REGEX MATCH "^.*cmake/.+$" cmake_match ${install_file})
     string(REGEX MATCH "^lib/.+\\.lib$" lib_match ${install_file})
     string(REGEX MATCH "^(lib/python.+/.+)|(lib/.+Python.+)$" python_match ${install_file})
-    string(REGEX MATCH "^^lib/Pothos/.+/PythonSupport.dll$" python3_support ${install_file})
-    string(REGEX MATCH "^(.+/gnuradio/.+)|(bin/gnuradio.+)|(bin/gr.+)$" gr_match ${install_file})
-    string(REGEX MATCH "^bin/Qt(Core|Gui|Svg|OpenGL)4\\.dll$" qt4_match ${install_file})
-    string(REGEX MATCH "^(include/qwt(\\.h|_.+\\.h))|lib/qwt\\.lib$" qwt6_skip_match ${install_file})
-    string(REGEX MATCH "^bin/qwt6\\.dll$" qwt6_dll_match ${install_file})
-    string(REGEX MATCH "^(sip/.+)|(lib/python2.7/site-packages/sip.+)|(include/sip\\.h)|(bin/sip\\.exe)$" python2_sip_match ${install_file})
-    string(REGEX MATCH "^(lib/python2.7/site-packages/PyQt4/.+)|(bin/(pylupdate4\\.exe|pyrcc4\\.exe|pyuic4\\.bat))$" python2_pyqt4_match ${install_file})
+    string(REGEX MATCH "^^lib/Pothos/.+/PythonSupport.dll$" pothos_python_support ${install_file})
+    #string(REGEX MATCH "^(.+/gnuradio/.+)|(bin/gnuradio.+)|(bin/gr.+)$" gr_match ${install_file})
+    #string(REGEX MATCH "^bin/Qt(Core|Gui|Svg|OpenGL)4\\.dll$" qt4_match ${install_file})
+    #string(REGEX MATCH "^(include/qwt(\\.h|_.+\\.h))|lib/qwt\\.lib$" qwt6_skip_match ${install_file})
+    #string(REGEX MATCH "^bin/qwt6\\.dll$" qwt6_dll_match ${install_file})
+    #string(REGEX MATCH "^(sip/.+)|(lib/python2.7/site-packages/sip.+)|(include/sip\\.h)|(bin/sip\\.exe)$" python2_sip_match ${install_file})
+    #string(REGEX MATCH "^(lib/python2.7/site-packages/PyQt4/.+)|(bin/(pylupdate4\\.exe|pyrcc4\\.exe|pyuic4\\.bat))$" python2_pyqt4_match ${install_file})
     string(REGEX MATCH "^(lib/.+/PlutoSDRSupport.dll)$" plutosdr_support_match ${install_file})
-    # pyqwt5 files will be matched by sip and pyqt4 regexs
+    ## pyqwt5 files will be matched by sip and pyqt4 regexs
 
     #other matches can be greedy, so the order here matters
-    if (qwt6_skip_match)
-        # skip
-    elseif (python2_sip_match)
-        # I'm not sure if these files are necessary
-        set(MYCOMPONENT gnuradio)
-    elseif (qt4_match)
-        set(MYCOMPONENT gnuradio)
-    elseif (qwt6_dll_match)
-        set(MYCOMPONENT gnuradio)
-    elseif (python2_pyqt4_match)
-        set(MYCOMPONENT gnuradio)
-    elseif (gr_match)
-        set(MYCOMPONENT gnuradio)
+    if (FALSE)
+    #if (qwt6_skip_match)
+    #    # skip
+    #elseif (python2_sip_match)
+    #    # I'm not sure if these files are necessary
+    #    set(MYCOMPONENT gnuradio)
+    #elseif (qt4_match)
+    #    set(MYCOMPONENT gnuradio)
+    #elseif (qwt6_dll_match)
+    #    set(MYCOMPONENT gnuradio)
+    #elseif (python2_pyqt4_match)
+    #    set(MYCOMPONENT gnuradio)
+    #elseif (gr_match)
+    #    set(MYCOMPONENT gnuradio)
     elseif (include_match)
         set(MYCOMPONENT includes)
     elseif (cmake_match)
         set(MYCOMPONENT cmake)
     elseif (lib_match)
         set(MYCOMPONENT libdevel)
-    elseif (python3_support)
-        set(MYCOMPONENT python3_exclusive)
+    elseif (pothos_python_support)
+        set(MYCOMPONENT pothos_python_exclusive)
     elseif (python_match)
         set(MYCOMPONENT python)
     elseif (plutosdr_support_match)
@@ -134,13 +136,13 @@ cpack_add_component(libdevel
     INSTALL_TYPES full)
 
 cpack_add_component(python
-    DISPLAY_NAME "Python bindings"
+    DISPLAY_NAME "Python${PYTHON3_VERSION} bindings"
     GROUP application
     DEPENDS runtime
     INSTALL_TYPES apps full)
 
-cpack_add_component(python3_exclusive
-    DISPLAY_NAME "Pothos Python3 blocks development plugin"
+cpack_add_component(pothos_python_exclusive
+    DISPLAY_NAME "Pothos Python${PYTHON3_VERSION} blocks development plugin"
     DESCRIPTION "Python3 blocks plugin for Pothos.\nInstall only to develop python blocks."
     GROUP experimental
     DEPENDS runtime)
@@ -156,15 +158,15 @@ cpack_add_component(runtime
     GROUP application
     INSTALL_TYPES apps full)
 
-cpack_add_component(gnuradio
-    DISPLAY_NAME "GNU Radio support"
-    GROUP application
-    DEPENDS runtime
-    INSTALL_TYPES apps full)
+#cpack_add_component(gnuradio
+#    DISPLAY_NAME "GNU Radio support"
+#    GROUP application
+#    DEPENDS runtime
+#    INSTALL_TYPES apps full)
 
-cpack_add_component_group(application DISPLAY_NAME "Applications" EXPANDED)
-cpack_add_component_group(development DISPLAY_NAME "Development" EXPANDED)
-cpack_add_component_group(experimental DISPLAY_NAME "Experimental!")
+cpack_add_component_group(application DISPLAY_NAME "Applications" EXPANDED DESCRIPTION "Runtime applications")
+cpack_add_component_group(development DISPLAY_NAME "Development" EXPANDED DESCRIPTION "Development resources")
+cpack_add_component_group(experimental DISPLAY_NAME "Experimental!" DESCRIPTION "Experimental components")
 
 cpack_add_install_type(apps DISPLAY_NAME "Applications only")
 cpack_add_install_type(full DISPLAY_NAME "Full installation")

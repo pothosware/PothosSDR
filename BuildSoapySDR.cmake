@@ -153,7 +153,7 @@ MyExternalProject_Add(SoapyHackRF
 ############################################################
 ## Build SoapyOsmo
 ##
-## * ENABLE_RFSPACE=OFF build errors
+## * ENABLE_RFSPACE=OFF see Soapy NetSDR
 ## * ENABLE_BLADERF=OFF see Soapy BladeRF
 ## * ENABLE_HACKRF=OFF see Soapy HackRF
 ## * ENABLE_RTL=OFF see Soapy RTL-SDR

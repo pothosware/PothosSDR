@@ -18,7 +18,7 @@ set(INSPECTRUM_SDR_BRANCH master)
 ## from clearing wxWidgets_LIB_DIR the first configuration.
 ############################################################
 MyExternalProject_Add(CubicSDR
-    DEPENDS SoapySDR wxWidgets liquiddsp
+    DEPENDS SoapySDR wxWidgets liquiddsp fftw
     GIT_REPOSITORY https://github.com/cjcliffe/CubicSDR.git
     GIT_TAG ${CUBIC_SDR_BRANCH}
     CMAKE_DEFAULTS ON
@@ -45,14 +45,14 @@ list(APPEND CPACK_CREATE_DESKTOP_LINKS "CubicSDR")
 ## Build Inspectrum
 ############################################################
 MyExternalProject_Add(Inspectrum
-    DEPENDS liquiddsp
+    DEPENDS liquiddsp Qt5 fftw
     GIT_REPOSITORY https://github.com/miek/inspectrum.git
     GIT_TAG ${INSPECTRUM_SDR_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
+        -DCMAKE_PREFIX_PATH=${QT5_ROOT}
         -DMMAN=${CMAKE_INSTALL_PREFIX}/lib/mman.lib
         -DFFTW_INCLUDES=${FFTW3F_INCLUDE_DIRS}
         -DFFTW_LIBRARIES=${FFTW3F_LIBRARIES}
