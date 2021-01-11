@@ -221,6 +221,8 @@ MyExternalProject_Add(airspyhf
     DEPENDS Pthreads libusb Pthreads
     GIT_REPOSITORY https://github.com/airspy/airspyhf.git
     GIT_TAG ${AIRSPYHF_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/airspyhf_missing_getopt.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

@@ -17,8 +17,8 @@
 ## * gr-limesdr
 ############################################################
 
-set(VOLK_BRANCH 1.4-support)
-set(GNURADIO_BRANCH maint-3.7)
+set(VOLK_BRANCH v2.4.1)
+set(GNURADIO_BRANCH maint-3.9)
 set(GR_POTHOS_BRANCH master)
 set(GROSMOSDR_BRANCH gr3.7) #prior to 3.8 req
 set(GRRDS_BRANCH maint-3.7)
@@ -31,10 +31,11 @@ set(GRLIMESDR_BRANCH master)
 
 ############################################################
 # python generation tools
-# volk uses cheetah
+# volk uses mako
+# gnuradio uses pygccxml numpy
 # gr-pothos uses same python3 deps as PothosLiquidDSP
 ############################################################
-execute_process(COMMAND ${PYTHON2_ROOT}/Scripts/pip.exe install Cheetah six mako OUTPUT_QUIET)
+execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako pygccxml numpy OUTPUT_QUIET)
 
 ############################################################
 ## Build Volk
@@ -42,8 +43,6 @@ execute_process(COMMAND ${PYTHON2_ROOT}/Scripts/pip.exe install Cheetah six mako
 MyExternalProject_Add(volk
     GIT_REPOSITORY https://github.com/gnuradio/volk.git
     GIT_TAG ${VOLK_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/volk_remove_sys_time.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
@@ -52,8 +51,8 @@ MyExternalProject_Add(volk
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DBOOST_ALL_DYN_LINK=TRUE
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DVOLK_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
+        -DVOLK_PYTHON_DIR=${PYTHON3_INSTALL_DIR}
     LICENSE_FILES COPYING
 )
 
@@ -69,28 +68,31 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"VOLK_PREFIX\\\"
 ## Build GNU Radio
 ############################################################
 MyExternalProject_Add(GNURadio
-    DEPENDS volk uhd CppZMQ PortAudio CppUnit gsl fftw swig qt4 qwt5 qwt6 python2_pyqt4 python2_pyqwt5
+    DEPENDS volk PyBind11 Log4CPP MPIR uhd CppZMQ PortAudio CppUnit gsl fftw Qt5
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
     PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio_python_path.diff
+        ${PROJECT_SOURCE_DIR}/patches/gnuradio.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DLOG4CPP_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include/orocos
+        -DLOG4CPP_LIBRARY=${CMAKE_INSTALL_PREFIX}/lib/orocos-log4cpp.lib
+        -DMPIR_INCLUDE_DIR=${MPIR_INCLUDE_DIR}
+        -DMPIR_LIBRARY=${MPIR_LIBRARY}
+        -DMPIRXX_LIBRARY=${MPIRXX_LIBRARY}
         -DENABLE_INTERNAL_VOLK=OFF
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DBOOST_ALL_DYN_LINK=TRUE
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DSWIG_DIR=${SWIG_DIR}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON2_INCLUDE_DIR}
-        -DPYTHON_LIBRARY=${PYTHON2_LIBRARY}
-        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
-        -DFFTW3F_INCLUDE_DIRS=${FFTW3F_INCLUDE_DIRS}
-        -DFFTW3F_LIBRARIES=${FFTW3F_LIBRARIES}
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
+        -DPYTHON_INCLUDE_DIR=${PYTHON3_INCLUDE_DIR}
+        -DPYTHON_LIBRARY=${PYTHON3_LIBRARY}
+        -DGR_PYTHON_DIR=${PYTHON3_INSTALL_DIR}
+        -DFFTW3f_INCLUDE_DIRS=${FFTW3F_INCLUDE_DIRS}
+        -DFFTW3f_LIBRARIES=${FFTW3F_LIBRARIES}
         -DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
         -DUHD_LIBRARIES=${UHD_LIBRARIES}
         -DENABLE_TESTING=ON
@@ -104,10 +106,11 @@ MyExternalProject_Add(GNURadio
         -DGSL_INCLUDE_DIRS=${GSL_INCLUDE_DIRS}
         -DGSL_LIBRARY=${GSL_LIBRARY}
         -DGSL_CBLAS_LIBRARY=${GSL_CBLAS_LIBRARY}
-        -DENABLE_GR_QTGUI=ON
-        -DQT_QMAKE_EXECUTABLE=${QT4_ROOT}/bin/qmake.exe
-        -DQWT_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include/qwt6
-        -DQWT_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/qwt6.lib
+        -DENABLE_GR_QTGUI=OFF #FIXME need to do QWT
+        -DCMAKE_PREFIX_PATH=${QT5_ROOT}
+        #-DQT_QMAKE_EXECUTABLE=${QT4_ROOT}/bin/qmake.exe
+        #-DQWT_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include/qwt6
+        #-DQWT_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/qwt6.lib
     LICENSE_FILES COPYING
 )
 
@@ -120,6 +123,9 @@ set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
 DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GR_PREFIX\\\"
 DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GRC_BLOCKS_PATH\\\"
 ")
+
+#FIXME as we test
+return()
 
 ########################################################################
 ## gnuradio-companion.exe

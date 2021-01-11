@@ -1,0 +1,103 @@
+diff --git a/cmake/Modules/GrVersion.cmake b/cmake/Modules/GrVersion.cmake
+index 6d39d8d4b..cf8904367 100644
+--- a/cmake/Modules/GrVersion.cmake
++++ b/cmake/Modules/GrVersion.cmake
+@@ -75,5 +75,5 @@ else()
+     set(DOCVER "${VERSION}")
+     set(LIBVER "${MAJOR_VERSION}.${API_COMPAT}.${MINOR_VERSION}")
+     set(RC_MINOR_VERSION ${MINOR_VERSION})
+-    set(RC_MAINT_VERSION ${MAINT_VERSION})
++    set(RC_MAINT_VERSION "0")
+ endif()
+diff --git a/gnuradio-runtime/include/gnuradio/tag_checker.h b/gnuradio-runtime/include/gnuradio/tag_checker.h
+index fbee3e36a..281b81a9c 100644
+--- a/gnuradio-runtime/include/gnuradio/tag_checker.h
++++ b/gnuradio-runtime/include/gnuradio/tag_checker.h
+@@ -12,6 +12,7 @@
+ #define INCLUDED_GR_RUNTIME_TAG_CHECKER_H
+ 
+ #include <gnuradio/tags.h>
++#include <algorithm>
+ #include <vector>
+ 
+ namespace gr {
+diff --git a/gnuradio-runtime/lib/terminate_handler.cc b/gnuradio-runtime/lib/terminate_handler.cc
+index ed3b1d93b..1e125cfd5 100644
+--- a/gnuradio-runtime/lib/terminate_handler.cc
++++ b/gnuradio-runtime/lib/terminate_handler.cc
+@@ -14,7 +14,9 @@
+ #include <regex>
+ #include <stdexcept>
+ 
++#ifdef __GNUG__
+ #include <cxxabi.h>
++#endif
+ 
+ #ifdef HAVE_LIBUNWIND
+ #define UNW_LOCAL_ONLY
+@@ -48,10 +50,12 @@ void print_backtrace()
+         if (unw_get_proc_name(&cursor, sym, sizeof(sym), &offset) == 0) {
+             char* nameptr = sym;
+             int status;
++            #ifdef __GNUG__
+             char* demangled = abi::__cxa_demangle(sym, nullptr, nullptr, &status);
+             if (status == 0) {
+                 nameptr = demangled;
+             }
++            #endif
+             std::fprintf(stderr, " (%s+0x%lx)\n", nameptr, offset);
+             std::free(demangled);
+         } else {
+diff --git a/gnuradio-runtime/lib/terminate_handler.h b/gnuradio-runtime/lib/terminate_handler.h
+index a7a671b06..0ce68d207 100644
+--- a/gnuradio-runtime/lib/terminate_handler.h
++++ b/gnuradio-runtime/lib/terminate_handler.h
+@@ -13,7 +13,7 @@
+ #include <gnuradio/api.h>
+ 
+ namespace gr {
+-void install_terminate_handler() GR_RUNTIME_API;
++GR_RUNTIME_API void install_terminate_handler();
+ }
+ 
+ #endif /* INCLUDED_TERMINATE_HANDLER_H */
+diff --git a/gnuradio-runtime/python/gnuradio/gr/bindings/tag_checker_python.cc b/gnuradio-runtime/python/gnuradio/gr/bindings/tag_checker_python.cc
+index cfe40c6a1..d2bb5e2ba 100644
+--- a/gnuradio-runtime/python/gnuradio/gr/bindings/tag_checker_python.cc
++++ b/gnuradio-runtime/python/gnuradio/gr/bindings/tag_checker_python.cc
+@@ -14,7 +14,7 @@
+ /* BINDTOOL_GEN_AUTOMATIC(0)                                                       */
+ /* BINDTOOL_USE_PYGCCXML(0)                                                        */
+ /* BINDTOOL_HEADER_FILE(tag_checker.h)                                        */
+-/* BINDTOOL_HEADER_FILE_HASH(4f4bad08f4f039dbd5150a36e29d365c)                     */
++/* BINDTOOL_HEADER_FILE_HASH(e602a721975a2c2c15dbbb419eb57c15)                     */
+ /***********************************************************************************/
+ 
+ #include <pybind11/complex.h>
+diff --git a/gr-filter/include/gnuradio/filter/polyphase_filterbank.h b/gr-filter/include/gnuradio/filter/polyphase_filterbank.h
+index c7c60e3d3..59663e288 100644
+--- a/gr-filter/include/gnuradio/filter/polyphase_filterbank.h
++++ b/gr-filter/include/gnuradio/filter/polyphase_filterbank.h
+@@ -97,6 +97,10 @@ protected:
+     fft::fft_complex_rev* d_fft;
+ 
+ public:
++    // Disallow copy.
++    polyphase_filterbank(const polyphase_filterbank&) = delete;
++    polyphase_filterbank& operator=(const polyphase_filterbank&) = delete;
++
+     /*!
+      * Build the polyphase filterbank decimator.
+      * \param nfilts (unsigned integer) Specifies the number of
+diff --git a/gr-trellis/include/gnuradio/trellis/fsm.h b/gr-trellis/include/gnuradio/trellis/fsm.h
+index 9250d5ea5..6c34e467e 100644
+--- a/gr-trellis/include/gnuradio/trellis/fsm.h
++++ b/gr-trellis/include/gnuradio/trellis/fsm.h
+@@ -14,6 +14,7 @@
+ #include <gnuradio/trellis/api.h>
+ #include <iosfwd>
+ #include <vector>
++#include <string>
+ 
+ namespace gr {
+ namespace trellis {

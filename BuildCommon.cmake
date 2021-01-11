@@ -18,6 +18,9 @@
 ## * cppunit (gnuradio)
 ## * gsl (gnuradio)
 ## * libxml2 (libiio)
+## * pybind11 (gnuradio)
+## * log4cpp (gnuradio)
+## * gmp (gnuradio)
 ############################################################
 
 set(PTHREADS_BRANCH master)
@@ -35,6 +38,9 @@ set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
 set(GSL_BRANCH v2.5.0)
 set(LIBXML2_BRANCH v2.9.10)
+set(PYBIND11_BRANCH master)
+set(LOG4CPP_BRANCH master)
+set(MPIR_BRANCH master)
 
 ############################################################
 ## Build Pthreads for win32
@@ -120,7 +126,7 @@ MyExternalProject_Add(ZeroMQ
 )
 
 set(ZEROMQ_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
-set(ZEROMQ_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/libzmq-v${MSVC_VERSION_MAJOR}${MSVC_VERSION_MINOR}-mt-4_1_8.lib)
+set(ZEROMQ_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/libzmq-v142-mt-4_1_8.lib)
 
 ############################################################
 ## Build CppZMQ
@@ -419,3 +425,53 @@ MyExternalProject_Add(libxml2
 ExternalProject_Get_Property(libxml2 SOURCE_DIR)
 set(LIBXML2_INCLUDE_DIR ${SOURCE_DIR}/include)
 set(LIBXML2_LIBRARIES ${SOURCE_DIR}/win32/bin.msvc/libxml2_a.lib) #static
+
+############################################################
+## Build PyBind11
+############################################################
+MyExternalProject_Add(PyBind11
+    GIT_REPOSITORY https://github.com/pybind/pybind11.git
+    GIT_TAG ${PYBIND11_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
+        -DPYTHON_INCLUDE_DIR=${PYTHON3_INCLUDE_DIR}
+        -DPYTHON_LIBRARY=${PYTHON3_LIBRARY}
+        -DPYBIND11_TEST=OFF
+    LICENSE_FILES LICENSE
+)
+
+############################################################
+## Build Log4CPP
+############################################################
+MyExternalProject_Add(Log4CPP
+    GIT_REPOSITORY https://github.com/orocos-toolchain/log4cpp.git
+    GIT_TAG ${LOG4CPP_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    LICENSE_FILES COPYING
+)
+
+############################################################
+## Build MPIR (static lib)
+############################################################
+MyExternalProject_Add(MPIR
+    GIT_REPOSITORY git://github.com/BrianGladman/mpir.git
+    GIT_TAG ${MPIR_BRANCH}
+    CONFIGURE_COMMAND echo "Configure MPIR..."
+    BUILD_COMMAND cd <SOURCE_DIR>/msvc/vs19 && msbuild.bat gc LIB x64 Release &&
+        cd <SOURCE_DIR>/msvc/vs19 && msbuild.bat cxx LIB x64 Release
+    INSTALL_COMMAND echo "..."
+    LICENSE_FILES COPYING COPYING.LIB
+)
+
+ExternalProject_Get_Property(MPIR SOURCE_DIR)
+set(MPIR_INCLUDE_DIR ${SOURCE_DIR}/msvc/vs19/lib_mpir_cxx/x64/Release)
+set(MPIR_LIBRARY ${SOURCE_DIR}/msvc/vs19/lib_mpir_gc/x64/Release/mpir.lib)
+set(MPIRXX_LIBRARY ${SOURCE_DIR}/msvc/vs19/lib_mpir_cxx/x64/Release/mpirxx.lib)

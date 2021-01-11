@@ -101,7 +101,7 @@ include(BuildSoapySDR.cmake)
 include(BuildSDRApps.cmake)
 include(BuildPothos.cmake)
 #include(BuildGrQt4Deps.cmake)
-#include(BuildGNURadio.cmake)
+include(BuildGNURadio.cmake)
 
 ########################################################################
 # Target to manually update cloned repos
