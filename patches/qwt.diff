@@ -1,0 +1,13 @@
+diff --git a/qwtconfig.pri b/qwtconfig.pri
+index 3ac19a4..61156f3 100644
+--- a/qwtconfig.pri
++++ b/qwtconfig.pri
+@@ -118,7 +118,7 @@ QWT_CONFIG     += QwtOpenGL
+ # Otherwise you have to build it from the designer directory.
+ ######################################################################
+ 
+-QWT_CONFIG     += QwtDesigner
++#QWT_CONFIG     += QwtDesigner
+ 
+ ######################################################################
+ # Compile all Qwt classes into the designer plugin instead

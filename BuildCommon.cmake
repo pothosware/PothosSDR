@@ -13,6 +13,7 @@
 ## * portaudio (gr-audio, pothos-audio)
 ## * wxwidgets (cubicsdr, limesuite)
 ## * qt5 (pothos-flow, gnuradio, gqrx, inspectrum)
+## * qwt (gr-qtgui, pothos-plotters)
 ## * faac (gr-drm)
 ## * faad2 (gr-drm)
 ## * cppunit (gnuradio)
@@ -21,6 +22,7 @@
 ## * pybind11 (gnuradio)
 ## * log4cpp (gnuradio)
 ## * gmp (gnuradio)
+## * libsndfile (gr-blocks)
 ############################################################
 
 set(PTHREADS_BRANCH master)
@@ -33,6 +35,7 @@ set(MUPARSERX_BRANCH v4.0.8)
 set(PORTAUDIO_BRANCH master)
 set(WXWIDGETS_BRANCH v3.1.4)
 set(QT5_BRANCH 5.15) #LTS
+set(QWT_BRANCH master)
 set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
@@ -41,6 +44,7 @@ set(LIBXML2_BRANCH v2.9.10)
 set(PYBIND11_BRANCH master)
 set(LOG4CPP_BRANCH master)
 set(MPIR_BRANCH master)
+set(LIBSNDFILE_BRANCH master)
 
 ############################################################
 ## Build Pthreads for win32
@@ -293,6 +297,27 @@ install(FILES "${QT5_ROOT}/plugins/platforms/qwindows.dll" DESTINATION bin/platf
 install(FILES "${QT5_ROOT}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
 
 ############################################################
+## Build QWT
+############################################################
+MyExternalProject_Add(qwt
+    DEPENDS Qt5
+    GIT_REPOSITORY https://github.com/opencor/qwt.git
+    GIT_TAG ${QWT_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/qwt.diff
+    CONFIGURE_COMMAND cd <BINARY_DIR> && ${QT5_ROOT}/bin/qmake.exe <SOURCE_DIR>/qwt.pro
+    BUILD_COMMAND nmake release
+    INSTALL_COMMAND echo "..."
+    LICENSE_FILES COPYING
+)
+
+ExternalProject_Get_Property(qwt SOURCE_DIR)
+ExternalProject_Get_Property(qwt BINARY_DIR)
+set(QWT_INCLUDE_DIR ${SOURCE_DIR}/src)
+set(QWT_LIBRARY ${BINARY_DIR}/lib/qwt.lib)
+install(FILES ${BINARY_DIR}/lib/qwt.dll DESTINATION bin)
+
+############################################################
 ## Build FAAC
 ############################################################
 MyExternalProject_Add(faac
@@ -459,19 +484,36 @@ MyExternalProject_Add(Log4CPP
 )
 
 ############################################################
-## Build MPIR (static lib)
+## Build MPIR
+##
+## dll_mpir_gc builds both mpirxx and mpir as one library
+## so we copy mpir.lib to mpirxx.lib to trick gnuradio
 ############################################################
 MyExternalProject_Add(MPIR
     GIT_REPOSITORY git://github.com/BrianGladman/mpir.git
     GIT_TAG ${MPIR_BRANCH}
     CONFIGURE_COMMAND echo "Configure MPIR..."
-    BUILD_COMMAND cd <SOURCE_DIR>/msvc/vs19 && msbuild.bat gc LIB x64 Release &&
-        cd <SOURCE_DIR>/msvc/vs19 && msbuild.bat cxx LIB x64 Release
-    INSTALL_COMMAND echo "..."
+    BUILD_COMMAND cd <SOURCE_DIR>/msvc/vs19 && call msbuild.bat gc DLL x64 Release
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/msvc/vs19/dll_mpir_gc/x64/Release/mpir.lib <SOURCE_DIR>/msvc/vs19/dll_mpir_gc/x64/Release/mpirxx.lib
     LICENSE_FILES COPYING COPYING.LIB
 )
 
 ExternalProject_Get_Property(MPIR SOURCE_DIR)
-set(MPIR_INCLUDE_DIR ${SOURCE_DIR}/msvc/vs19/lib_mpir_cxx/x64/Release)
-set(MPIR_LIBRARY ${SOURCE_DIR}/msvc/vs19/lib_mpir_gc/x64/Release/mpir.lib)
-set(MPIRXX_LIBRARY ${SOURCE_DIR}/msvc/vs19/lib_mpir_cxx/x64/Release/mpirxx.lib)
+set(MPIR_INCLUDE_DIR ${SOURCE_DIR}/msvc/vs19/dll_mpir_gc/x64/Release)
+set(MPIR_LIBRARY ${SOURCE_DIR}/msvc/vs19/dll_mpir_gc/x64/Release/mpir.lib)
+set(MPIRXX_LIBRARY ${SOURCE_DIR}/msvc/vs19/dll_mpir_gc/x64/Release/mpirxx.lib) #same lib
+install(FILES ${SOURCE_DIR}/msvc/vs19/dll_mpir_gc/x64/Release/mpir.dll DESTINATION bin)
+
+############################################################
+## Build libsndfile
+############################################################
+MyExternalProject_Add(libsndfile
+    GIT_REPOSITORY https://github.com/libsndfile/libsndfile.git
+    GIT_TAG ${LIBSNDFILE_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    LICENSE_FILES COPYING
+)

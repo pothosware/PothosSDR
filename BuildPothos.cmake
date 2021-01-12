@@ -164,7 +164,7 @@ DeleteRegKey HKEY_CLASSES_ROOT \\\"Pothos.Flow\\\"
 ## Build Pothos Plotters toolkit
 ############################################################
 MyExternalProject_Add(PothosPlotters
-    DEPENDS PothosCore Spuce Qt5
+    DEPENDS PothosCore Spuce Qt5 qwt
     GIT_REPOSITORY https://github.com/pothosware/PothosPlotters.git
     GIT_TAG ${POTHOS_PLOTTERS_BRANCH}
     CMAKE_DEFAULTS ON
@@ -173,6 +173,8 @@ MyExternalProject_Add(PothosPlotters
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
+        -DQWT_INCLUDE_DIR=${QWT_INCLUDE_DIR}
+        -DQWT_LIBRARY=${QWT_LIBRARY}
         -DCMAKE_PREFIX_PATH=${QT5_ROOT}
     LICENSE_FILES LICENSE_1_0.txt
 )

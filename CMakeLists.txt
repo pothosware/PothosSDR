@@ -100,7 +100,6 @@ include(BuildHwDrivers.cmake)
 include(BuildSoapySDR.cmake)
 include(BuildSDRApps.cmake)
 include(BuildPothos.cmake)
-#include(BuildGrQt4Deps.cmake)
 include(BuildGNURadio.cmake)
 
 ########################################################################
