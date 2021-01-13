@@ -151,7 +151,7 @@ set(BISON_EXECUTABLE "${SOURCE_DIR}/bin/Release/win_bison.exe")
 ############################################################
 ## SDRplay API
 ############################################################
-get_filename_component(SDRPLAY_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\API;Install_Dir]" ABSOLUTE)
+get_filename_component(SDRPLAY_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\Service\\API;Install_Dir]" ABSOLUTE)
 if (EXISTS "${SDRPLAY_API_DIR}")
     message(STATUS "SDRPLAY_API_DIR: ${SDRPLAY_API_DIR}")
     install(

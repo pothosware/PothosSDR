@@ -110,6 +110,7 @@ MyExternalProject_Add(GNURadio
         -DCMAKE_PREFIX_PATH=${QT5_ROOT}
         -DQWT_INCLUDE_DIRS=${QWT_INCLUDE_DIR}
         -DQWT_LIBRARIES=${QWT_LIBRARY}
+        -DENABLE_GRC=OFF #FIXME dependencies
     LICENSE_FILES COPYING
 )
 

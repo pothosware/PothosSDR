@@ -475,6 +475,8 @@ MyExternalProject_Add(PyBind11
 MyExternalProject_Add(Log4CPP
     GIT_REPOSITORY https://github.com/orocos-toolchain/log4cpp.git
     GIT_TAG ${LOG4CPP_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/log4cpp.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
