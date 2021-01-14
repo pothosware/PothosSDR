@@ -9,6 +9,5 @@
 | airspyhf      | airspyhf_missing_getopt.diff         | https://github.com/airspy/airspyhf/pull/28            |
 | GNURadio      | gnuradio.diff                        | minor build fixes not upstreamed                      |
 | QWT           | qwt.diff                             | disable qt designer plugin                            |
-| Python        | manually edit pyerrors.h snprintf    | https://bugs.python.org/issue36020                    |
 | gr-osmodr     | gr-osmodr.diff                       | replace boost::shared_ptr with std::shared_ptr        |
 | log4cpp       | log4cpp.diff                         | install the dll to the bin/ directory                 |

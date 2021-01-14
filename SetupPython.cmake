@@ -3,10 +3,10 @@
 ##
 ## This script handles python config and registry paths.
 ##
-## * python3.8
+## * python3.9
 ############################################################
 
-set(PYTHON3_VERSION "3.8")
+set(PYTHON3_VERSION "3.9")
 string(REPLACE "." "" PYTHON3_VERSION_NO_DOT "${PYTHON3_VERSION}")
 get_filename_component(PYTHON3_ROOT "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\${PYTHON3_VERSION}\\InstallPath]" ABSOLUTE)
 if (NOT EXISTS "${PYTHON3_ROOT}")
