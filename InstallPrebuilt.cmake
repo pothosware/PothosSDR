@@ -10,7 +10,6 @@
 ## * swig (prebuilt generator)
 ## * fftw (prebuilt runtime dlls)
 ## * liquiddsp (prebuilt runtime dlls)
-## * winflexbison (generator exes)
 ############################################################
 
 ############################################################
@@ -43,6 +42,7 @@ message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")
 message(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
 message(STATUS "BOOST_DLL_SUFFIX: ${BOOST_DLL_SUFFIX}")
 
+if (EXISTS ${BOOST_ROOT})
 install(FILES
     "${BOOST_LIBRARYDIR}/boost_thread-${BOOST_DLL_SUFFIX}"
     "${BOOST_LIBRARYDIR}/boost_system-${BOOST_DLL_SUFFIX}"
@@ -56,11 +56,14 @@ install(FILES
 )
 
 install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
+else()
+    message(STATUS "Prebuilt boost not found (${BOOST_ROOT})")
+endif()
 
 ############################################################
 ## Cypress API (prebuilt)
 ############################################################
-set(FX3_SDK_PATH "C:/local/EZ-USB FX3 SDK/1.3")
+set(FX3_SDK_PATH "C:/Program Files (x86)/Cypress/EZ-USB FX3 SDK/1.3")
 
 if (EXISTS ${FX3_SDK_PATH})
     message(STATUS "FX3_SDK_PATH: ${FX3_SDK_PATH}")
@@ -70,7 +73,7 @@ else()
     set(FX3_SDK_FOUND FALSE)
 endif()
 
-#nothing to install, this is a static
+#nothing to install, limesuite uses the static library
 
 ############################################################
 ## SWIG dependency (prebuilt)
@@ -131,22 +134,6 @@ set(LIQUIDDSP_DLL ${SOURCE_DIR}/msvc/64/libliquid.dll)
 install(FILES ${LIQUIDDSP_INCLUDE_DIR}/liquid/liquid.h DESTINATION include/liquid)
 install(FILES ${LIQUIDDSP_LIBRARY} DESTINATION lib)
 install(FILES ${LIQUIDDSP_DLL} DESTINATION bin)
-
-############################################################
-## Download winflexbison
-############################################################
-MyExternalProject_Add(winflexbison
-    URL https://github.com/lexxmark/winflexbison/archive/v2.5.15.zip
-    URL_MD5 cbc9d36d620c2cc7a4a2da32c4e96409
-    CONFIGURE_COMMAND echo "..."
-    BUILD_COMMAND echo "..."
-    INSTALL_COMMAND echo "..."
-    LICENSE_FILES README.md
-)
-
-ExternalProject_Get_Property(winflexbison SOURCE_DIR)
-set(FLEX_EXECUTABLE "${SOURCE_DIR}/bin/Release/win_flex.exe")
-set(BISON_EXECUTABLE "${SOURCE_DIR}/bin/Release/win_bison.exe")
 
 ############################################################
 ## SDRplay API

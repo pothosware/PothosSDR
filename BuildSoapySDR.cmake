@@ -159,6 +159,7 @@ MyExternalProject_Add(SoapyHackRF
 ## * ENABLE_RTL=OFF see Soapy RTL-SDR
 ## * ENABLE_AIRSPY=OFF see Soapy Airspy
 ############################################################
+if (EXISTS ${BOOST_ROOT})
 MyExternalProject_Add(SoapyOsmo
     DEPENDS SoapySDR osmo-sdr miri-sdr #airspy bladeRF hackRF rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
@@ -178,6 +179,10 @@ MyExternalProject_Add(SoapyOsmo
         -DENABLE_MIRI=ON
     LICENSE_FILES COPYING
 )
+
+else()
+    message(STATUS "Boost missing, skipping SoapyOsmo...")
+endif()
 
 ############################################################
 ## Build SoapyRTLSDR
@@ -210,6 +215,7 @@ MyExternalProject_Add(SoapyRemote
 ############################################################
 ## Build SoapyUHD
 ############################################################
+if (EXISTS ${BOOST_ROOT})
 MyExternalProject_Add(SoapyUHD
     DEPENDS SoapySDR uhd
     GIT_REPOSITORY https://github.com/pothosware/SoapyUHD.git
@@ -224,6 +230,9 @@ MyExternalProject_Add(SoapyUHD
         -DUHD_LIBRARIES=${UHD_LIBRARIES}
     LICENSE_FILES COPYING
 )
+else()
+    message(STATUS "Boost missing, skipping SoapyUHD...")
+endif()
 
 ############################################################
 ## Build SoapyRedPitaya

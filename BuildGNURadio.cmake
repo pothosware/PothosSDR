@@ -4,38 +4,31 @@
 ## This script builds GNU Radio and toolkit bindings
 ##
 ## * volk
+## * SoapyVolk
 ## * gnuradio
-## * gr-runtime (runtime + pothos support)
-## * gr-pothos (toolkit bindings project)
 ## * gr-osmosdr
-## * gr-rds
 ## * gqrx
-## * gr-drm
-## * gr-rftap
-## * gr-nrsc5
-## * gr-iio
-## * gr-limesdr
+## * gr-sdrplay3
 ############################################################
 
 set(VOLK_BRANCH master)
+set(SOAPYVOLK_BRANCH master)
 set(GNURADIO_BRANCH master)
-set(GR_POTHOS_BRANCH master)
 set(GROSMOSDR_BRANCH master)
-set(GRRDS_BRANCH maint-3.7)
 set(GQRX_BRANCH master)
-set(GRDRM_BRANCH master)
-set(GRRFTAP_BRANCH master)
-set(GRNRSC5_BRANCH 610d6d772390cee9afdeea07f7e7a79bd3460a57) #prior to 3.8 req
-set(GRIIO_BRANCH master)
-set(GRLIMESDR_BRANCH master)
+set(GRSDRPLAY3 master)
+
+if (NOT EXISTS ${BOOST_ROOT})
+    return() #boost is a requirement for all projects here
+endif ()
 
 ############################################################
 # python generation tools
 # volk uses mako
 # gnuradio uses pygccxml numpy PyQt5
-# gr-pothos uses same python3 deps as PothosLiquidDSP
+# gr-sdrplay3 uses six
 ############################################################
-execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako pygccxml numpy PyQt5 OUTPUT_QUIET)
+execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako pygccxml numpy PyQt5 six OUTPUT_QUIET)
 
 ############################################################
 ## Build Volk
@@ -65,6 +58,21 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"VOLK_PREFIX\\\"
 ")
 
 ############################################################
+## Build SoapyVolk
+############################################################
+MyExternalProject_Add(SoapyVolk
+    DEPENDS SoapySDR volk
+    GIT_REPOSITORY https://github.com/pothosware/SoapyVOLKConverters.git
+    GIT_TAG ${SOAPYVOLK_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    LICENSE_FILES COPYING
+)
+
+############################################################
 ## Build GNU Radio
 ############################################################
 MyExternalProject_Add(GNURadio
@@ -78,8 +86,8 @@ MyExternalProject_Add(GNURadio
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DLOG4CPP_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include/orocos
-        -DLOG4CPP_LIBRARY=${CMAKE_INSTALL_PREFIX}/lib/orocos-log4cpp.lib
+        -DLOG4CPP_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include
+        -DLOG4CPP_LIBRARY=${CMAKE_INSTALL_PREFIX}/lib/log4cpp.lib
         -DMPIR_INCLUDE_DIR=${MPIR_INCLUDE_DIR}
         -DMPIR_LIBRARY=${MPIR_LIBRARY}
         -DMPIRXX_LIBRARY=${MPIRXX_LIBRARY}
@@ -124,51 +132,6 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GR_PREFIX\\\"
 DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GRC_BLOCKS_PATH\\\"
 ")
 
-########################################################################
-## gnuradio-companion.exe
-########################################################################
-if (FALSE) #TODO
-MyExternalProject_Add(GnuradioCompanionExe
-    GIT_REPOSITORY https://github.com/pothosware/gnuradio-companion-exe.git
-    CMAKE_DEFAULTS ON
-    CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    LICENSE_FILES README.md
-)
-
-list(APPEND CPACK_PACKAGE_EXECUTABLES "gnuradio-companion" "GNURadio Companion")
-list(APPEND CPACK_CREATE_DESKTOP_LINKS "gnuradio-companion")
-
-set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
-WriteRegStr HKEY_CLASSES_ROOT \\\".grc\\\" \\\"\\\" \\\"GNURadio.Companion\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\bin\\\\gnuradio-companion.exe\\\"
-WriteRegStr HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${NEQ}$INSTDIR\\\\bin\\\\gnuradio-companion.exe${NEQ} ${NEQ}%1${NEQ} %*\\\"
-")
-
-set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
-DeleteRegKey HKEY_CLASSES_ROOT \\\".grc\\\"
-DeleteRegKey HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\"
-")
-
-############################################################
-## GR Pothos bindings
-############################################################
-MyExternalProject_Add(GrPothos
-    DEPENDS GNURadio PothosCore
-    GIT_REPOSITORY https://github.com/pothosware/gr-pothos.git
-    GIT_TAG ${GR_POTHOS_BRANCH}
-    CMAKE_DEFAULTS ON
-    CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-    LICENSE_FILES COPYING
-)
-endif()
-
 ############################################################
 ## Build GrOsmoSDR
 ##
@@ -185,8 +148,8 @@ MyExternalProject_Add(GrOsmoSDR
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DLOG4CPP_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include/orocos
-        -DLOG4CPP_LIBRARY=${CMAKE_INSTALL_PREFIX}/lib/orocos-log4cpp.lib
+        -DLOG4CPP_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include
+        -DLOG4CPP_LIBRARY=${CMAKE_INSTALL_PREFIX}/lib/log4cpp.lib
         -DMPIR_INCLUDE_DIR=${MPIR_INCLUDE_DIR}
         -DMPIR_LIBRARY=${MPIR_LIBRARY}
         -DMPIRXX_LIBRARY=${MPIRXX_LIBRARY}
@@ -208,30 +171,6 @@ MyExternalProject_Add(GrOsmoSDR
 )
 
 ############################################################
-## Build gr-rds
-############################################################
-if (FALSE) #TODO
-MyExternalProject_Add(GrRDS
-    DEPENDS GNURadio
-    GIT_REPOSITORY https://github.com/bastibl/gr-rds.git
-    GIT_TAG ${GRRDS_BRANCH}
-    CMAKE_DEFAULTS ON
-    CMAKE_ARGS
-        -Wno-dev
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DBOOST_ALL_DYN_LINK=TRUE
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
-        -DSWIG_DIR=${SWIG_DIR}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-    LICENSE_FILES COPYING
-)
-endif()
-
-############################################################
 ## Build GQRX
 ############################################################
 MyExternalProject_Add(GQRX
@@ -243,8 +182,8 @@ MyExternalProject_Add(GQRX
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DLOG4CPP_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include/orocos
-        -DLOG4CPP_LIBRARY=${CMAKE_INSTALL_PREFIX}/lib/orocos-log4cpp.lib
+        -DLOG4CPP_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include
+        -DLOG4CPP_LIBRARY=${CMAKE_INSTALL_PREFIX}/lib/log4cpp.lib
         -DMPIR_INCLUDE_DIR=${MPIR_INCLUDE_DIR}
         -DMPIR_LIBRARY=${MPIR_LIBRARY}
         -DMPIRXX_LIBRARY=${MPIRXX_LIBRARY}
@@ -261,133 +200,32 @@ MyExternalProject_Add(GQRX
 list(APPEND CPACK_PACKAGE_EXECUTABLES "gqrx" "GQRX SDR")
 list(APPEND CPACK_CREATE_DESKTOP_LINKS "gqrx")
 
-#FIXME as we test
-return()
-
 ############################################################
-## Build gr-drm
+## Build GrSDRPlay3
 ############################################################
-MyExternalProject_Add(GrDRM
-    DEPENDS GNURadio faac faad2
-    GIT_REPOSITORY https://github.com/kit-cel/gr-drm.git
-    GIT_TAG ${GRDRM_BRANCH}
-    CMAKE_DEFAULTS ON
-    CMAKE_ARGS
-        -Wno-dev
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DBOOST_ALL_DYN_LINK=TRUE
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
-        -DSWIG_DIR=${SWIG_DIR}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DFaac_INCLUDE_DIR=${Faac_INCLUDE_DIR}
-        -DFaac_LIBRARY=${Faac_LIBRARY}
-        -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
-        -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
-    LICENSE_FILES COPYING.txt
-)
-
-############################################################
-## Build gr-RFtap
-############################################################
-MyExternalProject_Add(GrRFtap
+if (EXISTS "${SDRPLAY_API_DIR}")
+MyExternalProject_Add(GrSDRPlay3
     DEPENDS GNURadio
-    GIT_REPOSITORY https://github.com/rftap/gr-rftap.git
-    GIT_TAG ${GRRFTAP_BRANCH}
+    GIT_REPOSITORY https://github.com/fventuri/gr-sdrplay3.git
+    GIT_TAG ${GRSDRPLAY3}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DLOG4CPP_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include
+        -DLOG4CPP_LIBRARY=${CMAKE_INSTALL_PREFIX}/lib/log4cpp.lib
+        -DMPIR_INCLUDE_DIR=${MPIR_INCLUDE_DIR}
+        -DMPIR_LIBRARY=${MPIR_LIBRARY}
+        -DMPIRXX_LIBRARY=${MPIRXX_LIBRARY}
+        -DFFTW3f_INCLUDE_DIRS=${FFTW3F_INCLUDE_DIRS}
+        -DFFTW3f_LIBRARIES=${FFTW3F_LIBRARIES}
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DBOOST_ALL_DYN_LINK=TRUE
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
-        -DSWIG_DIR=${SWIG_DIR}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
-        -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
-    LICENSE_FILES MANIFEST.md
+    LICENSE_FILES COPYING LICENSE
 )
 
-############################################################
-## Build gr-NRSC5
-############################################################
-MyExternalProject_Add(GrNRSC5
-    DEPENDS GNURadio fdk_aac
-    GIT_REPOSITORY https://github.com/argilo/gr-nrsc5.git
-    GIT_TAG ${GRNRSC5_BRANCH}
-    CMAKE_DEFAULTS ON
-    CMAKE_ARGS
-        -Wno-dev
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DBOOST_ALL_DYN_LINK=TRUE
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
-        -DSWIG_DIR=${SWIG_DIR}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DCPPUNIT_INCLUDE_DIRS=${CPPUNIT_INCLUDE_DIRS}
-        -DCPPUNIT_LIBRARIES=${CPPUNIT_LIBRARIES}
-        -DFDK_AAC_INCLUDE_DIR=${FDK_AAC_INCLUDE_DIR}
-        -DFDK_AAC_LIBRARY=${FDK_AAC_LIBRARY}
-    LICENSE_FILES COPYING
-)
-
-############################################################
-## Build gr-IIO
-############################################################
-MyExternalProject_Add(GrIIO
-    DEPENDS GNURadio libad9361 winflexbison
-    GIT_REPOSITORY https://github.com/analogdevicesinc/gr-iio.git
-    GIT_TAG ${GRIIO_BRANCH}
-    CMAKE_DEFAULTS ON
-    CMAKE_ARGS
-        -Wno-dev
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DBOOST_ALL_DYN_LINK=TRUE
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
-        -DSWIG_DIR=${SWIG_DIR}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DIIO_INCLUDE_DIRS=${LIBIIO_INCLUDE_DIR}
-        -DIIO_LIBRARIES=${LIBIIO_LIBRARY}
-        -DAD9361_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include/
-        -DAD9361_LIBRARIES=${CMAKE_INSTALL_PREFIX}/lib/libad9361.lib
-        -DFLEX_EXECUTABLE=${FLEX_EXECUTABLE}
-        -DBISON_EXECUTABLE=${BISON_EXECUTABLE}
-    LICENSE_FILES COPYING
-)
-
-############################################################
-## Build gr-limesdr
-############################################################
-MyExternalProject_Add(GrLimeSDR
-    DEPENDS GNURadio LimeSuite
-    GIT_REPOSITORY https://github.com/myriadrf/gr-limesdr.git
-    GIT_TAG ${GRLIMESDR_BRANCH}
-    CMAKE_DEFAULTS ON
-    CMAKE_ARGS
-        -Wno-dev
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DBOOST_ALL_DYN_LINK=TRUE
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DGR_PYTHON_DIR=${PYTHON2_INSTALL_DIR}
-        -DSWIG_DIR=${SWIG_DIR}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DLIMESUITE_INCLUDE_DIRS=${CMAKE_INSTALL_PREFIX}/include/lime
-        -DLIMESUITE_LIB=${CMAKE_INSTALL_PREFIX}/lib/LimeSuite.lib
-    LICENSE_FILES LICENSE
-)
+else ()
+    message(STATUS "!Skipping GrSDRPlay3 - sdrplay_api not found")
+endif ()

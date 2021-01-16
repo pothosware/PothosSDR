@@ -166,6 +166,7 @@ MyExternalProject_Add(hackRF
 ############################################################
 ## Build UHD
 ############################################################
+if (EXISTS ${BOOST_ROOT})
 MyExternalProject_Add(uhd
     DEPENDS libusb
     GIT_REPOSITORY https://github.com/EttusResearch/uhd.git
@@ -195,6 +196,10 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"UHD_PKG_PATH\\\"
 
 set(UHD_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
 set(UHD_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/uhd.lib)
+
+else()
+    message(STATUS "Boost missing, skipping uhd...")
+endif()
 
 ############################################################
 ## Build Airspy
