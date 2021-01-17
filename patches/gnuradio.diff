@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index be367c5db..3aede7cb8 100644
+index 4b2510a05..7b5fe618c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -282,8 +282,8 @@ file(TO_NATIVE_PATH "${CMAKE_INSTALL_PREFIX}"           prefix)
+@@ -283,8 +283,8 @@ file(TO_NATIVE_PATH "${CMAKE_INSTALL_PREFIX}"           prefix)
  file(TO_NATIVE_PATH "\${prefix}"                        exec_prefix)
  file(TO_NATIVE_PATH "\${exec_prefix}/${GR_LIBRARY_DIR}" libdir)
  file(TO_NATIVE_PATH "\${prefix}/${GR_INCLUDE_DIR}"      includedir)
@@ -24,3 +24,16 @@ index 6d39d8d4b..cf8904367 100644
 -    set(RC_MAINT_VERSION ${MAINT_VERSION})
 +    set(RC_MAINT_VERSION "0")
  endif()
+diff --git a/gnuradio-runtime/lib/CMakeLists.txt b/gnuradio-runtime/lib/CMakeLists.txt
+index db6d74949..de42cf000 100644
+--- a/gnuradio-runtime/lib/CMakeLists.txt
++++ b/gnuradio-runtime/lib/CMakeLists.txt
+@@ -50,7 +50,7 @@ set(MATH_SINE_TABLE_GENERATOR ${CMAKE_CURRENT_SOURCE_DIR}/math/gen_sine_table.py
+ add_custom_command(
+   DEPENDS ${MATH_SINE_TABLE_GENERATOR}
+   OUTPUT ${MATH_SINE_TABLE_HEADER}
+-  COMMAND ${PYTHON_EXECUTABLE} ${MATH_SINE_TABLE_GENERATOR} | install -D /dev/stdin ${MATH_SINE_TABLE_HEADER}
++  COMMAND ${PYTHON_EXECUTABLE} ${MATH_SINE_TABLE_GENERATOR} > ${MATH_SINE_TABLE_HEADER}
+ )
+ 
+ add_library(gnuradio-runtime

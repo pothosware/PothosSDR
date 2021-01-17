@@ -11,3 +11,4 @@
 | QWT           | qwt.diff                             | disable qt designer plugin                            |
 | gr-osmodr     | gr-osmodr.diff                       | replace boost::shared_ptr with std::shared_ptr        |
 | log4cpp       | log4cpp.diff                         | fix dll install path, remove repository theme         |
+| bladerf       | bladerf.diff                         | fix issues with cyusb.c                               |

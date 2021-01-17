@@ -89,14 +89,17 @@ MyExternalProject_Add(rtl-sdr
 ## Build BladeRF
 ############################################################
 MyExternalProject_Add(bladeRF
-    DEPENDS Pthreads libusb Pthreads
+    DEPENDS Pthreads libusb
     GIT_REPOSITORY https://github.com/Nuand/bladeRF.git
     GIT_TAG ${BLADERF_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/bladerf.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DTREAT_WARNINGS_AS_ERRORS=OFF
         -DENABLE_BACKEND_USB=ON
         -DENABLE_BACKEND_LIBUSB=ON
         -DENABLE_BACKEND_CYAPI=${FX3_SDK_FOUND}
@@ -133,9 +136,12 @@ MyExternalProject_Add(bladeRF
 )
 
 #bladerf tries to install this file, but its not part of the SDK, so make it
-if (NOT EXISTS "${FX3_SDK_PATH}/license/license.txt")
-    file(WRITE "${FX3_SDK_PATH}/license/license.txt" "http://www.cypress.com")
-endif()
+ExternalProject_Get_Property(bladeRF BINARY_DIR)
+execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory
+    "${BINARY_DIR}/output/${CMAKE_BUILD_TYPE}/drivers/CyUSB3")
+execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${FX3_SDK_PATH}/driver/bin/Win8.1/x64/WdfCoinstaller01011.dll"
+    "${BINARY_DIR}/output/${CMAKE_BUILD_TYPE}/drivers/CyUSB3")
 
 ############################################################
 ## Build HackRF

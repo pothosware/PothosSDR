@@ -1,3 +1,15 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 74c54f5..38f5f0d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -267,6 +267,7 @@ add_custom_target(uninstall
+ # Add subdirectories
+ ########################################################################
+ add_subdirectory(include/osmosdr)
++include(GrPython) #needed anyway since runtime libs want Python::Module?
+ add_subdirectory(lib)
+ if(ENABLE_PYTHON)
+     add_subdirectory(swig)
 diff --git a/include/osmosdr/sink.h b/include/osmosdr/sink.h
 index 906976e..1f72a5e 100644
 --- a/include/osmosdr/sink.h

@@ -13,6 +13,7 @@
 ## * PothosSoapy (toolkit)
 ## * PothosWidgets (toolkit)
 ## * PothosLiquidDSP (toolkit)
+## * PothosNumpy (toolkit)
 ############################################################
 
 set(POTHOS_BRANCH master)
@@ -25,12 +26,12 @@ set(POTHOS_PYTHON_BRANCH master)
 set(POTHOS_SDR_BRANCH master)
 set(POTHOS_WIDGETS_BRANCH master)
 set(POTHOS_LIQUID_DSP_BRANCH master)
-set(POTHOS_IIO_BRANCH master)
-set(POTHOS_MODULES_DIR "modules0.7")
+set(POTHOS_NUMPY_BRANCH master)
 
 ############################################################
 # python generation tools
 # PothosLiquidDSP uses ply, mako, colorama
+# PothosNumpy uses pyyaml, mako
 ############################################################
 execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako ply pyyaml colorama OUTPUT_QUIET)
 
@@ -291,20 +292,19 @@ MyExternalProject_Add(PothosLiquidDSP
 )
 
 ############################################################
-## Build IIO
-## Disabled because WITH_LOCAL_BACKEND is linux only
+## Build Python Numpy toolkit
 ############################################################
-#MyExternalProject_Add(PothosIIO
-    #DEPENDS PothosCore libiio
-    #GIT_REPOSITORY https://github.com/pothosware/PothosIIO.git
-    #GIT_TAG ${POTHOS_IIO_BRANCH}
-    #CMAKE_DEFAULTS ON
-    #CMAKE_ARGS
-        #-Wno-dev
-        #-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        #-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        #-DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
-        #-DLIBIIO_INCLUDE_DIR=${LIBIIO_INCLUDE_DIR}
-        #-DLIBIIO_LIBRARY=${LIBIIO_LIBRARY}
-    #LICENSE_FILES LICENSE_1_0.txt
-#)
+return() #FIXME
+MyExternalProject_Add(PothosNumpy
+    DEPENDS PothosCore
+    GIT_REPOSITORY https://github.com/pothosware/PothosNumPy.git
+    GIT_TAG ${POTHOS_NUMPY_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPoco_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/Poco
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
+    LICENSE_FILES LICENSE.txt
+)
