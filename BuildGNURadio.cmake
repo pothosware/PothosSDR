@@ -14,6 +14,7 @@
 set(VOLK_BRANCH master)
 set(SOAPYVOLK_BRANCH master)
 set(GNURADIO_BRANCH master)
+set(GRC_EXE_BRANCH gr3.9)
 set(GROSMOSDR_BRANCH master)
 set(GQRX_BRANCH master)
 set(GRSDRPLAY3 master)
@@ -25,10 +26,10 @@ endif ()
 ############################################################
 # python generation tools
 # volk uses mako
-# gnuradio uses pygccxml numpy PyQt5
+# gnuradio uses pygccxml PyQt5 pyyaml numpy mako
 # gr-sdrplay3 uses six
 ############################################################
-execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako pygccxml numpy PyQt5 six OUTPUT_QUIET)
+execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako pygccxml pyyaml numpy PyQt5 six OUTPUT_QUIET)
 
 ############################################################
 ## Build Volk
@@ -132,6 +133,34 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GR_PREFIX\\\"
 DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"GRC_BLOCKS_PATH\\\"
 ")
 
+########################################################################
+## gnuradio-companion.exe
+########################################################################
+MyExternalProject_Add(GnuradioCompanionExe
+    GIT_REPOSITORY https://github.com/pothosware/gnuradio-companion-exe.git
+    GIT_TAG ${GRC_EXE_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPYTHON_VERSION=${PYTHON3_VERSION}
+    LICENSE_FILES README.md
+)
+
+list(APPEND CPACK_PACKAGE_EXECUTABLES "gnuradio-companion" "GNURadio Companion")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "gnuradio-companion")
+
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}
+WriteRegStr HKEY_CLASSES_ROOT \\\".grc\\\" \\\"\\\" \\\"GNURadio.Companion\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\\DefaultIcon\\\" \\\"\\\" \\\"$INSTDIR\\\\bin\\\\gnuradio-companion.exe\\\"
+WriteRegStr HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\\Shell\\\\Open\\\\command\\\" \\\"\\\" \\\"${NEQ}$INSTDIR\\\\bin\\\\gnuradio-companion.exe${NEQ} ${NEQ}%1${NEQ} %*\\\"
+")
+
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
+DeleteRegKey HKEY_CLASSES_ROOT \\\".grc\\\"
+DeleteRegKey HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\"
+")
+
 ############################################################
 ## Build GrOsmoSDR
 ##
@@ -223,6 +252,10 @@ MyExternalProject_Add(GrSDRPlay3
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DBOOST_ALL_DYN_LINK=TRUE
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
+        -DPYTHON_INCLUDE_DIR=${PYTHON3_INCLUDE_DIR}
+        -DPYTHON_LIBRARY=${PYTHON3_LIBRARY}
+        -DGR_PYTHON_DIR=${PYTHON3_INSTALL_DIR}
     LICENSE_FILES COPYING LICENSE
 )
 

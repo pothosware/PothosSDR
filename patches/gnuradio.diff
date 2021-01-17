@@ -37,3 +37,18 @@ index db6d74949..de42cf000 100644
  )
  
  add_library(gnuradio-runtime
+diff --git a/gnuradio-runtime/python/gnuradio/__init__.py b/gnuradio-runtime/python/gnuradio/__init__.py
+index ab3bbdbf1..f4d1e31f2 100644
+--- a/gnuradio-runtime/python/gnuradio/__init__.py
++++ b/gnuradio-runtime/python/gnuradio/__init__.py
+@@ -13,6 +13,10 @@ GNU Radio is licensed under the GNU General Public License (GPL) version 3. All
+ 
+ import os
+ 
++RUNTIME_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'bin'))
++try: os.add_dll_directory(RUNTIME_DIR)
++except: pass
++
+ # Check if the gnuradio package is installed or whether we're attempting to import it from
+ # the build directory.
+ path_ending = os.path.join('gnuradio-runtime', 'python', 'gnuradio', '__init__.py')
