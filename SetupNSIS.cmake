@@ -113,6 +113,9 @@ foreach(install_file ${ALL_FILES})
 
     #install file to itself with the component name
     get_filename_component(MYDESTINATION "${install_file}" DIRECTORY)
+    if ("${MYDESTINATION}" STREQUAL "")
+        set(MYDESTINATION "./")
+    endif()
     install(
         FILES "${CMAKE_INSTALL_PREFIX}/${install_file}"
         DESTINATION "${MYDESTINATION}"

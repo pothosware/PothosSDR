@@ -39,7 +39,7 @@ execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako ply pyyaml 
 ## Build Pothos framework
 ############################################################
 MyExternalProject_Add(PothosCore
-    DEPENDS Poco muparserx
+    DEPENDS Poco muparserx nlohmann_json
     GIT_REPOSITORY https://github.com/pothosware/PothosCore.git
     GIT_TAG ${POTHOS_BRANCH}
     GIT_SUBMODULES libsimdpp

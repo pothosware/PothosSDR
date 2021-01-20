@@ -83,12 +83,7 @@ MyExternalProject_Add(SoapySDRPython3
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DSWIG_DIR=${SWIG_DIR}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    #extra install command to inject add_dll_directory for DLL search changes in python3.8
-    INSTALL_COMMAND
-        ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install &&
-        cat "${CMAKE_SOURCE_DIR}/python/soapysdr_python38_add_dll_directory.py" > "${CMAKE_BINARY_DIR}/SoapySDR.py" &&
-        cat "${CMAKE_INSTALL_PREFIX}/${PYTHON3_INSTALL_DIR}/SoapySDR.py" >> "${CMAKE_BINARY_DIR}/SoapySDR.py" &&
-        ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/SoapySDR.py" "${CMAKE_INSTALL_PREFIX}/${PYTHON3_INSTALL_DIR}"
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
     LICENSE_FILES LICENSE_1_0.txt
 )
 

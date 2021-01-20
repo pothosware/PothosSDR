@@ -10,6 +10,7 @@
 ## * poco (pothos framework + toolkits)
 ## * spuce (pothos-comms + plotters)
 ## * muparserx (pothos framework)
+## * nlohmann json (pothos framework)
 ## * portaudio (gr-audio, pothos-audio)
 ## * wxwidgets (cubicsdr, limesuite)
 ## * qt5 (pothos-flow, gnuradio, gqrx, inspectrum)
@@ -32,6 +33,7 @@ set(CPPZMQ_BRANCH master)
 set(POCO_BRANCH poco-1.9.4-release) #1.10.x release missing openssl submodule
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.8)
+set(NLOHMANN_JSON_BRANCH v3.9.1)
 set(PORTAUDIO_BRANCH master)
 set(WXWIDGETS_BRANCH v3.1.4)
 set(QT5_BRANCH 5.15) #LTS
@@ -190,6 +192,23 @@ MyExternalProject_Add(muparserx
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     LICENSE_FILES License.txt
+)
+
+############################################################
+## Install nlohmann json (header only)
+############################################################
+MyExternalProject_Add(nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG ${NLOHMANN_JSON_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DJSON_BuildTests=OFF
+        -DJSON_MultipleHeaders=OFF
+        -DJSON_Install=ON
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    LICENSE_FILES LICENSE.MIT
 )
 
 ############################################################
