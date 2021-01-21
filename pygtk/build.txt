@@ -1,0 +1,20 @@
+#this is documentation, adjust commands accordingly
+
+#clone the git repository
+git clone https://github.com/wingtk/gvsbuild.git
+
+#build the project
+C:\Python39\python.exe gvsbuild\build.py ^
+    build ^
+    --build-dir C:\gtk-build ^
+    --same-python ^
+    --platform x64 ^
+    --configuration release ^
+    --vs-ver 16 ^
+    --enable-gi ^
+    --keep ^
+    gtk3 pango cairo adwaita-icon-theme pygobject pycairo
+
+#package into a wheel
+mkdir build && cd build
+C:\Python39\python.exe src\setup.py bdist_wheel
