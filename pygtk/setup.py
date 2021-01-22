@@ -3,7 +3,6 @@ import os
 import sys
 import shutil
 import glob
-import platform
 from setuptools import setup
 
 from datetime import datetime
@@ -18,8 +17,7 @@ PYTHON_INSTALL_ROOT = os.path.dirname(sys.executable)
 PYTHON_SITE_PACKAGES = os.path.join(PYTHON_INSTALL_ROOT, 'Lib', 'site-packages')
 
 #copy python modules into local directory
-if not os.path.exists(THIS_SITE_PACKAGES): os.makedirs(THIS_SITE_PACKAGES)
-for globname in ('pycairo-*.egg', 'PyGObject-*.egg'):
+for globname in ('pycairo-*.egg/cairo', 'PyGObject-*.egg/gi'):
     src = glob.glob(os.path.join(PYTHON_SITE_PACKAGES, globname))[0]
     dst = os.path.join(THIS_SITE_PACKAGES, os.path.basename(src))
     print('Copying %s to %s'%(src, dst))
@@ -34,28 +32,37 @@ for dirname in os.listdir(GTK_INSTALL_ROOT):
 
 #patch dll dir into gi __init__.py
 print("Patching gi module...")
-gi = glob.glob(os.path.join(THIS_SITE_PACKAGES, 'PyGObject-*.egg', 'gi', '__init__.py'))[0]
+gi = glob.glob(os.path.join(THIS_SITE_PACKAGES, 'gi', '__init__.py'))[0]
 original = open(gi).read()
 PATCH = """
 ########################################################################
 THIS_DIR = os.path.dirname(__file__)
-BIN_DIR = os.path.join(THIS_DIR, '..', '..', '..', 'gtk', 'bin')
+BIN_DIR = os.path.join(THIS_DIR, '..', '..', 'gtk', 'bin')
 os.environ['PATH'] = os.environ['PATH'] + ';' + os.path.abspath(BIN_DIR)
-#code below will search the PATH and call add_dll_directory:
+os.add_dll_directory(BIN_DIR) #do add_dll_directory without added_dirs
+#code below will close added_dirs after imports and break future imports
 ########################################################################
 """
 if 'BIN_DIR' not in original:
     SEARCH_TEXT = 'added_dirs = []'
-    output = original.replace(SEARCH_TEXT, SEARCH_TEXT+PATCH)
+    output = original.replace(SEARCH_TEXT, PATCH+SEARCH_TEXT)
     open(gi, 'w').write(output)
 
+def form_data_file_list(*dir_list):
+    for dirname in dir_list:
+        print("Generate data file list for %s..."%dirname)
+        for root, dirs, files in os.walk(dirname):
+            root_files = [os.path.join(root, i) for i in files]
+            yield (root, root_files)
+
+def form_package_file_list(*dir_list):
+    for dirname in dir_list:
+        print("Generate data file list for %s..."%dirname)
+        for root, dirs, files in os.walk(dirname):
+            for i in files: yield os.path.join(root, i)
+
 #form list of all data files
-data_files = list()
-for dirname in ('Lib',):
-    print("Generate data file list for %s..."%dirname)
-    for root, dirs, files in os.walk(dirname):
-        root_files = [os.path.join(root, i) for i in files]
-        data_files.append((root, root_files))
+data_files = list(form_data_file_list('Lib'))
 
 print("Start setup...")
 
@@ -65,14 +72,12 @@ class BinaryDistribution(Distribution):
     """Distribution which always forces a binary package with platform name"""
     def has_ext_modules(foo): return True
 
-major, minor, patch = platform.python_version_tuple()
-
 setup(
-   name='PothosSDRPyGTK',
-   data_files=data_files,
-   version=VERSION,
-   python_requires='==%s.%s.*'%(major, minor),
-   distclass=BinaryDistribution,
+    name='PothosSDRPyGTK',
+    data_files=data_files,
+    version=VERSION,
+    python_requires='==%d.%d.*'%(sys.version_info.major, sys.version_info.minor),
+    distclass=BinaryDistribution,
 )
 
 print("Done!")
