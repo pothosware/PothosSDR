@@ -38,7 +38,7 @@ PATCH = """
 ########################################################################
 THIS_DIR = os.path.dirname(__file__)
 BIN_DIR = os.path.join(THIS_DIR, '..', '..', 'gtk', 'bin')
-os.environ['PATH'] = os.environ['PATH'] + ';' + os.path.abspath(BIN_DIR)
+os.environ['PATH'] = os.path.abspath(BIN_DIR) + ';' + os.environ['PATH']
 os.add_dll_directory(BIN_DIR) #do add_dll_directory without added_dirs
 #code below will close added_dirs after imports and break future imports
 ########################################################################
@@ -54,12 +54,6 @@ def form_data_file_list(*dir_list):
         for root, dirs, files in os.walk(dirname):
             root_files = [os.path.join(root, i) for i in files]
             yield (root, root_files)
-
-def form_package_file_list(*dir_list):
-    for dirname in dir_list:
-        print("Generate data file list for %s..."%dirname)
-        for root, dirs, files in os.walk(dirname):
-            for i in files: yield os.path.join(root, i)
 
 #form list of all data files
 data_files = list(form_data_file_list('Lib'))
