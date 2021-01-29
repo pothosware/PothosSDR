@@ -80,8 +80,8 @@ MyExternalProject_Add(GNURadio
     DEPENDS volk PyBind11 Log4CPP MPIR uhd CppZMQ PortAudio CppUnit gsl fftw Qt5 qwt libsndfile
     GIT_REPOSITORY https://github.com/gnuradio/gnuradio.git
     GIT_TAG ${GNURADIO_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/gnuradio.diff
+    #PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+    #    ${PROJECT_SOURCE_DIR}/patches/gnuradio.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
@@ -170,8 +170,8 @@ MyExternalProject_Add(GrOsmoSDR
     DEPENDS GNURadio SoapySDR bladeRF uhd hackRF rtl-sdr osmo-sdr miri-sdr airspy
     GIT_REPOSITORY git://git.osmocom.org/gr-osmosdr
     GIT_TAG ${GROSMOSDR_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/gr-osmosdr.diff
+    #PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+    #    ${PROJECT_SOURCE_DIR}/patches/gr-osmosdr.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -Wno-dev
@@ -189,7 +189,6 @@ MyExternalProject_Add(GrOsmoSDR
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DBOOST_ALL_DYN_LINK=TRUE
-        -DENABLE_PYTHON=OFF #FIXME, master looks for GrSWIG.cmake, we we cant python yet
         -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
         -DPYTHON_INCLUDE_DIR=${PYTHON3_INCLUDE_DIR}
         -DPYTHON_LIBRARY=${PYTHON3_LIBRARY}
