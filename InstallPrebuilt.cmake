@@ -6,23 +6,21 @@
 ##
 ## * zadig (prebuilt executable)
 ## * boost (prebuilt runtime dlls)
-## * qt5 (prebuilt runtime dlls)
 ## * fx3 (prebuilt static libs)
 ## * swig (prebuilt generator)
 ## * fftw (prebuilt runtime dlls)
 ## * liquiddsp (prebuilt runtime dlls)
-## * winflexbison (generator exes)
 ############################################################
 
 ############################################################
 ## Zadig for USB devices
 ############################################################
-set(ZADIG_NAME "zadig-2.4.exe")
+set(ZADIG_NAME "zadig-2.5.exe")
 
 if (NOT EXISTS "${CMAKE_BINARY_DIR}/${ZADIG_NAME}")
     message(STATUS "Downloading zadig...")
     file(DOWNLOAD
-        "https://github.com/pbatard/libwdi/releases/download/b721/zadig-2.4.exe"
+        "https://github.com/pbatard/libwdi/releases/download/b730/zadig-2.5.exe"
         ${CMAKE_BINARY_DIR}/${ZADIG_NAME}
     )
     message(STATUS "...done")
@@ -30,20 +28,21 @@ endif ()
 
 install(FILES "${CMAKE_BINARY_DIR}/${ZADIG_NAME}" DESTINATION bin)
 
-list(APPEND CPACK_PACKAGE_EXECUTABLES "zadig-2.4" "Zadig v2.4")
-list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig-2.4")
+list(APPEND CPACK_PACKAGE_EXECUTABLES "zadig-2.5" "Zadig v2.5")
+list(APPEND CPACK_CREATE_DESKTOP_LINKS "zadig-2.5")
 
 ############################################################
 ## Boost dependency (prebuilt)
 ############################################################
-set(BOOST_ROOT C:/local/boost_1_67_0)
-set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-${MSVC_VERSION_MAJOR}.${MSVC_VERSION_MINOR})
-set(BOOST_DLL_SUFFIX vc${MSVC_VERSION_MAJOR}${MSVC_VERSION_MINOR}-mt-x64-1_67.dll)
+set(BOOST_ROOT C:/local/boost_1_75_0)
+set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib64-msvc-14.2)
+set(BOOST_DLL_SUFFIX vc142-mt-x64-1_75.dll)
 
 message(STATUS "BOOST_ROOT: ${BOOST_ROOT}")
 message(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
 message(STATUS "BOOST_DLL_SUFFIX: ${BOOST_DLL_SUFFIX}")
 
+if (EXISTS ${BOOST_ROOT})
 install(FILES
     "${BOOST_LIBRARYDIR}/boost_thread-${BOOST_DLL_SUFFIX}"
     "${BOOST_LIBRARYDIR}/boost_system-${BOOST_DLL_SUFFIX}"
@@ -57,46 +56,14 @@ install(FILES
 )
 
 install(FILES ${BOOST_ROOT}/LICENSE_1_0.txt DESTINATION licenses/Boost)
-
-############################################################
-## Qt5 (prebuilt)
-############################################################
-set(QT5_ROOT C:/Qt/Qt5.8.0)
-#support VC-specific suffix for multiple installs to coexist
-if (EXISTS ${QT5_ROOT}-vc${MSVC_VERSION_MAJOR})
-    set(QT5_ROOT ${QT5_ROOT}-vc${MSVC_VERSION_MAJOR})
+else()
+    message(STATUS "Prebuilt boost not found (${BOOST_ROOT})")
 endif()
-set(QT5_LIB_PATH ${QT5_ROOT}/5.8/msvc${MSVC_VERSION_YEAR}_64)
-
-message(STATUS "QT5_ROOT: ${QT5_ROOT}")
-message(STATUS "QT5_LIB_PATH: ${QT5_LIB_PATH}")
-
-file(GLOB QT5_ICU_DLLS "${QT5_LIB_PATH}/bin/icu*.dll")
-
-install(FILES
-    ${QT5_ICU_DLLS}
-    "${QT5_LIB_PATH}/bin/libGLESv2.dll"
-    "${QT5_LIB_PATH}/bin/libEGL.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Core.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Gui.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Widgets.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Concurrent.dll"
-    "${QT5_LIB_PATH}/bin/Qt5OpenGL.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Svg.dll"
-    "${QT5_LIB_PATH}/bin/Qt5PrintSupport.dll"
-    "${QT5_LIB_PATH}/bin/Qt5Network.dll"
-    DESTINATION bin
-)
-
-install(FILES "${QT5_LIB_PATH}/plugins/platforms/qwindows.dll" DESTINATION bin/platforms)
-install(FILES "${QT5_LIB_PATH}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
-
-install(DIRECTORY ${QT5_ROOT}/Licenses/ DESTINATION licenses/Qt)
 
 ############################################################
 ## Cypress API (prebuilt)
 ############################################################
-set(FX3_SDK_PATH "C:/local/EZ-USB FX3 SDK/1.3")
+set(FX3_SDK_PATH "C:/Program Files (x86)/Cypress/EZ-USB FX3 SDK/1.3")
 
 if (EXISTS ${FX3_SDK_PATH})
     message(STATUS "FX3_SDK_PATH: ${FX3_SDK_PATH}")
@@ -106,14 +73,14 @@ else()
     set(FX3_SDK_FOUND FALSE)
 endif()
 
-#nothing to install, this is a static
+#nothing to install, limesuite uses the static library
 
 ############################################################
 ## SWIG dependency (prebuilt)
 ############################################################
 MyExternalProject_Add(swig
-    URL https://downloads.sourceforge.net/project/swig/swigwin/swigwin-4.0.1/swigwin-4.0.1.zip
-    URL_MD5 eb6948ee80bb54e69190b630a29d3d4f
+    URL https://downloads.sourceforge.net/project/swig/swigwin/swigwin-4.0.2/swigwin-4.0.2.zip
+    URL_MD5 009926b512aee9318546bdd4c7eab6f9
     CONFIGURE_COMMAND echo "..."
     BUILD_COMMAND echo "..."
     INSTALL_COMMAND echo "..."
@@ -169,25 +136,9 @@ install(FILES ${LIQUIDDSP_LIBRARY} DESTINATION lib)
 install(FILES ${LIQUIDDSP_DLL} DESTINATION bin)
 
 ############################################################
-## Download winflexbison
-############################################################
-MyExternalProject_Add(winflexbison
-    URL https://github.com/lexxmark/winflexbison/archive/v2.5.15.zip
-    URL_MD5 cbc9d36d620c2cc7a4a2da32c4e96409
-    CONFIGURE_COMMAND echo "..."
-    BUILD_COMMAND echo "..."
-    INSTALL_COMMAND echo "..."
-    LICENSE_FILES README.md
-)
-
-ExternalProject_Get_Property(winflexbison SOURCE_DIR)
-set(FLEX_EXECUTABLE "${SOURCE_DIR}/bin/Release/win_flex.exe")
-set(BISON_EXECUTABLE "${SOURCE_DIR}/bin/Release/win_bison.exe")
-
-############################################################
 ## SDRplay API
 ############################################################
-get_filename_component(SDRPLAY_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\API;Install_Dir]" ABSOLUTE)
+get_filename_component(SDRPLAY_API_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\Service\\API;Install_Dir]" ABSOLUTE)
 if (EXISTS "${SDRPLAY_API_DIR}")
     message(STATUS "SDRPLAY_API_DIR: ${SDRPLAY_API_DIR}")
     install(

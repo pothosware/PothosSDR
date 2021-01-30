@@ -1,7 +1,7 @@
 ########################################################################
 # Pothos SDR development environment
 ########################################################################
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 3.12.0)
 project(PothosSDR NONE)
 
 if (NOT CMAKE_BUILD_TYPE)
@@ -11,9 +11,9 @@ endif()
 enable_language(CXX) #defines MSVCxx variables
 message(STATUS "MSVC_VERSION: ${MSVC_VERSION}")
 message(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
-if ("${MSVC_VERSION}" STREQUAL "1900")
-    set(MSVC_VERSION_YEAR 2015)
-    set(MSVC_VERSION_MAJOR 14)
+if ("${MSVC_VERSION}" STREQUAL "1928")
+    set(MSVC_VERSION_YEAR 2019)
+    set(MSVC_VERSION_MAJOR 16)
     set(MSVC_VERSION_MINOR 0)
 else ()
     message(FATAL_ERROR "MSVC version ${MSVC_VERSION} not supported!")
@@ -46,7 +46,6 @@ install(DIRECTORY patches DESTINATION ".")
 ########################################################################
 set_property(DIRECTORY PROPERTY "EP_BASE" ${CMAKE_BINARY_DIR})
 set_property(DIRECTORY PROPERTY "EP_UPDATE_DISCONNECTED" TRUE) #no auto update
-set_property(DIRECTORY PROPERTY "EP_INDEPENDENT_STEP_TARGETS" update)
 include(ExternalProject)
 include(CMakeParseArguments)
 
@@ -99,10 +98,9 @@ include(SetupPython.cmake)
 include(BuildCommon.cmake)
 include(BuildHwDrivers.cmake)
 include(BuildSoapySDR.cmake)
-include(BuildPothos.cmake)
-include(BuildGrQt4Deps.cmake)
-include(BuildGNURadio.cmake)
 include(BuildSDRApps.cmake)
+include(BuildPothos.cmake)
+include(BuildGNURadio.cmake)
 
 ########################################################################
 # Target to manually update cloned repos

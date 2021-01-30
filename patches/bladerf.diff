@@ -1,0 +1,15 @@
+diff --git a/host/libraries/libbladeRF/src/backend/usb/cyapi.c b/host/libraries/libbladeRF/src/backend/usb/cyapi.c
+index 41a3b755..ad1c7fc1 100644
+--- a/host/libraries/libbladeRF/src/backend/usb/cyapi.c
++++ b/host/libraries/libbladeRF/src/backend/usb/cyapi.c
+@@ -750,8 +750,8 @@ out:
+ 
+ /* The top-level code will have acquired the stream->lock for us */
+ int cyapi_submit_stream_buffer(void *driver, struct bladerf_stream *stream,
+-                               void *buffer, unsigned int timeout_ms,
+-                               bool nonblock)
++                              void *buffer, size_t *length,
++                              unsigned int timeout_ms, bool nonblock)
+ {
+     int status = 0;
+     struct timespec timeout_abs;

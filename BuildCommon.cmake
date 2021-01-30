@@ -10,29 +10,43 @@
 ## * poco (pothos framework + toolkits)
 ## * spuce (pothos-comms + plotters)
 ## * muparserx (pothos framework)
+## * nlohmann json (pothos framework)
 ## * portaudio (gr-audio, pothos-audio)
 ## * wxwidgets (cubicsdr, limesuite)
+## * qt5 (pothos-flow, gnuradio, gqrx, inspectrum)
+## * qwt (gr-qtgui, pothos-plotters)
 ## * faac (gr-drm)
 ## * faad2 (gr-drm)
 ## * cppunit (gnuradio)
 ## * gsl (gnuradio)
 ## * libxml2 (libiio)
+## * pybind11 (gnuradio)
+## * log4cpp (gnuradio)
+## * gmp (gnuradio)
+## * libsndfile (gr-blocks)
 ############################################################
 
 set(PTHREADS_BRANCH master)
-set(LIBUSB_BRANCH v1.0.23)
+set(LIBUSB_BRANCH v1.0.24)
 set(ZEROMQ_BRANCH master)
-set(CPPZMQ_BRANCH v4.3.0) #gr-zmq req due to zmq api change
-set(POCO_BRANCH poco-1.9.3-release)
+set(CPPZMQ_BRANCH master)
+set(POCO_BRANCH poco-1.9.4-release) #1.10.x release missing openssl submodule
 set(SPUCE_BRANCH 0.4.3)
 set(MUPARSERX_BRANCH v4.0.8)
+set(NLOHMANN_JSON_BRANCH v3.9.1)
 set(PORTAUDIO_BRANCH master)
-set(WXWIDGETS_BRANCH v3.1.2) #v3.1.3 has winsock def error
+set(WXWIDGETS_BRANCH v3.1.4)
+set(QT5_BRANCH 5.15) #LTS
+set(QWT_BRANCH master)
 set(FAAC_BRANCH master)
 set(FAAD2_BRANCH master)
 set(CPPUNIT_BRANCH master)
 set(GSL_BRANCH v2.5.0)
-set(LIBXML2_BRANCH v2.9.9)
+set(LIBXML2_BRANCH v2.9.10)
+set(PYBIND11_BRANCH master)
+set(LOG4CPP_BRANCH master)
+set(MPIR_BRANCH master)
+set(LIBSNDFILE_BRANCH master)
 
 ############################################################
 ## Build Pthreads for win32
@@ -118,7 +132,7 @@ MyExternalProject_Add(ZeroMQ
 )
 
 set(ZEROMQ_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
-set(ZEROMQ_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/libzmq-v${MSVC_VERSION_MAJOR}${MSVC_VERSION_MINOR}-mt-4_1_8.lib)
+set(ZEROMQ_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/libzmq-v142-mt-4_1_8.lib)
 
 ############################################################
 ## Build CppZMQ
@@ -159,7 +173,7 @@ MyExternalProject_Add(Spuce
         -DBUILD_SHARED_LIBS=OFF
         -DENABLE_PYTHON=OFF
         -DBUILD_TESTING=OFF
-        -DCMAKE_PREFIX_PATH=${QT5_LIB_PATH}
+        -DCMAKE_PREFIX_PATH=${QT5_ROOT}
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     LICENSE_FILES LICENSE_1_0.txt
@@ -178,6 +192,23 @@ MyExternalProject_Add(muparserx
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     LICENSE_FILES License.txt
+)
+
+############################################################
+## Install nlohmann json (header only)
+############################################################
+MyExternalProject_Add(nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG ${NLOHMANN_JSON_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DJSON_BuildTests=OFF
+        -DJSON_MultipleHeaders=OFF
+        -DJSON_Install=ON
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    LICENSE_FILES LICENSE.MIT
 )
 
 ############################################################
@@ -227,6 +258,83 @@ ExternalProject_Get_Property(wxWidgets SOURCE_DIR)
 #use these variable to setup wxWidgets in dependent projects
 set(wxWidgets_ROOT_DIR ${SOURCE_DIR})
 set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_x64_lib)
+
+############################################################
+## Build Qt5
+############################################################
+
+#qt is huge, install to a staging ground, and install select dlls
+set(QT5_ROOT ${CMAKE_CURRENT_BINARY_DIR}/Qt${QT5_BRANCH}-vc${MSVC_VERSION_MAJOR})
+
+message(STATUS "QT5_ROOT: ${QT5_ROOT}")
+
+MyExternalProject_Add(Qt5
+    GIT_REPOSITORY git://code.qt.io/qt/qt5.git
+    GIT_TAG ${QT5_BRANCH}
+    GIT_SUBMODULES "" #handled by init-repository
+    GIT_SHALLOW TRUE
+    UPDATE_COMMAND perl init-repository || true
+    #configure really messes up the cmake shell, so "call" fixes that
+    CONFIGURE_COMMAND cd <BINARY_DIR> && call <SOURCE_DIR>/configure
+        -nomake examples
+        -nomake tests
+        -skip qtwebengine
+        -skip qtconnectivity
+        -opensource
+        -confirm-license
+        -release
+        -shared
+        -prefix ${QT5_ROOT}
+        QMAKE_CXXFLAGS+=/MP
+    BUILD_COMMAND nmake
+    INSTALL_COMMAND nmake install
+    LICENSE_FILES
+        LICENSE.FDL
+        LICENSE.GPL3-EXCEPT
+        LICENSE.GPLv2
+        LICENSE.GPLv3
+        LICENSE.LGPLv21
+        LICENSE.LGPLv3
+        LICENSE.QT-LICENSE-AGREEMENT
+)
+
+install(FILES
+    "${QT5_ROOT}/bin/libGLESv2.dll"
+    "${QT5_ROOT}/bin/libEGL.dll"
+    "${QT5_ROOT}/bin/Qt5Core.dll"
+    "${QT5_ROOT}/bin/Qt5Gui.dll"
+    "${QT5_ROOT}/bin/Qt5Widgets.dll"
+    "${QT5_ROOT}/bin/Qt5Concurrent.dll"
+    "${QT5_ROOT}/bin/Qt5OpenGL.dll"
+    "${QT5_ROOT}/bin/Qt5Svg.dll"
+    "${QT5_ROOT}/bin/Qt5PrintSupport.dll"
+    "${QT5_ROOT}/bin/Qt5Network.dll"
+    DESTINATION bin
+)
+
+install(FILES "${QT5_ROOT}/plugins/platforms/qwindows.dll" DESTINATION bin/platforms)
+install(FILES "${QT5_ROOT}/plugins/iconengines/qsvgicon.dll" DESTINATION bin/iconengines)
+
+############################################################
+## Build QWT
+############################################################
+MyExternalProject_Add(qwt
+    DEPENDS Qt5
+    GIT_REPOSITORY https://github.com/opencor/qwt.git
+    GIT_TAG ${QWT_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/qwt.diff
+    CONFIGURE_COMMAND cd <BINARY_DIR> && ${QT5_ROOT}/bin/qmake.exe <SOURCE_DIR>/qwt.pro
+    BUILD_COMMAND nmake release
+    INSTALL_COMMAND echo "..."
+    LICENSE_FILES COPYING
+)
+
+ExternalProject_Get_Property(qwt SOURCE_DIR)
+ExternalProject_Get_Property(qwt BINARY_DIR)
+set(QWT_INCLUDE_DIR ${SOURCE_DIR}/src)
+set(QWT_LIBRARY ${BINARY_DIR}/lib/qwt.lib)
+install(FILES ${BINARY_DIR}/lib/qwt.dll DESTINATION bin)
 
 ############################################################
 ## Build FAAC
@@ -361,3 +469,72 @@ MyExternalProject_Add(libxml2
 ExternalProject_Get_Property(libxml2 SOURCE_DIR)
 set(LIBXML2_INCLUDE_DIR ${SOURCE_DIR}/include)
 set(LIBXML2_LIBRARIES ${SOURCE_DIR}/win32/bin.msvc/libxml2_a.lib) #static
+
+############################################################
+## Build PyBind11
+############################################################
+MyExternalProject_Add(PyBind11
+    GIT_REPOSITORY https://github.com/pybind/pybind11.git
+    GIT_TAG ${PYBIND11_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
+        -DPYTHON_INCLUDE_DIR=${PYTHON3_INCLUDE_DIR}
+        -DPYTHON_LIBRARY=${PYTHON3_LIBRARY}
+        -DPYBIND11_TEST=OFF
+    LICENSE_FILES LICENSE
+)
+
+############################################################
+## Build Log4CPP
+############################################################
+MyExternalProject_Add(Log4CPP
+    GIT_REPOSITORY https://github.com/orocos-toolchain/log4cpp.git
+    GIT_TAG ${LOG4CPP_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/log4cpp.diff
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    LICENSE_FILES COPYING
+)
+
+############################################################
+## Build MPIR
+##
+## dll_mpir_gc builds both mpirxx and mpir as one library
+## so we copy mpir.lib to mpirxx.lib to trick gnuradio
+############################################################
+MyExternalProject_Add(MPIR
+    GIT_REPOSITORY git://github.com/BrianGladman/mpir.git
+    GIT_TAG ${MPIR_BRANCH}
+    CONFIGURE_COMMAND echo "Configure MPIR..."
+    BUILD_COMMAND cd <SOURCE_DIR>/msvc/vs19 && call msbuild.bat gc DLL x64 Release
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/msvc/vs19/dll_mpir_gc/x64/Release/mpir.lib <SOURCE_DIR>/msvc/vs19/dll_mpir_gc/x64/Release/mpirxx.lib
+    LICENSE_FILES COPYING COPYING.LIB
+)
+
+ExternalProject_Get_Property(MPIR SOURCE_DIR)
+set(MPIR_INCLUDE_DIR ${SOURCE_DIR}/msvc/vs19/dll_mpir_gc/x64/Release)
+set(MPIR_LIBRARY ${SOURCE_DIR}/msvc/vs19/dll_mpir_gc/x64/Release/mpir.lib)
+set(MPIRXX_LIBRARY ${SOURCE_DIR}/msvc/vs19/dll_mpir_gc/x64/Release/mpirxx.lib) #same lib
+install(FILES ${SOURCE_DIR}/msvc/vs19/dll_mpir_gc/x64/Release/mpir.dll DESTINATION bin)
+
+############################################################
+## Build libsndfile
+############################################################
+MyExternalProject_Add(libsndfile
+    GIT_REPOSITORY https://github.com/libsndfile/libsndfile.git
+    GIT_TAG ${LIBSNDFILE_BRANCH}
+    CMAKE_DEFAULTS ON
+    CMAKE_ARGS
+        -Wno-dev
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    LICENSE_FILES COPYING
+)

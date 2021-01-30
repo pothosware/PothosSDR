@@ -8,7 +8,6 @@
 ## * bladerf
 ## * hackrf
 ## * uhd/usrp
-## * umtrx
 ## * airspy
 ## * airspy-hf+
 ## * mirisdr
@@ -21,12 +20,18 @@ set(MIRISDR_BRANCH master)
 set(RTL_BRANCH development)
 set(BLADERF_BRANCH master)
 set(HACKRF_BRANCH master)
-set(UHD_BRANCH UHD-3.15.LTS) #bump MSVC ver to go higher
+set(UHD_BRANCH v4.0.0.0)
 set(UMTRX_BRANCH master)
 set(AIRSPY_BRANCH master)
 set(AIRSPYHF_BRANCH master)
-set(LIBIIO_BRANCH v0.18)
+set(LIBIIO_BRANCH v0.19)
 set(LIBAD9361_BRANCH master)
+
+############################################################
+# python generation tools
+# uhd uses mako
+############################################################
+execute_process(COMMAND ${PYTHON3_ROOT}/Scripts/pip.exe install mako OUTPUT_QUIET)
 
 ############################################################
 ## Build Osmo SDR
@@ -84,14 +89,17 @@ MyExternalProject_Add(rtl-sdr
 ## Build BladeRF
 ############################################################
 MyExternalProject_Add(bladeRF
-    DEPENDS Pthreads libusb Pthreads
+    DEPENDS Pthreads libusb
     GIT_REPOSITORY https://github.com/Nuand/bladeRF.git
     GIT_TAG ${BLADERF_BRANCH}
+    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
+        ${PROJECT_SOURCE_DIR}/patches/bladerf.diff
     CONFIGURE_COMMAND
         "${CMAKE_COMMAND}" <SOURCE_DIR>/host
         -G ${CMAKE_GENERATOR}
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+        -DTREAT_WARNINGS_AS_ERRORS=OFF
         -DENABLE_BACKEND_USB=ON
         -DENABLE_BACKEND_LIBUSB=ON
         -DENABLE_BACKEND_CYAPI=${FX3_SDK_FOUND}
@@ -128,9 +136,12 @@ MyExternalProject_Add(bladeRF
 )
 
 #bladerf tries to install this file, but its not part of the SDK, so make it
-if (NOT EXISTS "${FX3_SDK_PATH}/license/license.txt")
-    file(WRITE "${FX3_SDK_PATH}/license/license.txt" "http://www.cypress.com")
-endif()
+ExternalProject_Get_Property(bladeRF BINARY_DIR)
+execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory
+    "${BINARY_DIR}/output/${CMAKE_BUILD_TYPE}/drivers/CyUSB3")
+execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${FX3_SDK_PATH}/driver/bin/Win8.1/x64/WdfCoinstaller01011.dll"
+    "${BINARY_DIR}/output/${CMAKE_BUILD_TYPE}/drivers/CyUSB3")
 
 ############################################################
 ## Build HackRF
@@ -161,6 +172,7 @@ MyExternalProject_Add(hackRF
 ############################################################
 ## Build UHD
 ############################################################
+if (EXISTS ${BOOST_ROOT})
 MyExternalProject_Add(uhd
     DEPENDS libusb
     GIT_REPOSITORY https://github.com/EttusResearch/uhd.git
@@ -176,7 +188,7 @@ MyExternalProject_Add(uhd
         -DBOOST_ROOT=${BOOST_ROOT}
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
         -DBOOST_ALL_DYN_LINK=TRUE
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
+        -DPYTHON_EXECUTABLE=${PYTHON3_EXECUTABLE}
     LICENSE_FILES host/LICENSE
 )
 
@@ -191,35 +203,16 @@ DeleteRegValue HKEY_LOCAL_MACHINE \\\"${NSIS_ENV}\\\" \\\"UHD_PKG_PATH\\\"
 set(UHD_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)
 set(UHD_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/uhd.lib)
 
-############################################################
-## Build UmTRX
-############################################################
-MyExternalProject_Add(umtrx
-    DEPENDS uhd
-    GIT_REPOSITORY https://github.com/fairwaves/UHD-Fairwaves.git
-    GIT_TAG ${UMTRX_BRANCH}
-    PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
-        ${PROJECT_SOURCE_DIR}/patches/umtrx_logger_fix.diff
-    CMAKE_DEFAULTS ON
-    CONFIGURE_COMMAND
-        "${CMAKE_COMMAND}" <SOURCE_DIR>/host
-        -G ${CMAKE_GENERATOR}
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARYDIR}
-        -DBOOST_ALL_DYN_LINK=TRUE
-        -DUHD_INCLUDE_DIRS=${UHD_INCLUDE_DIRS}
-        -DUHD_LIBRARIES=${UHD_LIBRARIES}
-    LICENSE_FILES README
-)
+else()
+    message(STATUS "Boost missing, skipping uhd...")
+endif()
 
 ############################################################
 ## Build Airspy
 ############################################################
 MyExternalProject_Add(airspy
     DEPENDS Pthreads libusb Pthreads
-    GIT_REPOSITORY https://github.com/airspy/host.git
+    GIT_REPOSITORY https://github.com/airspy/airspyone_host.git
     GIT_TAG ${AIRSPY_BRANCH}
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
@@ -239,6 +232,10 @@ MyExternalProject_Add(airspyhf
     DEPENDS Pthreads libusb Pthreads
     GIT_REPOSITORY https://github.com/airspy/airspyhf.git
     GIT_TAG ${AIRSPYHF_BRANCH}
+    PATCH_COMMAND cd <SOURCE_DIR> &&
+        ${GIT_EXECUTABLE} reset --hard HEAD &&
+        ${GIT_EXECUTABLE} clean -dfx &&
+        ${GIT_EXECUTABLE} apply ${PROJECT_SOURCE_DIR}/patches/airspyhf_missing_getopt.diff
     CMAKE_DEFAULTS ON
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

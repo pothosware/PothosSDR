@@ -30,29 +30,41 @@ and links to the actual source code, checkout this wiki page:
 
 * https://github.com/pothosware/PothosSDR/wiki/Sources
 
-## Prebuilt binaries manifest
+## Required packages to install
 
-Pothos SDR relies on a number of pre-build package from the internet.
+**Visual studio 2019:** The free community installer is fine.
+Install all of the C++ development tools.
+https://visualstudio.microsoft.com/vs/community/
+
+**Python environment:** Download the python3.9 x64 installer.
+Python is used for bindings, generation, downloading tools.
+https://www.python.org/downloads/
+
+**Git:** Install msysgit, make sure git is in the command PATH.
+https://msysgit.github.io/index.old.html
+
+**CMake:** The build environment is cmake-based,
+as are most projects built by this environment.
+https://cmake.org/download/
+
+## Optional packages to install
+
+Some projects require pre-build packages from the internet.
+These packages are optional, but need to be installed manually.
 The current download URLs are maintained here for reference,
-and can be to replicate the complete build environment.
+and can be used to replicate the complete build environment.
 
-* Boost: http://sourceforge.net/projects/boost/files/boost-binaries/1.63.0/
-* Qt: https://download.qt.io/archive/qt/5.8/5.8.0/
-* NSIS: https://sourceforge.net/projects/nsis/files/NSIS%203/
-* CyAPI: cy_ssusbsuite_v1.3.3_0.zip
-* SDRplayAPI: SDRplay_RSP_API-Windows-2.11.1.exe
+**Boost 1.75:** UHD and GNURadio projects require Boost development sources.
+http://sourceforge.net/projects/boost/files/boost-binaries/1.75.0/
 
-Python environments needed for the build:
+**CyAPI:** Limesuite (LimeSDR) uses the Cypress API for USB bindings.
+https://www.cypress.com FX3SDKSetup_1.3.4.exe
 
-* Python3.8 for python3 bindings
-* Python2.7 for python2 bindings
+**SDRplayAPIv3:** SoapySDRPlay3 and gr-sdrplay3 require the SDRPlayv3 API.
+https://www.sdrplay.com/downloads/
 
-Python2.7 modules needed for GNU Radio build:
-
-* Use pip to install: Cheetah, mako, ply
-* Download prebuilt wheels and install with pip
-  * http://www.lfd.uci.edu/~gohlke/pythonlibs
-  * pygtk, wxpython, numpy, lxml, pyopengl
+**NSIS:** The installer packaging requires NSIS to make the final exe.
+https://sourceforge.net/projects/nsis/files/NSIS%203/
 
 ## Building the environment
 
@@ -74,9 +86,17 @@ Building the environment with CMake:
 ```
 mkdir build
 cd build
-cmake ../ -G "Visual Studio 14 2015 Win64" ^
-    -DCMAKE_SYSTEM_VERSION=8.1 ^
+cmake ../ -G "Visual Studio 16 2019" ^
     -DCMAKE_INSTALL_PREFIX=C:/PothosSDR ^
     -DCMAKE_BUILD_TYPE=RelWithDebInfo
+
+#build everything + NSIS packaging
 rebuild_all.bat
+
+#--OR-- just build and install to CMAKE_INSTALL_PREFIX
+cmake --build . --config RelWithDebInfo
+cmake --build . --config RelWithDebInfo --target install
+
+#repositories can be updated with
+cmake --build . --config RelWithDebInfo --target update
 ```

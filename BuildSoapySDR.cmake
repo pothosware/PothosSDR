@@ -67,26 +67,6 @@ MyExternalProject_Add(SoapySDR
 ############################################################
 ## Build SoapySDR python bindings
 ############################################################
-MyExternalProject_Add(SoapySDRPython2
-    DEPENDS swig SoapySDR
-    GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
-    GIT_TAG ${SOAPY_SDR_BRANCH}
-    CONFIGURE_COMMAND
-        "${CMAKE_COMMAND}" <SOURCE_DIR>/python
-        -G ${CMAKE_GENERATOR}
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-        -DPYTHON_EXECUTABLE=${PYTHON2_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON2_INCLUDE_DIR}
-        -DPYTHON_LIBRARY=${PYTHON2_LIBRARY}
-        -DPYTHON_INSTALL_DIR=${PYTHON2_INSTALL_DIR}
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DSWIG_DIR=${SWIG_DIR}
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
-    LICENSE_FILES LICENSE_1_0.txt
-)
-
 MyExternalProject_Add(SoapySDRPython3
     DEPENDS swig SoapySDR
     GIT_REPOSITORY https://github.com/pothosware/SoapySDR.git
@@ -103,12 +83,7 @@ MyExternalProject_Add(SoapySDRPython3
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DSWIG_DIR=${SWIG_DIR}
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
-    #extra install command to inject add_dll_directory for DLL search changes in python3.8
-    INSTALL_COMMAND
-        ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install &&
-        cat "${CMAKE_SOURCE_DIR}/python/soapysdr_python38_add_dll_directory.py" > "${CMAKE_BINARY_DIR}/SoapySDR.py" &&
-        cat "${CMAKE_INSTALL_PREFIX}/${PYTHON3_INSTALL_DIR}/SoapySDR.py" >> "${CMAKE_BINARY_DIR}/SoapySDR.py" &&
-        ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/SoapySDR.py" "${CMAKE_INSTALL_PREFIX}/${PYTHON3_INSTALL_DIR}"
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE} --target install
     LICENSE_FILES LICENSE_1_0.txt
 )
 
@@ -173,12 +148,13 @@ MyExternalProject_Add(SoapyHackRF
 ############################################################
 ## Build SoapyOsmo
 ##
-## * ENABLE_RFSPACE=OFF build errors
+## * ENABLE_RFSPACE=OFF see Soapy NetSDR
 ## * ENABLE_BLADERF=OFF see Soapy BladeRF
 ## * ENABLE_HACKRF=OFF see Soapy HackRF
 ## * ENABLE_RTL=OFF see Soapy RTL-SDR
 ## * ENABLE_AIRSPY=OFF see Soapy Airspy
 ############################################################
+if (EXISTS ${BOOST_ROOT})
 MyExternalProject_Add(SoapyOsmo
     DEPENDS SoapySDR osmo-sdr miri-sdr #airspy bladeRF hackRF rtl-sdr
     GIT_REPOSITORY https://github.com/pothosware/SoapyOsmo.git
@@ -198,6 +174,10 @@ MyExternalProject_Add(SoapyOsmo
         -DENABLE_MIRI=ON
     LICENSE_FILES COPYING
 )
+
+else()
+    message(STATUS "Boost missing, skipping SoapyOsmo...")
+endif()
 
 ############################################################
 ## Build SoapyRTLSDR
@@ -230,6 +210,7 @@ MyExternalProject_Add(SoapyRemote
 ############################################################
 ## Build SoapyUHD
 ############################################################
+if (EXISTS ${BOOST_ROOT})
 MyExternalProject_Add(SoapyUHD
     DEPENDS SoapySDR uhd
     GIT_REPOSITORY https://github.com/pothosware/SoapyUHD.git
@@ -244,6 +225,9 @@ MyExternalProject_Add(SoapyUHD
         -DUHD_LIBRARIES=${UHD_LIBRARIES}
     LICENSE_FILES COPYING
 )
+else()
+    message(STATUS "Boost missing, skipping SoapyUHD...")
+endif()
 
 ############################################################
 ## Build SoapyRedPitaya
