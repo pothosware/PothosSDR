@@ -9,7 +9,7 @@ from datetime import datetime
 VERSION = datetime.today().strftime('%Y.%m.%d')
 
 THIS_DIR = os.getcwd()
-THIS_SITE_PACKAGES = os.path.join(THIS_DIR, 'Lib', 'site-packages')
+THIS_SITE_PACKAGES = os.path.join(THIS_DIR)
 
 #gvsbuild resource location
 GTK_INSTALL_ROOT = os.path.abspath("c:/gtk-build/gtk/x64/release")
@@ -37,7 +37,9 @@ original = open(gi).read()
 PATCH = """
 ########################################################################
 THIS_DIR = os.path.dirname(__file__)
-BIN_DIR = os.path.join(THIS_DIR, '..', '..', 'gtk', 'bin')
+PYLIB_DIR = os.path.join(THIS_DIR, '..', '..', '..', 'Lib')
+PYLIB_DIR = os.path.abspath(PYLIB_DIR)
+BIN_DIR = os.path.join(PYLIB_DIR, 'gtk', 'bin')
 os.environ['PATH'] = os.path.abspath(BIN_DIR) + ';' + os.environ['PATH']
 os.add_dll_directory(BIN_DIR) #do add_dll_directory without added_dirs
 #code below will close added_dirs after imports and break future imports
@@ -55,6 +57,11 @@ def form_data_file_list(*dir_list):
             root_files = [os.path.join(root, i) for i in files]
             yield (root, root_files)
 
+def package_data_file_list(dirname):
+    print("Generate data file list for %s..."%dirname)
+    for root, dirs, files in os.walk(dirname):
+        for f in files: yield os.path.relpath(os.path.join(root, f), dirname)
+
 #form list of all data files
 data_files = list(form_data_file_list('Lib'))
 
@@ -64,7 +71,10 @@ print("Start setup...")
 from setuptools.dist import Distribution
 class BinaryDistribution(Distribution):
     """Distribution which always forces a binary package with platform name"""
-    def has_ext_modules(foo): return True
+    def has_ext_modules(self): return True
+
+PACKAGES=['gi', 'cairo']
+PACKAGE_DATA=dict([(name, list(package_data_file_list(name))) for name in PACKAGES])
 
 setup(
     name='PothosSDRPyGTK',
@@ -72,6 +82,9 @@ setup(
     version=VERSION,
     python_requires='==%d.%d.*'%(sys.version_info.major, sys.version_info.minor),
     distclass=BinaryDistribution,
+    packages=PACKAGES,
+    package_data=PACKAGE_DATA,
+    include_package_data=True,
 )
 
 print("Done!")
