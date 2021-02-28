@@ -9,4 +9,3 @@
 | airspyhf      | airspyhf_missing_getopt.diff         | https://github.com/airspy/airspyhf/pull/28            |
 | QWT           | qwt.diff                             | disable qt designer plugin                            |
 | log4cpp       | log4cpp.diff                         | fix dll install path, remove repository theme         |
-| bladerf       | bladerf.diff                         | https://github.com/Nuand/bladeRF/issues/803           |
