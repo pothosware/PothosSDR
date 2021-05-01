@@ -13,8 +13,8 @@
 
 set(VOLK_BRANCH master)
 set(SOAPYVOLK_BRANCH master)
-set(GNURADIO_BRANCH master)
-set(GRC_EXE_BRANCH gr3.9)
+set(GNURADIO_BRANCH maint-3.9)
+set(GRC_EXE_BRANCH master)
 set(GROSMOSDR_BRANCH master)
 set(GQRX_BRANCH master)
 set(GRSDRPLAY3 master)
