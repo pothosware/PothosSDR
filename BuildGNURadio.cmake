@@ -165,9 +165,10 @@ DeleteRegKey HKEY_CLASSES_ROOT \\\"GNURadio.Companion\\\"
 ## Build GrOsmoSDR
 ##
 ## * ENABLE_RFSPACE=OFF build errors
+## * ENABLE_REDPITAYA=OFF build errors
 ############################################################
 MyExternalProject_Add(GrOsmoSDR
-    DEPENDS GNURadio SoapySDR bladeRF uhd hackRF rtl-sdr osmo-sdr miri-sdr airspy
+    DEPENDS GNURadio SoapySDR bladeRF uhd hackRF rtl-sdr osmo-sdr miri-sdr airspy airspyhf
     GIT_REPOSITORY git://git.osmocom.org/gr-osmosdr
     GIT_TAG ${GROSMOSDR_BRANCH}
     #PATCH_COMMAND ${GIT_PATCH_HELPER} --git ${GIT_EXECUTABLE}
@@ -194,7 +195,7 @@ MyExternalProject_Add(GrOsmoSDR
         -DPYTHON_LIBRARY=${PYTHON3_LIBRARY}
         -DGR_PYTHON_DIR=${PYTHON3_INSTALL_DIR}
         -DENABLE_RFSPACE=OFF
-        -DENABLE_REDPITAYA=ON
+        -DENABLE_REDPITAYA=OFF
     LICENSE_FILES COPYING
 )
 
